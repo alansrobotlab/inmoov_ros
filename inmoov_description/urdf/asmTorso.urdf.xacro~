@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+
+<robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+
+<xacro:macro name="torso" params="side covers">
+
+  <link name="mid_stomach">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/mid_stomach.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 1.152"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+  <link name="disk">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/disk.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0.046 0"/>
+      <xacro:cover_color/>
+    </visual>
+  </link>
+
+  <link name="top_stomach">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/top_stomach.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+  <link name="torso">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/torso.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+  <link name="kinect">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:kinect_color/>
+    </visual>
+  </link>
+
+  <link name="chestplate">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/chest.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:cover_color/>
+    </visual>
+  </link>
+
+
+  <joint name="waist_rotate" type="revolute">
+   <axis xyz="0 0 1"/>
+<limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0 1.152"/>
+    <parent link="mid_stomach"/>
+    <child link="top_stomach"/>
+  </joint>
+
+  <joint name="disk" type="fixed">
+
+      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+    <parent link="top_stomach"/>
+    <child link="disk"/>
+  </joint>
+
+  <joint name="waist_lean" type="revolute">
+   <axis xyz="0 1 0"/>
+<limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
+<origin rpy="0 0 0" xyz="0 0 0.11"/>
+    <parent link="top_stomach"/>
+    <child link="torso"/>
+  </joint>
+
+</xacro:macro>
+
+</robot>

@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+  <xacro:include filename="$(find inmoov_description)/urdf/asmBase.urdf.xacro" />
+  <xacro:include filename="$(find inmoov_description)/urdf/asmTorso.urdf.xacro" />
+  <xacro:include filename="$(find inmoov_description)/urdf/asmHead.urdf.xacro" />
+  <xacro:include filename="$(find inmoov_description)/urdf/asmFace.urdf.xacro" />
+  <xacro:include filename="$(find inmoov_description)/urdf/asmArm.urdf.xacro" />
+  <xacro:include filename="$(find inmoov_description)/urdf/asmHand.urdf.xacro" />
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.11" radius="0.26"/>
+      </geometry> 
+      <origin rpy="0 0 0" xyz="0 0 0.055"/>
+      <xacro:base_color/>
+    </visual>
+  </link>
+
+  <joint name="base_to_pedestal" type="fixed">
+    <parent link="base_link"/>
+    <child link="pedestal"/>
+    <origin rpy="0 0 0"  xyz="0 0 0"/>
+  </joint>
+
+  <link name="pedestal">
+    <visual>
+      <geometry>
+        <cylinder length="0.94" radius="0.0254"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.58"/>
+      <xacro:base_color/>
+    </visual>
+  </link>
+
+  <joint name="pedestal_to_mid_stomach" type="fixed">
+    <parent link="pedestal"/>
+    <child link="mid_stomach"/>
+     <origin rpy="0 0 0"  xyz="0 0 0"/>
+  </joint>
+
+  <xacro:torso side="right" covers="yes" />
+
+  <joint name="head_updown" type="revolute">
+   <axis xyz="1 0 0"/>
+   <limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="-0.001 -0.0315 0.4551"/>
+   <parent link="torso"/>
+   <child link="head_base"/>
+  </joint>
+
+  <xacro:head covers="yes" />
+
+  <xacro:face covers="yes" />
+
+  <joint name="face" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.0637 0.079"/>
+    <parent link="skull"/>
+    <child link="face"/>
+  </joint>
+
+  <xacro:arm side="right" flip="1" covers="yes" />
+
+  <joint name="right_shoulder_side" type="revolute">
+   <axis xyz="0 1 0"/>
+   <limit effort="1000.0" lower="0" upper="0.75" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0.143 0 0.298"/>
+   <parent link="torso"/>
+   <child link="right_shoulder_base"/>
+  </joint>
+
+  <xacro:hand side="right" neg="1" flip="0" covers="yes" />
+
+  <joint name="right_hand" type="revolute">
+   <axis xyz="0 0 1"/>
+   <limit effort="1000.0" lower="-3.14" upper="0" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="-0.01 -0.0144 -0.2885"/>
+   <parent link="right_forearm"/>
+   <child link="right_hand"/>
+  </joint>
+
+  <xacro:arm side="left" flip="-1" covers="yes" />
+
+  <joint name="left_shoulder_side" type="revolute">
+   <axis xyz="0 1 0"/>
+   <limit effort="1000.0" lower="0" upper="0.75" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="-0.143 0 0.298"/>
+   <parent link="torso"/>
+   <child link="left_shoulder_base"/>
+  </joint>
+
+  <xacro:hand side="left" neg="-1" flip="3.1415926539" covers="yes" />
+
+  <joint name="left_hand" type="revolute">
+   <axis xyz="0 0 1"/>
+   <limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0.01 -0.0144 -0.2885"/>
+   <parent link="left_forearm"/>
+   <child link="left_hand"/>
+  </joint>
+
+</robot>
+

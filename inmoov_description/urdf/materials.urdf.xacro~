@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:property name="pi" value="3.1415926535897931" />
+
+<xacro:macro name="decimalrgba" params="r g b a">
+      <color rgba="${r/255} ${g/255} ${b/255} ${a/255}"/>
+</xacro:macro>
+      
+<xacro:macro name="frame_color">
+      <material name="cframe">
+      <color rgba="0.25 0.25 0.25 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="cover_color">
+      <material name="ccover">
+      <color rgba="0.6 0.6 0.6 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="eyeball_color">
+      <material name="ceyeball">
+      <color rgba="0.7 0.7 0.7 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="iris_color">
+      <material name="ciris">
+      <color rgba="0.25 0.41 0.88 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="base_color">
+      <material name="cbase">
+      <color rgba="0.1 0.1 0.1 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="kinect_color">
+      <material name="ckinect">
+      <color rgba="0.1 0.1 0.1 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="accent_color">
+      <material name="chighlight">
+      <color rgba="0.25 0.41 0.88 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="servo_color">
+      <material name="cservo">
+      <color rgba="0.1 0.1 0.1 1"/>
+      </material>
+</xacro:macro>
+
+<xacro:macro name="horn_color">
+      <material name="chorn">
+      <color rgba="0.6 0.6 0.6 1"/>
+      </material>
+</xacro:macro>
+
+</robot>

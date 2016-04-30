@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+
+<xacro:macro name="arm" params="side flip covers">
+
+  <link name="${side}_shoulder_base">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/${side}_shoulder_base.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+  <link name="${side}_shoulder">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/${side}_shoulder.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+  <link name="${side}_bicep">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/bicep.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+  <link name="${side}_bicepcover">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/bicepcover.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:cover_color/>
+    </visual>
+  </link>
+
+  <link name="${side}_forearm">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/${side}_forearm.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="${flip * 0.001} 0 0"/>
+      <xacro:cover_color/>
+    </visual>
+  </link>
+
+  <joint name="${side}_shoulder_up" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="${flip * -0.012} 0 -0.04"/>
+    <parent link="${side}_shoulder_base"/>
+    <child link="${side}_shoulder"/>
+  </joint>
+
+  <joint name="${side}_bicep_rotate" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="${flip * 0.066} 0 -0.060"/>
+    <parent link="${side}_shoulder"/>
+    <child link="${side}_bicep"/>
+  </joint>
+
+  <joint name="${side}_bicep" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" lower="0.75" upper="1.57" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0 -0.0278 -0.2235"/>
+    <parent link="${side}_bicep"/>
+    <child link="${side}_forearm"/>
+  </joint>
+
+  <joint name="${side}_bicepcover" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="${side}_bicep"/>
+    <child link="${side}_bicepcover"/>
+  </joint>
+
+
+
+
+
+</xacro:macro>
+
+
+
+</robot>

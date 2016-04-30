@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+
+<robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+
+<xacro:macro name="face" params="covers">
+
+  <link name="face">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/face.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:cover_color/>
+    </visual>
+  </link>
+
+  <joint name="eyes_updown" type="revolute">
+   <axis xyz="1 0 0"/>
+   <limit effort="1000.0" lower="-0.3" upper="0.3" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <parent link="face"/>
+   <child link="eyesupport"/>
+  </joint>
+
+  <link name="eyesupport">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/eyesupport.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+<xacro:asmEye side="right" flip="1" />
+
+  <joint name="right_eye_leftright" type="revolute">
+   <axis xyz="0 0 1"/>
+   <limit effort="1000.0" lower="-0.3" upper="0.3" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0.033 0 -0.0036"/>
+   <parent link="eyesupport"/>
+   <child link="right_eyesupport"/>
+  </joint>
+
+<xacro:asmEye side="left" flip="-1" />
+
+  <joint name="left_eye_leftright" type="revolute">
+   <axis xyz="0 0 1"/>
+   <limit effort="1000.0" lower="-0.3" upper="0.3" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="-0.033 0 -0.0036"/>
+   <parent link="eyesupport"/>
+   <child link="left_eyesupport"/>
+  </joint>
+
+</xacro:macro>
+
+<xacro:macro name="asmEye" params="side flip">
+
+  <link name="${side}_eyesupport">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/${side}_eyesupport.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
+  <link name="${side}_camera">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/camera.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:camera_color/>
+    </visual>
+  </link>
+
+  <link name="${side}_eye">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/eye.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:eyeball_color/>
+    </visual>
+  </link>
+
+  <link name="${side}_iris">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/iris.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:iris_color/>
+    </visual>
+  </link>
+
+  <joint name="${side}_camera" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -0.001 0"/>
+    <parent link="${side}_eyesupport"/>
+    <child link="${side}_camera"/>
+  </joint>
+
+  <joint name="${side}_eye" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.003 0"/>
+    <parent link="${side}_eyesupport"/>
+    <child link="${side}_eye"/>
+  </joint>
+
+  <joint name="${side}_iris" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.0061 0"/>
+    <parent link="${side}_eyesupport"/>
+    <child link="${side}_iris"/>
+  </joint>
+
+</xacro:macro>
+
+</robot>

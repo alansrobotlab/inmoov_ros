@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<robot name="inmoov_hand" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+<xacro:include filename="$(find inmoov_description)/urdf/asmFace.urdf.xacro" />
+<xacro:include filename="$(find inmoov_description)/urdf/asmHead.urdf.xacro" />
+
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.0001" radius="0.26"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.055"/>
+      <material name="invisible">
+        <color rgba="0.3 0.3 0.3 0"/>
+      </material>
+    </visual>
+  </link>
+
+<xacro:head covers="yes" />
+
+<xacro:face covers="yes" />
+
+  <joint name="base_to_base" type="revolute">
+   <axis xyz="0 0 1"/>
+   <limit effort="1000.0" lower="-3.14" upper="0" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <parent link="base_link"/>
+   <child link="head_base"/>
+  </joint>
+
+  <joint name="face" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.0637 0.079"/>
+    <parent link="skull"/>
+    <child link="face"/>
+  </joint>
+
+</robot>
