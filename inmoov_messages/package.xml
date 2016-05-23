@@ -1,0 +1,23 @@
+<package>
+  <name>inmoov_messages</name>
+  <version>0.1.0</version>
+  <description>
+    Common messages used throughout inmoov_motor stack.
+  </description>
+  <maintainer email="gestalt73@gmail.com">Alan Timm</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">https://www.facebook.com/alansrobotlab</url>
+  <url type="bugtracker">https://github.com/alansrobotlab/inmoov_ros</url>
+
+  <author>Alan Timm</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>message_generation</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <run_depend>message_runtime</run_depend>
+  <run_depend>std_msgs</run_depend>
+
+</package>
