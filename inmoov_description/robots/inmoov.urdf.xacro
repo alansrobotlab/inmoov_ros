@@ -36,6 +36,16 @@
     </visual>
   </link>
 
+  <link name="head_tilt">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/virtual.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+  </link>
+
   <joint name="pedestal_to_mid_stomach" type="fixed">
     <parent link="pedestal"/>
     <child link="mid_stomach"/>
@@ -44,11 +54,20 @@
 
   <xacro:torso side="right" covers="yes" />
 
-  <joint name="head_updown" type="revolute">
-   <axis xyz="1 0 0"/>
+  <joint name="head_tilt" type="revolute">
+   <axis xyz="0 1 0"/>
    <limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
    <origin rpy="0 0 0" xyz="-0.001 -0.0315 0.4551"/>
    <parent link="torso"/>
+   <child link="head_tilt"/>
+  </joint>
+
+
+  <joint name="head_updown" type="revolute">
+   <axis xyz="1 0 0"/>
+   <limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <parent link="head_tilt"/>
    <child link="head_base"/>
   </joint>
 
@@ -66,7 +85,7 @@
 
   <joint name="right_shoulder_side" type="revolute">
    <axis xyz="0 1 0"/>
-   <limit effort="1000.0" lower="0" upper="-0.75" velocity="0.5"/>
+   <limit effort="1000.0" lower="-0.75" upper="0" velocity="0.5"/>
    <origin rpy="0 0 0" xyz="0.143 0 0.298"/>
    <parent link="torso"/>
    <child link="right_shoulder_base"/>

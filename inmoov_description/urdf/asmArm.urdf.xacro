@@ -59,7 +59,7 @@
   <joint name="${side}_shoulder_up" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="${flip * -0.012} 0 -0.04"/>
+    <origin rpy="0 0 0" xyz="${flip * 0.012} 0 -0.04"/>
     <parent link="${side}_shoulder_base"/>
     <child link="${side}_shoulder"/>
   </joint>
@@ -74,7 +74,7 @@
 
   <joint name="${side}_bicep" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="0.75" upper="1.57" velocity="0.5"/>
+    <limit effort="1000.0" lower="0.4" upper="1.57" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 -0.0278 -0.2235"/>
     <parent link="${side}_bicep"/>
     <child link="${side}_forearm"/>

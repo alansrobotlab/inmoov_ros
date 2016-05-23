@@ -31,7 +31,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/jaw.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <xacro:cover_color/>
     </visual>
   </link>
@@ -69,18 +69,18 @@
 
   <joint name="head_leftright" type="revolute">
    <axis xyz="0 0 1"/>
-<limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0 0.0245"/>
-    <parent link="head_base"/>
-    <child link="head"/>
+   <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0 0 0.0245"/>
+   <parent link="head_base"/>
+   <child link="head"/>
   </joint>
 
   <joint name="jaw" type="revolute">
    <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="-0.15" velocity="0.5"/>
-<origin rpy="-0.085 0 0" xyz="-0.001 0.0375 0.0437"/>
-    <parent link="head"/>
-    <child link="jaw"/>
+   <limit effort="1000.0" lower="0" upper="0.15" velocity="0.5"/>
+   <origin rpy="0.085 0 3.1415" xyz="-0.001 0.0375 0.0437"/>
+   <parent link="head"/>
+   <child link="jaw"/>
   </joint>
 
   <joint name="skull" type="fixed">

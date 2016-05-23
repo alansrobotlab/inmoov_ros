@@ -22,7 +22,7 @@
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -31,9 +31,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_thumb5_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="3.1415 0 0" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -42,9 +42,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/thumb5_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -53,9 +53,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/thumb5_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -64,9 +64,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/index3_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -75,9 +75,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/index3_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -86,9 +86,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/index3_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -97,9 +97,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/middle3_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -108,9 +108,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/middle3_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -119,9 +119,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/middle3_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -130,9 +130,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_ring3_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -141,9 +141,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/ring3_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -152,9 +152,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/ring3_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -163,9 +163,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/ring3_4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -174,9 +174,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_pinky3_1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -185,9 +185,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/pinky3_2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -196,9 +196,9 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/pinky3_3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
@@ -207,23 +207,24 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/pinky3_4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
-        <color rgba="0.3 0.3 0.3 1"/>
+        <color rgba="0.25 0.25 0.25 1"/>
       </material>
     </visual>
   </link>
   <joint name="right_thumb1" type="revolute">
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="0" upper="1.57" velocity="0.5"/>
-    <origin rpy="0 0.1 0" xyz="-0.029 0 -0.0577"/>
+    <origin rpy="3.1415 0.1 0" xyz="-0.029 0 -0.0577"/>
+    <mimic joint="right_thumb" multiplier="-0.75" offset="0"/>
     <parent link="right_hand"/>
     <child link="right_thumb1"/>
   </joint>
-  <joint name="right_thumb2" type="revolute">
+  <joint name="right_thumb" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-    <origin rpy="0 0.82 0" xyz="-0.0287 -0.0006 -0.0123"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
+    <origin rpy="0 2.3 -0.3" xyz="-0.02725 -0.0006 0.014"/>
     <parent link="right_thumb1"/>
     <child link="right_thumb2"/>
   </joint>
@@ -231,40 +232,44 @@
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0 -0.035"/>
+    <mimic joint="right_thumb" multiplier="1" offset="0"/>
     <parent link="right_thumb2"/>
     <child link="right_thumb3"/>
   </joint>
   <joint name="right_index1" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-    <origin rpy="0 0.1 0" xyz="-0.0342 -0.0015 -0.119"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
+    <origin rpy="0 -0.1 3.1415" xyz="-0.0342 -0.0015 -0.119"/>
+    <mimic joint="right_index" multiplier="1" offset="0"/>
     <parent link="right_hand"/>
     <child link="right_index1"/>
   </joint>
-  <joint name="right_index2" type="revolute">
+  <joint name="right_index" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0.001 -0.03595"/>
     <parent link="right_index1"/>
     <child link="right_index2"/>
   </joint>
   <joint name="right_index3" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0 -0.024"/>
+    <mimic joint="right_index" multiplier="1" offset="0"/>
     <parent link="right_index2"/>
     <child link="right_index3"/>
   </joint>
   <joint name="right_middle1" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="-0.007 -0.00175 -0.12325"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
+    <origin rpy="0 0 3.1415" xyz="-0.007 -0.00175 -0.12325"/>
+    <mimic joint="right_middle" multiplier="1" offset="0"/>
     <parent link="right_hand"/>
     <child link="right_middle1"/>
   </joint>
-  <joint name="right_middle2" type="revolute">
+  <joint name="right_middle" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0.000 -0.0389"/>
     <parent link="right_middle1"/>
     <child link="right_middle2"/>
@@ -273,20 +278,22 @@
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0.0005 -0.0259"/>
+    <mimic joint="right_middle" multiplier="1" offset="0"/>
     <parent link="right_middle2"/>
     <child link="right_middle3"/>
   </joint>
   <joint name="right_ring1" type="revolute">
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-    <origin rpy="0 0.7 0" xyz="0.00705 0 -0.0794"/>
+    <origin rpy="0 -0.7 3.1415" xyz="0.00705 0 -0.0794"/>
+    <mimic joint="right_ring" multiplier="0.1" offset="0"/>
     <parent link="right_hand"/>
     <child link="right_ring1"/>
   </joint>
-  <joint name="right_ring2" type="revolute">
+  <joint name="right_ring" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-    <origin rpy="0 -0.78 0" xyz="0.035 -.00125 -0.0167"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
+    <origin rpy="0 0.7775 0" xyz="-0.0351 0.00126 -0.0166"/>
     <parent link="right_ring1"/>
     <child link="right_ring2"/>
   </joint>
@@ -294,6 +301,7 @@
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0.0005 -0.0345"/>
+    <mimic joint="right_ring" multiplier="1" offset="0"/>
     <parent link="right_ring2"/>
     <child link="right_ring3"/>
   </joint>
@@ -301,20 +309,22 @@
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0.0004 -0.0229"/>
+    <mimic joint="right_ring" multiplier="1" offset="0"/>
     <parent link="right_ring3"/>
     <child link="right_ring4"/>
   </joint>
   <joint name="right_pinky1" type="revolute">
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-    <origin rpy="0 0.7 0" xyz="0.0270 0 -0.0555"/>
+    <origin rpy="0 -0.7 3.1415" xyz="0.027 0 -0.0555"/>
+    <mimic joint="right_pinky" multiplier="0.1" offset="0"/>
     <parent link="right_hand"/>
     <child link="right_pinky1"/>
   </joint>
-  <joint name="right_pinky2" type="revolute">
+  <joint name="right_pinky" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-    <origin rpy="0 -0.93 0" xyz="0.046 0 -0.0228"/>
+    <limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
+    <origin rpy="0 0.93 0" xyz="-0.046 -0 -0.0228"/>
     <parent link="right_pinky1"/>
     <child link="right_pinky2"/>
   </joint>
@@ -322,6 +332,7 @@
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0.0005 -0.031"/>
+    <mimic joint="right_pinky" multiplier="1" offset="0"/>
     <parent link="right_pinky2"/>
     <child link="right_pinky3"/>
   </joint>
@@ -329,6 +340,7 @@
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0.0004 -0.0208"/>
+    <mimic joint="right_pinky" multiplier="1" offset="0"/>
     <parent link="right_pinky3"/>
     <child link="right_pinky4"/>
   </joint>
@@ -348,7 +360,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_cover_handring.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -359,7 +371,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_cover_handpinky.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -370,7 +382,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_cover_thumb.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="3.1415 0 0" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -381,7 +393,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_cover_index.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -392,7 +404,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_cover_middle.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -403,7 +415,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_cover_ring.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -414,7 +426,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_cover_pinky.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -426,37 +438,37 @@
     <child link="right_handcover"/>
   </joint>
   <joint name="right_cover_handring" type="fixed">
-    <origin rpy="0 -0.7 0" xyz="0.015 0.009 -0.0008"/>
+    <origin rpy="0 0.7 0" xyz="-0.015 -0.009 -0.0008"/>
     <parent link="right_ring1"/>
     <child link="right_cover_handring"/>
   </joint>
   <joint name="right_cover_handpinky" type="fixed">
-    <origin rpy="0 -0.7 0" xyz="0.0205 0.01 -0.0069"/>
+    <origin rpy="0 0.7 0" xyz="-0.0205 -0.01 -0.0069"/>
     <parent link="right_pinky1"/>
     <child link="right_cover_handpinky"/>
   </joint>
   <joint name="right_cover_thumb" type="fixed">
-    <origin rpy="0 3.2 0" xyz="-0.02125 0.01 0.0047"/>
+    <origin rpy="0 3.1 0" xyz="-0.02125 -0.01 -0.0047"/>
     <parent link="right_thumb1"/>
     <child link="right_cover_thumb"/>
   </joint>
   <joint name="right_cover_index" type="fixed">
-    <origin rpy="-0.05 0 0" xyz="0 0.0071 -0.012"/>
+    <origin rpy="0.05 0 0" xyz="0 -0.0071 -0.012"/>
     <parent link="right_index1"/>
     <child link="right_cover_index"/>
   </joint>
   <joint name="right_cover_middle" type="fixed">
-    <origin rpy="-0.05 0 0" xyz="0 0.0071 -0.012"/>
+    <origin rpy="-0.05 0 0" xyz="0 -0.0071 -0.012"/>
     <parent link="right_middle1"/>
     <child link="right_cover_middle"/>
   </joint>
   <joint name="right_cover_ring" type="fixed">
-    <origin rpy="-0.05 0.1 0" xyz="0 0.0071 -0.011"/>
+    <origin rpy="-0.05 -0.1 0" xyz="0 -0.005 -0.011"/>
     <parent link="right_ring2"/>
     <child link="right_cover_ring"/>
   </joint>
   <joint name="right_cover_pinky" type="fixed">
-    <origin rpy="-0.05 0.1 0" xyz="0 0.0071 -0.0105"/>
+    <origin rpy="-0.05 -0.1 0" xyz="0 -0.005 -0.0105"/>
     <parent link="right_pinky2"/>
     <child link="right_cover_pinky"/>
   </joint>

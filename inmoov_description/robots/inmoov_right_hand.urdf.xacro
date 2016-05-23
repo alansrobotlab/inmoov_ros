@@ -17,7 +17,7 @@
     </visual>
   </link>
 
-<xacro:hand side="right" flip="0" covers="yes" />
+  <xacro:hand side="right" neg="1" flip="0" covers="yes" />
 
   <joint name="base_to_hand" type="revolute">
    <axis xyz="0 0 1"/>
