@@ -15,6 +15,8 @@ from trainergui import Ui_MainWindow
 from inmoov_msgs.msg import MotorStatus
 from inmoov_msgs.msg import MotorCommand
 from inmoov_msgs.srv import MotorParameter
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Header
 
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
 import qdarkstyle
@@ -35,6 +37,24 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.parameterTopic = ["servobus0/motorparameter","servobus1/motorparameter","servobus2/motorparameter"]
 
         self.motorcommand = MotorCommand()
+        self.jointcommand = JointState()
+        
+        self.jointNames = [
+        
+        'right_pinky','right_ring','right_middle','right_index','right_thumb',
+        'right_hand','right_bicep','right_bicep_rotate','right_shoulder_side','right_shoulder_up','','',
+        
+        #'right_shoulder_up', 'right_bicep_rotate', 'right_bicep', 'right_shoulder_side','right_thumb', 
+        #'right_index', 'right_middle', 'right_ring', 'right_pinky','right_hand', '',  '' ,
+        
+        'eye_leftright','eyes_updown','jaw','head_leftright','head_updown','head_tilt','waist_lean','waist_rotate','','','','',  
+        
+        #'left_shoulder_up', 'left_bicep_rotate', 'left_bicep', 'left_shoulder_side', 'left_thumb','left_index',  'left_middle',  #'left_ring', 'left_pinky', 'left_hand','',''
+        
+        'left_pinky','left_ring','left_middle','left_index','left_thumb',
+        'left_hand','left_bicep','left_bicep_rotate','left_shoulder_side','left_shoulder_up','','',
+        ]
+
 
         self.setupDropDowns()
         
@@ -53,16 +73,19 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         
         self.sliderGoal.valueChanged.connect(self.sliderChanged)
 
-        rospy.init_node('listener', anonymous=True)
+        rospy.init_node('trainer', anonymous=True)
         
         self.commandPublisher = []
         self.commandPublisher.append(rospy.Publisher("servobus0/motorcommand", MotorCommand, queue_size=10))
         self.commandPublisher.append(rospy.Publisher("servobus1/motorcommand", MotorCommand, queue_size=10))
         self.commandPublisher.append(rospy.Publisher("servobus2/motorcommand", MotorCommand, queue_size=10))
+        
         self.statusSubscriber = []
         self.statusSubscriber.append(rospy.Subscriber("servobus0/motorstatus", MotorStatus, self.callback0))
         self.statusSubscriber.append(rospy.Subscriber("servobus1/motorstatus", MotorStatus, self.callback1))
         self.statusSubscriber.append(rospy.Subscriber("servobus2/motorstatus", MotorStatus, self.callback2))
+        
+        self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
         
         self.bus = 0
         self.servo = 0
@@ -131,6 +154,9 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
             self.chkPower.setChecked(bool(data.power))
             #self.txtGoal.setText(str(data.goal))
     
+    def degreestoradians(self, d):
+        return d*(3.1415926/180.0)
+    
     def setupDropDowns(self):
         self.cmbBus.addItem('Bus 00')
         self.cmbBus.addItem('Bus 01')
@@ -166,6 +192,14 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.value = float(self.txtGoal.text())
         #print(self.motorcommand.value)
         self.commandPublisher[self.bus].publish(self.motorcommand)
+        
+        self.jointcommand.header = Header()
+        self.jointcommand.header.stamp = rospy.Time.now()
+        self.jointcommand.name = [self.jointNames[((self.bus * 11) + self.servo)]]
+        self.jointcommand.position = [self.degreestoradians(float(self.txtGoal.text()))]
+        self.jointcommand.velocity = []
+        self.jointcommand.effort = []
+        self.jointPublisher.publish(self.jointcommand)
         
     
     def getGoal(self):
