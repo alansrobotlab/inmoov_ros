@@ -30,8 +30,8 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)  # This is defined in design.py file automatically
         # It sets up layout and widgets that are defined
 
-        self.statusTopic = ["servobus0/motorstatus", "servobus1/motorstatus", "servobus2/motorstatus"]
-        self.commandTopic = ["servobus0/motorcommand","servobus1/motorcommand","servobus2/motorcommand"]
+        #self.statusTopic = ["servobus0/motorstatus", "servobus1/motorstatus", "servobus2/motorstatus"]
+        #self.commandTopic = ["servobus0/motorcommand","servobus1/motorcommand","servobus2/motorcommand"]
         self.parameterTopic = ["servobus0/motorparameter","servobus1/motorparameter","servobus2/motorparameter"]
 
         self.motorcommand = MotorCommand()
@@ -55,8 +55,17 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
 
         rospy.init_node('listener', anonymous=True)
         
-        self.commandPublisher = rospy.Publisher(self.commandTopic[0], MotorCommand, queue_size=10)
-        self.statusSubscriber = rospy.Subscriber(self.statusTopic[0], MotorStatus, self.callback)
+        self.commandPublisher = []
+        self.commandPublisher.append(rospy.Publisher("servobus0/motorcommand", MotorCommand, queue_size=10))
+        self.commandPublisher.append(rospy.Publisher("servobus1/motorcommand", MotorCommand, queue_size=10))
+        self.commandPublisher.append(rospy.Publisher("servobus2/motorcommand", MotorCommand, queue_size=10))
+        self.statusSubscriber = []
+        self.statusSubscriber.append(rospy.Subscriber("servobus0/motorstatus", MotorStatus, self.callback0))
+        self.statusSubscriber.append(rospy.Subscriber("servobus1/motorstatus", MotorStatus, self.callback1))
+        self.statusSubscriber.append(rospy.Subscriber("servobus2/motorstatus", MotorStatus, self.callback2))
+        
+        self.bus = 0
+        self.servo = 0
         
         self.busChanged()
         self.servoChanged()
@@ -65,17 +74,20 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
 
     def busChanged(self):
         # unregister topics and reregister to the new ones
-        bus = self.cmbBus.currentIndex()
+        self.bus = self.cmbBus.currentIndex()
         
-        self.commandPublisher.unregister()
-        self.commandPublisher = rospy.Publisher(self.commandTopic[bus], MotorCommand, queue_size=10)
-        self.statusSubscriber.unregister()
-        self.statusSubscriber = rospy.Subscriber(self.statusTopic[bus], MotorStatus, self.callback)
+        #self.commandPublisher.unregister()
+        #self.commandPublisher = rospy.Publisher(self.commandTopic[bus], MotorCommand, queue_size=10)
+        #self.statusSubscriber.unregister()
+        #self.statusSubscriber = rospy.Subscriber(self.statusTopic[self.bus], MotorStatus, self.callback)
 
         
         self.servoChanged()
         
     def servoChanged(self):
+    
+        self.servo = self.cmbServo.currentIndex()
+    
         self.getMinPulse()
         self.getMaxPulse()
         self.getMinGoal()
@@ -86,10 +98,32 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.getEnabled()
         self.getCalibrated()
     
-    def callback(self, data):
-        if data.id == self.cmbServo.currentIndex():
+    def callback0(self, data):
+        if data.id == self.servo and self.bus == 0:
             #print data.posraw
-            self.chkEnabled.setChecked(bool(data.enabled))
+            #self.chkEnabled.setChecked(bool(data.enabled))
+            self.txtPosition.setText(str(data.position))
+            self.txtSpeed.setText(str(data.presentspeed))
+            self.txtSensorRaw.setText(str(data.posraw))
+            self.chkMoving.setChecked(bool(data.moving))
+            self.chkPower.setChecked(bool(data.power))
+            #self.txtGoal.setText(str(data.goal))
+            
+    def callback1(self, data):
+        if data.id == self.servo and self.bus == 1:
+            #print data.posraw
+            #self.chkEnabled.setChecked(bool(data.enabled))
+            self.txtPosition.setText(str(data.position))
+            self.txtSpeed.setText(str(data.presentspeed))
+            self.txtSensorRaw.setText(str(data.posraw))
+            self.chkMoving.setChecked(bool(data.moving))
+            self.chkPower.setChecked(bool(data.power))
+            #self.txtGoal.setText(str(data.goal))
+
+    def callback2(self, data):
+        if data.id == self.servo and self.bus == 2:
+            #print data.posraw
+            #self.chkEnabled.setChecked(bool(data.enabled))
             self.txtPosition.setText(str(data.position))
             self.txtSpeed.setText(str(data.presentspeed))
             self.txtSensorRaw.setText(str(data.posraw))
@@ -131,7 +165,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.parameter = 0x1E
         self.motorcommand.value = float(self.txtGoal.text())
         #print(self.motorcommand.value)
-        self.commandPublisher.publish(self.motorcommand)
+        self.commandPublisher[self.bus].publish(self.motorcommand)
         
     
     def getGoal(self):
@@ -146,7 +180,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0x14
         self.motorcommand.value = float(self.txtMinPulse.text())
-        self.commandPublisher.publish(self.motorcommand)
+        self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMinPulse(self):
         bus = self.cmbBus.currentIndex()
@@ -158,7 +192,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0x16
         self.motorcommand.value = float(self.txtMaxPulse.text())
-        self.commandPublisher.publish(self.motorcommand)
+        self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMaxPulse(self):
         bus = self.cmbBus.currentIndex()
@@ -170,7 +204,8 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0x06
         self.motorcommand.value = float(self.txtMinGoal.text())
-        self.commandPublisher.publish(self.motorcommand)
+        self.sliderGoal.setMinimum(int(self.motorcommand.value * 1000.0))
+        self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMinGoal(self):
         bus = self.cmbBus.currentIndex()
@@ -184,7 +219,8 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0x08
         self.motorcommand.value = float(self.txtMaxGoal.text())
-        self.commandPublisher.publish(self.motorcommand)
+        self.sliderGoal.setMaximum(int(self.motorcommand.value * 1000.0))
+        self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMaxGoal(self):
         bus = self.cmbBus.currentIndex()
@@ -198,7 +234,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0xA2
         self.motorcommand.value = float(self.txtMinSensor.text())
-        self.commandPublisher.publish(self.motorcommand)
+        self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMinSensor(self):
         bus = self.cmbBus.currentIndex()
@@ -210,7 +246,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0xA4
         self.motorcommand.value = float(self.txtMaxSensor.text())
-        self.commandPublisher.publish(self.motorcommand)
+        self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMaxSensor(self):
         bus = self.cmbBus.currentIndex()
@@ -221,7 +257,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0x18
         self.motorcommand.value = float(self.chkEnabled.isChecked())
-        self.commandPublisher.publish(self.motorcommand)
+        self.commandPublisher[self.bus].publish(self.motorcommand)
     
     def getEnabled(self):
         bus = self.cmbBus.currentIndex()
@@ -232,7 +268,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0xA0
         self.motorcommand.value = float(self.chkCalibrated.isChecked())
-        self.commandPublisher.publish(self.motorcommand)
+        self.commandPublisher[self.bus].publish(self.motorcommand)
     
     def getCalibrated(self):
         bus = self.cmbBus.currentIndex()
