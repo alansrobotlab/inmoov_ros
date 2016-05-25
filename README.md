@@ -30,7 +30,7 @@ It currently implements the following:
  - MoveIt! (http://moveit.ros.org/install/)
 
 ###How to Install It:
-copy these packages into your {inmoov_ros}/src folder
+Copy these packages into your {inmoov_ros}/src folder
 Run the following commands from the root of your {inmoov_ros} folder:
   
     catkin_make              #build/rebuild all projects
