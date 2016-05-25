@@ -1,22 +1,22 @@
 <launch>
 
-<group ns="servobus0" >
-  <node pkg="rosserial_python" type="serial_node.py" name="servonode" respawn="true">
-    <param name="port" value="/dev/ttyACM0"/>
-    <param name="baud" value="115200"/>
-  </node>
-</group>
-
-<group ns="servobus1" >
+<group ns="servobus/torso" >
   <node pkg="rosserial_python" type="serial_node.py" name="servonode" respawn="true">
     <param name="port" value="/dev/ttyACM1"/>
     <param name="baud" value="115200"/>
   </node>
 </group>
 
-<group ns="servobus2" >
+<group ns="servobus/leftarm" >
   <node pkg="rosserial_python" type="serial_node.py" name="servonode" respawn="true">
-    <param name="port" value="/dev/ttyACM2"/>
+      <param name="port" value="/dev/ttyACM2"/>
+    <param name="baud" value="115200"/>
+  </node>
+</group>
+
+<group ns="servobus/rightarm" >
+  <node pkg="rosserial_python" type="serial_node.py" name="servonode" respawn="true">
+    <param name="port" value="/dev/ttyACM0"/>
     <param name="baud" value="115200"/>
   </node>
 </group>

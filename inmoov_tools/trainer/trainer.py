@@ -32,28 +32,33 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)  # This is defined in design.py file automatically
         # It sets up layout and widgets that are defined
 
-        #self.statusTopic = ["servobus0/motorstatus", "servobus1/motorstatus", "servobus2/motorstatus"]
-        #self.commandTopic = ["servobus0/motorcommand","servobus1/motorcommand","servobus2/motorcommand"]
-        self.parameterTopic = ["servobus0/motorparameter","servobus1/motorparameter","servobus2/motorparameter"]
+        self.parameterTopic = ["servobus/torso/motorparameter","servobus/leftarm/motorparameter","servobus/rightarm/motorparameter"]
 
         self.motorcommand = MotorCommand()
         self.jointcommand = JointState()
         
-        self.jointNames = [
+        self.jointNames = []
         
-        'right_pinky','right_ring','right_middle','right_index','right_thumb',
-        'right_hand','right_bicep','right_bicep_rotate','right_shoulder_side','right_shoulder_up','','',
+        for servo in range (0, 11):
+            self.jointNames.append( rospy.get_param('servobus/torso/servomap/'+str(servo)+'/name'))
+            
+        for servo in range (0, 11):
+            self.jointNames.append( rospy.get_param('servobus/leftarm/servomap/'+str(servo)+'/name'))
+            
+        for servo in range (0, 11):
+            self.jointNames.append( rospy.get_param('servobus/rightarm/servomap/'+str(servo)+'/name'))
         
-        #'right_shoulder_up', 'right_bicep_rotate', 'right_bicep', 'right_shoulder_side','right_thumb', 
-        #'right_index', 'right_middle', 'right_ring', 'right_pinky','right_hand', '',  '' ,
+        #print(self.jointNames)
         
-        'eye_leftright','eyes_updown','jaw','head_leftright','head_updown','head_tilt','waist_lean','waist_rotate','','','','',  
         
-        #'left_shoulder_up', 'left_bicep_rotate', 'left_bicep', 'left_shoulder_side', 'left_thumb','left_index',  'left_middle',  #'left_ring', 'left_pinky', 'left_hand','',''
-        
-        'left_pinky','left_ring','left_middle','left_index','left_thumb',
-        'left_hand','left_bicep','left_bicep_rotate','left_shoulder_side','left_shoulder_up','','',
-        ]
+            #'right_pinky','right_ring','right_middle','right_index','right_thumb',
+            #'right_hand','right_bicep','right_bicep_rotate','right_shoulder_side','right_shoulder_up','','',
+            
+            #'eye_leftright','eyes_updown','jaw','head_leftright','head_updown','head_tilt','waist_lean','waist_rotate','','','','',  
+            
+            #'left_pinky','left_ring','left_middle','left_index','left_thumb',
+            #'left_hand','left_bicep','left_bicep_rotate','left_shoulder_side','left_shoulder_up','','',
+            
 
 
         self.setupDropDowns()
@@ -76,14 +81,14 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         rospy.init_node('trainer', anonymous=True)
         
         self.commandPublisher = []
-        self.commandPublisher.append(rospy.Publisher("servobus0/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus1/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus2/motorcommand", MotorCommand, queue_size=10))
+        self.commandPublisher.append(rospy.Publisher("servobus/torso/motorcommand", MotorCommand, queue_size=10))
+        self.commandPublisher.append(rospy.Publisher("servobus/leftarm/motorcommand", MotorCommand, queue_size=10))
+        self.commandPublisher.append(rospy.Publisher("servobus/rightarm/motorcommand", MotorCommand, queue_size=10))
         
         self.statusSubscriber = []
-        self.statusSubscriber.append(rospy.Subscriber("servobus0/motorstatus", MotorStatus, self.callback0))
-        self.statusSubscriber.append(rospy.Subscriber("servobus1/motorstatus", MotorStatus, self.callback1))
-        self.statusSubscriber.append(rospy.Subscriber("servobus2/motorstatus", MotorStatus, self.callback2))
+        self.statusSubscriber.append(rospy.Subscriber("servobus/torso/motorstatus", MotorStatus, self.callback0))
+        self.statusSubscriber.append(rospy.Subscriber("servobus/leftarm/motorstatus", MotorStatus, self.callback1))
+        self.statusSubscriber.append(rospy.Subscriber("servobus/rightarm/motorstatus", MotorStatus, self.callback2))
         
         self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
         
@@ -99,6 +104,11 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         # unregister topics and reregister to the new ones
         self.bus = self.cmbBus.currentIndex()
         
+        self.cmbServo.clear()
+        
+        for s in range(0, 11):
+            self.cmbServo.addItem(self.jointNames[(self.bus * 11) + s])
+        
         #self.commandPublisher.unregister()
         #self.commandPublisher = rospy.Publisher(self.commandTopic[bus], MotorCommand, queue_size=10)
         #self.statusSubscriber.unregister()
@@ -109,17 +119,18 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         
     def servoChanged(self):
     
-        self.servo = self.cmbServo.currentIndex()
-    
-        self.getMinPulse()
-        self.getMaxPulse()
-        self.getMinGoal()
-        self.getMaxGoal()
-        self.getGoal()
-        self.getMinSensor()
-        self.getMaxSensor()
-        self.getEnabled()
-        self.getCalibrated()
+        if self.cmbServo.count() > 0:
+            self.servo = self.cmbServo.currentIndex()
+        
+            self.getMinPulse()
+            self.getMaxPulse()
+            self.getMinGoal()
+            self.getMaxGoal()
+            self.getGoal()
+            self.getMinSensor()
+            self.getMaxSensor()
+            self.getEnabled()
+            self.getCalibrated()
     
     def callback0(self, data):
         if data.id == self.servo and self.bus == 0:
@@ -158,22 +169,27 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         return d*(3.1415926/180.0)
     
     def setupDropDowns(self):
-        self.cmbBus.addItem('Bus 00')
-        self.cmbBus.addItem('Bus 01')
-        self.cmbBus.addItem('Bus 02')
+    
+        self.cmbBus.addItem(rospy.get_param('/servobus/torso/name'))
+        self.cmbBus.addItem(rospy.get_param('/servobus/leftarm/name'))
+        self.cmbBus.addItem(rospy.get_param('/servobus/rightarm/name'))
 
-        self.cmbServo.addItem('Servo 00')
-        self.cmbServo.addItem('Servo 01')
-        self.cmbServo.addItem('Servo 02')
-        self.cmbServo.addItem('Servo 03')
-        self.cmbServo.addItem('Servo 04')
-        self.cmbServo.addItem('Servo 05')
-        self.cmbServo.addItem('Servo 06')
-        self.cmbServo.addItem('Servo 07')
-        self.cmbServo.addItem('Servo 08')
-        self.cmbServo.addItem('Servo 09')
-        self.cmbServo.addItem('Servo 10')
-        self.cmbServo.addItem('Servo 11')
+        for servo in range (0, 11):
+            print('/servobus/torso/servomap/' + str(servo) + '/name')
+            self.cmbServo.addItem(rospy.get_param('/servobus/torso/servomap/' + str(servo) + '/name'))
+
+        #self.cmbServo.addItem('Servo 00')
+        #self.cmbServo.addItem('Servo 01')
+        #self.cmbServo.addItem('Servo 02')
+        #self.cmbServo.addItem('Servo 03')
+        #self.cmbServo.addItem('Servo 04')
+        #self.cmbServo.addItem('Servo 05')
+        #self.cmbServo.addItem('Servo 06')
+        #self.cmbServo.addItem('Servo 07')
+        #self.cmbServo.addItem('Servo 08')
+        #self.cmbServo.addItem('Servo 09')
+        #self.cmbServo.addItem('Servo 10')
+        #self.cmbServo.addItem('Servo 11')
 
         self.cmbSmoothing.addItem('0 - Instant')
         self.cmbSmoothing.addItem('1 - Max Speed')
@@ -195,7 +211,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         
         self.jointcommand.header = Header()
         self.jointcommand.header.stamp = rospy.Time.now()
-        self.jointcommand.name = [self.jointNames[((self.bus * 11) + self.servo)]]
+        self.jointcommand.name = [self.jointNames[((self.bus * 12) + self.servo)]]
         self.jointcommand.position = [self.degreestoradians(float(self.txtGoal.text()))]
         self.jointcommand.velocity = []
         self.jointcommand.effort = []
