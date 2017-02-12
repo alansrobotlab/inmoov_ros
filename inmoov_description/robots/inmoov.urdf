@@ -36,7 +36,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/virtual.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
         <color rgba="0.25 0.25 0.25 1"/>
       </material>
@@ -63,7 +63,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/disk.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0.046 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -91,12 +91,34 @@
       </material>
     </visual>
   </link>
-  <link name="kinect">
+  <link name="kinect2_link">
     <visual>
       <geometry>
         <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <material name="ckinect">
+        <color rgba="0.1 0.1 0.1 1"/>
+      </material>
+    </visual>
+  </link>
+  <link name="kinect2_ir_optical_frame">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <material name="ckinect">
+        <color rgba="0.1 0.1 0.1 1"/>
+      </material>
+    </visual>
+  </link>
+  <link name="kinect2_rgb_optical_frame">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
       <material name="ckinect">
         <color rgba="0.1 0.1 0.1 1"/>
       </material>
@@ -121,38 +143,48 @@
     <child link="top_stomach"/>
   </joint>
   <joint name="disk" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.09"/>
+    <origin rpy="0 0 0" xyz="0.046 0 0.09"/>
     <parent link="top_stomach"/>
     <child link="disk"/>
   </joint>
   <joint name="waist_lean" type="revolute">
-    <axis xyz="0 1 0"/>
+    <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0 0.11"/>
     <parent link="top_stomach"/>
     <child link="torso"/>
   </joint>
   <joint name="chestplate" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.039 0.025"/>
+    <origin rpy="0 0 0" xyz="0.039 0 0.025"/>
     <parent link="torso"/>
     <child link="chestplate"/>
   </joint>
-  <joint name="kinect" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.066"/>
+  <joint name="kinect2" type="fixed">
+    <origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
     <parent link="torso"/>
-    <child link="kinect"/>
+    <child link="kinect2_link"/>
+  </joint>
+  <joint name="kinect2_ir_optical_frame" type="fixed">
+    <origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
+    <parent link="torso"/>
+    <child link="kinect2_ir_optical_frame"/>
+  </joint>
+  <joint name="kinect2_rgb_optical" type="fixed">
+    <origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
+    <parent link="torso"/>
+    <child link="kinect2_rgb_optical_frame"/>
   </joint>
   <joint name="head_tilt" type="revolute">
-    <axis xyz="0 1 0"/>
-    <limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="-0.001 -0.0315 0.4551"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" lower="0.30" upper="-0.30" velocity="0.5"/>
+    <origin rpy="0 0 3.1415" xyz="-0.0315  -0.001 0.4551"/>
     <parent link="torso"/>
     <child link="head_tilt"/>
   </joint>
   <joint name="head_updown" type="revolute">
-    <axis xyz="1 0 0"/>
+    <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 0 3.1415" xyz="0 0 0"/>
     <parent link="head_tilt"/>
     <child link="head_base"/>
   </joint>
@@ -194,7 +226,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/skull.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0.001 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -232,22 +264,22 @@
   <joint name="jaw" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="0" upper="0.15" velocity="0.5"/>
-    <origin rpy="0.085 0 3.1415" xyz="-0.001 0.0375 0.0437"/>
+    <origin rpy="0 -0.09 3.1415" xyz="0.0375 0.0005 0.0437"/>
     <parent link="head"/>
     <child link="jaw"/>
   </joint>
   <joint name="skull" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.001 0.044 -0.0245"/>
+    <origin rpy="0 0 0" xyz="0.044 0 -0.0245"/>
     <parent link="head"/>
     <child link="skull"/>
   </joint>
   <joint name="left_ear" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.056 0.035 0.0437"/>
+    <origin rpy="0 0 0" xyz="0.035 0.056 0.0437"/>
     <parent link="head"/>
     <child link="left_ear"/>
   </joint>
   <joint name="right_ear" type="fixed">
-    <origin rpy="0 0 0" xyz="0.056 0.035 0.0437"/>
+    <origin rpy="0 0 0" xyz="0.035 -0.056 0.0437"/>
     <parent link="head"/>
     <child link="right_ear"/>
   </joint>
@@ -263,9 +295,9 @@
     </visual>
   </link>
   <joint name="eyes_updown" type="revolute">
-    <axis xyz="1 0 0"/>
+    <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 0 3.1415" xyz="0 0 0"/>
     <parent link="face"/>
     <child link="eyesupport"/>
   </joint>
@@ -274,7 +306,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/eyesupport.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <material name="cframe">
         <color rgba="0.25 0.25 0.25 1"/>
       </material>
@@ -325,24 +357,24 @@
     </visual>
   </link>
   <joint name="right_camera" type="fixed">
-    <origin rpy="0 0 0" xyz="0 -0.001 0"/>
+    <origin rpy="0 0 0" xyz="-0.001 0 0"/>
     <parent link="right_eyesupport"/>
     <child link="right_camera"/>
   </joint>
   <joint name="right_eye" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.003 0"/>
+    <origin rpy="0 0 0" xyz="0.003 0 0"/>
     <parent link="right_eyesupport"/>
     <child link="right_eye"/>
   </joint>
   <joint name="right_iris" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0061 0"/>
+    <origin rpy="0 0 0" xyz="0.0061 0 0"/>
     <parent link="right_eyesupport"/>
     <child link="right_iris"/>
   </joint>
   <joint name="eye_leftright" type="revolute">
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0.033 0 -0.0036"/>
+    <origin rpy="0 0 3.1415" xyz="0 0.033 -0.0036"/>
     <parent link="eyesupport"/>
     <child link="right_eyesupport"/>
   </joint>
@@ -391,17 +423,17 @@
     </visual>
   </link>
   <joint name="left_camera" type="fixed">
-    <origin rpy="0 0 0" xyz="0 -0.001 0"/>
+    <origin rpy="0 0 0" xyz="-0.001 0 0"/>
     <parent link="left_eyesupport"/>
     <child link="left_camera"/>
   </joint>
   <joint name="left_eye" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.003 0"/>
+    <origin rpy="0 0 0" xyz="0.003 0 0"/>
     <parent link="left_eyesupport"/>
     <child link="left_eye"/>
   </joint>
   <joint name="left_iris" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0061 0"/>
+    <origin rpy="0 0 0" xyz="0.0061 0 0"/>
     <parent link="left_eyesupport"/>
     <child link="left_iris"/>
   </joint>
@@ -409,12 +441,12 @@
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
     <mimic joint="eye_leftright" multiplier="1" offset="0"/>
-    <origin rpy="0 0 0" xyz="-0.033 0 -0.0036"/>
+    <origin rpy="0 0 3.1415" xyz="0 -0.033 -0.0036"/>
     <parent link="eyesupport"/>
     <child link="left_eyesupport"/>
   </joint>
   <joint name="face" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0637 0.079"/>
+    <origin rpy="0 0 0" xyz="0.0637 0 0.079"/>
     <parent link="skull"/>
     <child link="face"/>
   </joint>
@@ -423,7 +455,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_shoulder_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.14" xyz="0 0 0"/>
       <material name="cframe">
         <color rgba="0.25 0.25 0.25 1"/>
       </material>
@@ -445,7 +477,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/bicep.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 3.14 0" xyz="0 0 0"/>
       <material name="cframe">
         <color rgba="0.25 0.25 0.25 1"/>
       </material>
@@ -456,7 +488,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/bicepcover.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 3.14 0" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -476,21 +508,21 @@
   <joint name="right_shoulder_up" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0.012 0 -0.04"/>
+    <origin rpy="0 0 3.14" xyz="-0.012 0 -0.04"/>
     <parent link="right_shoulder_base"/>
     <child link="right_shoulder"/>
   </joint>
   <joint name="right_bicep_rotate" type="revolute">
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0.066 0 -0.060"/>
+    <origin rpy="0 3.14 0" xyz="0.066 0 -0.060"/>
     <parent link="right_shoulder"/>
     <child link="right_bicep"/>
   </joint>
   <joint name="right_bicep" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="0.4" upper="1.57" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0 -0.0278 -0.2235"/>
+    <origin rpy="0 3.14 0" xyz="0 -0.0278 0.2235"/>
     <parent link="right_bicep"/>
     <child link="right_forearm"/>
   </joint>
@@ -501,8 +533,8 @@
   </joint>
   <joint name="right_shoulder_side" type="revolute">
     <axis xyz="0 1 0"/>
-    <limit effort="1000.0" lower="-0.75" upper="0" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0.143 0 0.298"/>
+    <limit effort="1000.0" lower="0" upper="0.75" velocity="0.5"/>
+    <origin rpy="0 0 1.57" xyz="0 -0.143 0.298"/>
     <parent link="torso"/>
     <child link="right_shoulder_base"/>
   </joint>
@@ -975,7 +1007,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/left_shoulder_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0.0" xyz="0 0 0"/>
       <material name="cframe">
         <color rgba="0.25 0.25 0.25 1"/>
       </material>
@@ -997,7 +1029,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/bicep.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0.0 0" xyz="0 0 0"/>
       <material name="cframe">
         <color rgba="0.25 0.25 0.25 1"/>
       </material>
@@ -1008,7 +1040,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/bicepcover.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0.0 0" xyz="0 0 0"/>
       <material name="ccover">
         <color rgba="0.6 0.6 0.6 1"/>
       </material>
@@ -1028,21 +1060,21 @@
   <joint name="left_shoulder_up" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="-0.012 0 -0.04"/>
+    <origin rpy="0 0 0.0" xyz="-0.012 0 -0.04"/>
     <parent link="left_shoulder_base"/>
     <child link="left_shoulder"/>
   </joint>
   <joint name="left_bicep_rotate" type="revolute">
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="-0.066 0 -0.060"/>
+    <origin rpy="0 0.0 0" xyz="-0.066 0 -0.060"/>
     <parent link="left_shoulder"/>
     <child link="left_bicep"/>
   </joint>
   <joint name="left_bicep" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="0.4" upper="1.57" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0 -0.0278 -0.2235"/>
+    <origin rpy="0 0.0 0" xyz="0 -0.0278 -0.2235"/>
     <parent link="left_bicep"/>
     <child link="left_forearm"/>
   </joint>
@@ -1054,7 +1086,7 @@
   <joint name="left_shoulder_side" type="revolute">
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="0" upper="0.75" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="-0.143 0 0.298"/>
+    <origin rpy="0 0 -1.57" xyz="0 0.143 0.298"/>
     <parent link="torso"/>
     <child link="left_shoulder_base"/>
   </joint>

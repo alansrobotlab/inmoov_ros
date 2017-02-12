@@ -17,9 +17,9 @@
   </link>
 
   <joint name="eyes_updown" type="revolute">
-   <axis xyz="1 0 0"/>
+   <axis xyz="0 1 0"/>
    <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
-   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <origin rpy="0 0 3.1415" xyz="0 0 0"/>
    <parent link="face"/>
    <child link="eyesupport"/>
   </joint>
@@ -29,7 +29,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/eyesupport.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
   </link>
@@ -39,7 +39,7 @@
   <joint name="eye_leftright" type="revolute">
    <axis xyz="0 0 1"/>
    <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
-   <origin rpy="0 0 0" xyz="0.033 0 -0.0036"/>
+   <origin rpy="0 0 3.1415" xyz="0 0.033 -0.0036"/>
    <parent link="eyesupport"/>
    <child link="right_eyesupport"/>
   </joint>
@@ -50,7 +50,7 @@
    <axis xyz="0 0 1"/>
    <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
    <mimic joint="eye_leftright" multiplier="1" offset="0"/>
-   <origin rpy="0 0 0" xyz="-0.033 0 -0.0036"/>
+   <origin rpy="0 0 3.1415" xyz="0 -0.033 -0.0036"/>
    <parent link="eyesupport"/>
    <child link="left_eyesupport"/>
   </joint>
@@ -100,19 +100,19 @@
   </link>
 
   <joint name="${side}_camera" type="fixed">
-    <origin rpy="0 0 0" xyz="0 -0.001 0"/>
+    <origin rpy="0 0 0" xyz="-0.001 0 0"/>
     <parent link="${side}_eyesupport"/>
     <child link="${side}_camera"/>
   </joint>
 
   <joint name="${side}_eye" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.003 0"/>
+    <origin rpy="0 0 0" xyz="0.003 0 0"/>
     <parent link="${side}_eyesupport"/>
     <child link="${side}_eye"/>
   </joint>
 
   <joint name="${side}_iris" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0061 0"/>
+    <origin rpy="0 0 0" xyz="0.0061 0 0"/>
     <parent link="${side}_eyesupport"/>
     <child link="${side}_iris"/>
   </joint>

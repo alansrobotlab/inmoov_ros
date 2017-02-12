@@ -28,7 +28,7 @@
   </link>
   <joint name="eyes_updown" type="revolute">
     <axis xyz="1 0 0"/>
-    <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
+    <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <parent link="face"/>
     <child link="eyesupport"/>
@@ -89,24 +89,24 @@
     </visual>
   </link>
   <joint name="right_camera" type="fixed">
-    <origin rpy="0 0 0" xyz="0 -0.001 0"/>
+    <origin rpy="0 0 0" xyz="-0.001 0 0"/>
     <parent link="right_eyesupport"/>
     <child link="right_camera"/>
   </joint>
   <joint name="right_eye" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.003 0"/>
+    <origin rpy="0 0 0" xyz="0.003 0 0"/>
     <parent link="right_eyesupport"/>
     <child link="right_eye"/>
   </joint>
   <joint name="right_iris" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0061 0"/>
+    <origin rpy="0 0 0" xyz="0.0061 0 0"/>
     <parent link="right_eyesupport"/>
     <child link="right_iris"/>
   </joint>
-  <joint name="right_eye_leftright" type="revolute">
+  <joint name="eye_leftright" type="revolute">
     <axis xyz="0 0 1"/>
-    <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0.033 0 -0.0036"/>
+    <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0 0.033 -0.0036"/>
     <parent link="eyesupport"/>
     <child link="right_eyesupport"/>
   </joint>
@@ -155,24 +155,25 @@
     </visual>
   </link>
   <joint name="left_camera" type="fixed">
-    <origin rpy="0 0 0" xyz="0 -0.001 0"/>
+    <origin rpy="0 0 0" xyz="-0.001 0 0"/>
     <parent link="left_eyesupport"/>
     <child link="left_camera"/>
   </joint>
   <joint name="left_eye" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.003 0"/>
+    <origin rpy="0 0 0" xyz="0.003 0 0"/>
     <parent link="left_eyesupport"/>
     <child link="left_eye"/>
   </joint>
   <joint name="left_iris" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0.0061 0"/>
+    <origin rpy="0 0 0" xyz="0.0061 0 0"/>
     <parent link="left_eyesupport"/>
     <child link="left_iris"/>
   </joint>
   <joint name="left_eye_leftright" type="revolute">
     <axis xyz="0 0 1"/>
-    <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="-0.033 0 -0.0036"/>
+    <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
+    <mimic joint="eye_leftright" multiplier="1" offset="0"/>
+    <origin rpy="0 0 0" xyz="0 -0.033 -0.0036"/>
     <parent link="eyesupport"/>
     <child link="left_eyesupport"/>
   </joint>

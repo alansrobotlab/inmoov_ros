@@ -20,7 +20,7 @@
       <geometry>
         <mesh filename="package://inmoov_description/meshes/right_hand.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 3.14 0" xyz="0 0 0"/>
       <material name="cframe">
         <color rgba="0.25 0.25 0.25 1"/>
       </material>
@@ -286,7 +286,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 -0.7 3.1415" xyz="0.00705 0 -0.0794"/>
-    <mimic joint="right_ring" multiplier="0.1" offset="0"/>
+    <mimic joint="right_ring" multiplier="-0.1" offset="0"/>
     <parent link="right_hand"/>
     <child link="right_ring1"/>
   </joint>
@@ -317,7 +317,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
     <origin rpy="0 -0.7 3.1415" xyz="0.027 0 -0.0555"/>
-    <mimic joint="right_pinky" multiplier="0.1" offset="0"/>
+    <mimic joint="right_pinky" multiplier="-0.1" offset="0"/>
     <parent link="right_hand"/>
     <child link="right_pinky1"/>
   </joint>
