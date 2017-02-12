@@ -1,0 +1,52 @@
+servobus:
+  leftarm:
+    name: servoBus/leftarm
+    port: /dev/ttyACM0
+    servomap:
+      '0': {name: left_pinky}
+      '1': {name: left_ring}
+      '10': {name: leftarm-nc-10}
+      '11': {name: leftarm-nc-11}
+      '2': {name: left_middle}
+      '3': {name: left_index}
+      '4': {name: left_thumb}
+      '5': {name: left_hand}
+      '6': {name: left_bicep}
+      '7': {name: left_bicep_rotate}
+      '8': {name: left_shoulder_side}
+      '9': {name: left_shoulder_up}
+    servonode: {baud: 115200, port: /dev/ttyACM2}
+  rightarm:
+    name: servoBus/rightarm
+    port: /dev/ttyACM1
+    servomap:
+      '0': {name: right_pinky}
+      '1': {name: right_ring}
+      '10': {name: rightarm-nc-10}
+      '11': {name: rightarm-nc-11}
+      '2': {name: right_middle}
+      '3': {name: right_index}
+      '4': {name: right_thumb}
+      '5': {name: right_hand}
+      '6': {name: right_bicep}
+      '7': {name: right_bicep_rotate}
+      '8': {name: right_shoulder_side}
+      '9': {name: right_shoulder_up}
+    servonode: {baud: 115200, port: /dev/ttyACM0}
+  torso:
+    name: servoBus/torso
+    port: /dev/ttyACM2
+    servomap:
+      '0': {name: eye_leftright}
+      '1': {name: eyes_updown}
+      '10': {name: torso-nc-10}
+      '11': {name: torso-nc-11}
+      '2': {name: jaw}
+      '3': {name: head_leftright}
+      '4': {name: head_updown}
+      '5': {name: head_tilt}
+      '6': {name: waist_lean}
+      '7': {name: waist_rotate}
+      '8': {name: torso-nc-8}
+      '9': {name: torso-nc-9}
+    servonode: {baud: 115200, port: /dev/ttyACM1}

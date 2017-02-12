@@ -1,0 +1,32 @@
+<launch>
+  <node name="usb_cam_left" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="/dev/video0" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="360" />
+    <param name="framerate" value="30" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="usb_cam_left" />
+    <param name="io_method" value="mmap"/>
+  </node>
+    <node name="usb_cam_right" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="/dev/video1" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="360" />
+    <param name="framerate" value="30" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="usb_cam_right" />
+    <param name="io_method" value="mmap"/>
+  </node>
+
+  <node name="image_view_left" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_left/image_raw"/>
+    <param name="autosize" value="false" />
+  </node>
+    <node name="image_view_right" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_right/image_raw"/>
+    <param name="autosize" value="false" />
+  </node>
+
+
+
+</launch>

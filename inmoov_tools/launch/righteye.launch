@@ -1,0 +1,10 @@
+<launch>
+
+    <node name="image_view_right" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_right/image_raw"/>
+    <param name="autosize" value="false" />
+  </node>
+
+
+
+</launch>

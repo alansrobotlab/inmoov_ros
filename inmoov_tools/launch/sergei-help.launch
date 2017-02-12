@@ -1,0 +1,9 @@
+<launch>
+
+<node name="setup" pkg="inmoov_tools" type="setup_parameters.py" />
+
+<include file="$(find inmoov_tools)/launch/servobus.launch" />
+
+<node name="trainer" pkg="inmoov_tools" type="trainer.py" respawn="true" />
+
+</launch>
