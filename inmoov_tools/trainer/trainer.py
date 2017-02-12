@@ -5,6 +5,7 @@ import os
 import rospy
 import rospkg
 
+
 from threading import Thread
 
 from python_qt_binding import loadUi
@@ -17,6 +18,9 @@ from inmoov_msgs.msg import MotorCommand
 from inmoov_msgs.srv import MotorParameter
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Header
+
+from time import sleep
+
 
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
 import qdarkstyle
@@ -39,16 +43,16 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         
         self.jointNames = []
         
-        for servo in range (0, 11):
+        for servo in range (0, 12):
             self.jointNames.append( rospy.get_param('servobus/torso/servomap/'+str(servo)+'/name'))
             
-        for servo in range (0, 11):
+        for servo in range (0, 12):
             self.jointNames.append( rospy.get_param('servobus/leftarm/servomap/'+str(servo)+'/name'))
             
-        for servo in range (0, 11):
+        for servo in range (0, 12):
             self.jointNames.append( rospy.get_param('servobus/rightarm/servomap/'+str(servo)+'/name'))
         
-        #print(self.jointNames)
+        print(self.jointNames)
         
         
             #'right_pinky','right_ring','right_middle','right_index','right_thumb',
@@ -63,6 +67,40 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
 
         self.setupDropDowns()
         
+
+
+
+
+        rospy.init_node('trainer', anonymous=True)
+
+        print("INITIALIZED")
+        
+        self.commandPublisher = []
+        self.commandPublisher.append(rospy.Publisher("servobus/torso/motorcommand", MotorCommand, queue_size=10))
+        self.commandPublisher.append(rospy.Publisher("servobus/leftarm/motorcommand", MotorCommand, queue_size=10))
+        self.commandPublisher.append(rospy.Publisher("servobus/rightarm/motorcommand", MotorCommand, queue_size=10))
+        
+        print("COMMANDS COMPLETE")
+
+        self.statusSubscriber = []
+        self.statusSubscriber.append(rospy.Subscriber("servobus/torso/motorstatus", MotorStatus, self.callback0))
+        self.statusSubscriber.append(rospy.Subscriber("servobus/leftarm/motorstatus", MotorStatus, self.callback1))
+        self.statusSubscriber.append(rospy.Subscriber("servobus/rightarm/motorstatus", MotorStatus, self.callback2))
+        
+        print("SUBSCRIBER COMPLETE")
+
+        self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
+        
+        print("JOINTPUBLISHER COMPLETE")
+
+        self.bus = 0
+        self.servo = 0
+        self.motorparameter = rospy.ServiceProxy(self.parameterTopic[self.bus], MotorParameter)
+        
+        self.busChanged()
+
+        self.servoChanged()
+
         self.cmbBus.currentIndexChanged.connect(self.busChanged)
         self.cmbServo.currentIndexChanged.connect(self.servoChanged)
 
@@ -78,65 +116,73 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         
         self.sliderGoal.valueChanged.connect(self.sliderChanged)
 
-        rospy.init_node('trainer', anonymous=True)
+        self.chkEnableAll.stateChanged.connect(self.setEnableAll)
         
-        self.commandPublisher = []
-        self.commandPublisher.append(rospy.Publisher("servobus/torso/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/leftarm/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/rightarm/motorcommand", MotorCommand, queue_size=10))
-        
-        self.statusSubscriber = []
-        self.statusSubscriber.append(rospy.Subscriber("servobus/torso/motorstatus", MotorStatus, self.callback0))
-        self.statusSubscriber.append(rospy.Subscriber("servobus/leftarm/motorstatus", MotorStatus, self.callback1))
-        self.statusSubscriber.append(rospy.Subscriber("servobus/rightarm/motorstatus", MotorStatus, self.callback2))
-        
-        self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
-        
-        self.bus = 0
-        self.servo = 0
-        
-        self.busChanged()
-        self.servoChanged()
-        
-        
+        print("INIT COMPLETE")
 
     def busChanged(self):
-        # unregister topics and reregister to the new ones
-        self.bus = self.cmbBus.currentIndex()
         
+        print("BUSCHANGED")
+
+        self.bus = self.cmbBus.currentIndex()
+        self.motorparameter = rospy.ServiceProxy(self.parameterTopic[self.bus], MotorParameter)
+        
+        #self.cmbServo.currentIndexChanged.disconnect(self.servoChanged)
+
         self.cmbServo.clear()
         
         for s in range(0, 11):
-            self.cmbServo.addItem(self.jointNames[(self.bus * 11) + s])
-        
-        #self.commandPublisher.unregister()
-        #self.commandPublisher = rospy.Publisher(self.commandTopic[bus], MotorCommand, queue_size=10)
-        #self.statusSubscriber.unregister()
-        #self.statusSubscriber = rospy.Subscriber(self.statusTopic[self.bus], MotorStatus, self.callback)
+            self.cmbServo.addItem(self.jointNames[(self.bus * 12) + s])
 
-        
-        self.servoChanged()
-        
+        #self.cmbServo.currentIndexChanged.connect(self.servoChanged)
+
+        #self.servoChanged()
+
     def servoChanged(self):
     
+        print("SERVOCHANGED")
+
         if self.cmbServo.count() > 0:
+            print("SERVICECALLS")
             self.servo = self.cmbServo.currentIndex()
-        
+            
+            sdir = 0.1
+
             self.getMinPulse()
+            #print("MINPULSE")
+            sleep(sdir)
             self.getMaxPulse()
-            self.getMinGoal()
-            self.getMaxGoal()
+            #print("MAXPULSE")
+            sleep(sdir)     
+            self.getMinMaxGoal()       
+            #self.getMinGoal()
+            #print("MINGOAL")
+            #sleep(sdir)
+            #self.getMaxGoal()
+            #print("MAXGOAL")
+            sleep(sdir)
             self.getGoal()
+            #print("GOAL")
+            sleep(sdir)
             self.getMinSensor()
+            #print("MINSENSOR")
+            sleep(sdir)
             self.getMaxSensor()
+            #print("MAXSENSOR")
+            sleep(sdir)
             self.getEnabled()
+            #print("ENABLED")
+            sleep(sdir)
             self.getCalibrated()
+            #print("CALIBRATED")
+            sleep(sdir)
     
+
     def callback0(self, data):
         if data.id == self.servo and self.bus == 0:
             #print data.posraw
             #self.chkEnabled.setChecked(bool(data.enabled))
-            self.txtPosition.setText(str(data.position))
+            self.txtPosition.setText(str(round(data.position,4)))
             self.txtSpeed.setText(str(data.presentspeed))
             self.txtSensorRaw.setText(str(data.posraw))
             self.chkMoving.setChecked(bool(data.moving))
@@ -147,7 +193,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         if data.id == self.servo and self.bus == 1:
             #print data.posraw
             #self.chkEnabled.setChecked(bool(data.enabled))
-            self.txtPosition.setText(str(data.position))
+            self.txtPosition.setText(str(round(data.position,4)))
             self.txtSpeed.setText(str(data.presentspeed))
             self.txtSensorRaw.setText(str(data.posraw))
             self.chkMoving.setChecked(bool(data.moving))
@@ -158,7 +204,7 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         if data.id == self.servo and self.bus == 2:
             #print data.posraw
             #self.chkEnabled.setChecked(bool(data.enabled))
-            self.txtPosition.setText(str(data.position))
+            self.txtPosition.setText(str(round(data.position,4)))
             self.txtSpeed.setText(str(data.presentspeed))
             self.txtSensorRaw.setText(str(data.posraw))
             self.chkMoving.setChecked(bool(data.moving))
@@ -175,21 +221,8 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.cmbBus.addItem(rospy.get_param('/servobus/rightarm/name'))
 
         for servo in range (0, 11):
-            print('/servobus/torso/servomap/' + str(servo) + '/name')
+            #print('/servobus/torso/servomap/' + str(servo) + '/name')
             self.cmbServo.addItem(rospy.get_param('/servobus/torso/servomap/' + str(servo) + '/name'))
-
-        #self.cmbServo.addItem('Servo 00')
-        #self.cmbServo.addItem('Servo 01')
-        #self.cmbServo.addItem('Servo 02')
-        #self.cmbServo.addItem('Servo 03')
-        #self.cmbServo.addItem('Servo 04')
-        #self.cmbServo.addItem('Servo 05')
-        #self.cmbServo.addItem('Servo 06')
-        #self.cmbServo.addItem('Servo 07')
-        #self.cmbServo.addItem('Servo 08')
-        #self.cmbServo.addItem('Servo 09')
-        #self.cmbServo.addItem('Servo 10')
-        #self.cmbServo.addItem('Servo 11')
 
         self.cmbSmoothing.addItem('0 - Instant')
         self.cmbSmoothing.addItem('1 - Max Speed')
@@ -201,29 +234,51 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.txtGoal.setText(str(i/1000.0))
         self.setGoal()
     
+    def setEnableAll(self):
+        for servo in range (0, 12):
+            for bus in range (0, 3):
+                self.motorcommand.id = servo
+                self.motorcommand.parameter = 0x18
+                self.motorcommand.value = float(self.chkEnableAll.isChecked())
+                self.commandPublisher[bus].publish(self.motorcommand)
+            #sleep(0.1)
+
+    def setParameter(self, bus, servo, parameter, value):
+        rospy.wait_for_service('motorparameter')
+
+
     def setGoal(self):
+        print("SETGOAL")
         #print(str(value))
+
+        goal = float(self.txtGoal.text())
+
+        self.sliderGoal.setValue(int(goal)*1000.0)
+
         self.motorcommand.id = self.cmbServo.currentIndex()
         self.motorcommand.parameter = 0x1E
-        self.motorcommand.value = float(self.txtGoal.text())
+        self.motorcommand.value = goal
         #print(self.motorcommand.value)
         self.commandPublisher[self.bus].publish(self.motorcommand)
         
         self.jointcommand.header = Header()
         self.jointcommand.header.stamp = rospy.Time.now()
         self.jointcommand.name = [self.jointNames[((self.bus * 12) + self.servo)]]
-        self.jointcommand.position = [self.degreestoradians(float(self.txtGoal.text()))]
+        self.jointcommand.position = [self.degreestoradians(goal)]
         self.jointcommand.velocity = []
         self.jointcommand.effort = []
         self.jointPublisher.publish(self.jointcommand)
         
     
     def getGoal(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        value = motorparameter(self.cmbServo.currentIndex(), 0x1E).data
+        print("GETGOAL")
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        value = self.motorparameter(self.cmbServo.currentIndex(), 0x1E).data
         self.txtGoal.setText(str(value))
-        self.sliderGoal.setValue(int(value * 1000.0))
+        val = clamp(int(value * 1000.00),-360000,360000)
+        self.sliderGoal.setValue(val)
+        #self.sliderGoal.setValue(int(value * 1000.0))
        
     def setMinPulse(self):
         #print(str(value))
@@ -233,9 +288,10 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMinPulse(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        self.txtMinPulse.setText(str(motorparameter(self.cmbServo.currentIndex(), 0x14).data))
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        self.txtMinPulse.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0x14).data))
     
     def setMaxPulse(self):
         #print(str(value))
@@ -245,9 +301,10 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMaxPulse(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        self.txtMaxPulse.setText(str(motorparameter(self.cmbServo.currentIndex(), 0x16).data))
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        self.txtMaxPulse.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0x16).data))
         
     def setMinGoal(self):
         #print(str(value))
@@ -256,11 +313,27 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.motorcommand.value = float(self.txtMinGoal.text())
         self.sliderGoal.setMinimum(int(self.motorcommand.value * 1000.0))
         self.commandPublisher[self.bus].publish(self.motorcommand)
+
+    def getMinMaxGoal(self):
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        minval = self.motorparameter(self.cmbServo.currentIndex(), 0x06).data
+        self.txtMinGoal.setText(str(minval))
+        
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        maxval = self.motorparameter(self.cmbServo.currentIndex(), 0x08).data
+        self.txtMaxGoal.setText(str(maxval))
+        if minval < maxval :
+            self.sliderGoal.setMinimum(int(minval * 1000.0))
+            self.sliderGoal.setMaximum(int(maxval * 1000.0))
+        else:
+            self.sliderGoal.setMinimum(int(maxval * 1000.0))
+            self.sliderGoal.setMaximum(int(minval * 1000.0))
        
     def getMinGoal(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        value = motorparameter(self.cmbServo.currentIndex(), 0x06).data
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        value = self.motorparameter(self.cmbServo.currentIndex(), 0x06).data
         self.txtMinGoal.setText(str(value))
         self.sliderGoal.setMinimum(int(value * 1000.0))
     
@@ -273,9 +346,10 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMaxGoal(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        value = motorparameter(self.cmbServo.currentIndex(), 0x08).data
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        value = self.motorparameter(self.cmbServo.currentIndex(), 0x08).data
         self.txtMaxGoal.setText(str(value))
         self.sliderGoal.setMaximum(int(value * 1000.0))
         
@@ -287,9 +361,10 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMinSensor(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        self.txtMinSensor.setText(str(motorparameter(self.cmbServo.currentIndex(), 0xA2).data))
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        self.txtMinSensor.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0xA2).data))
     
     def setMaxSensor(self):
         #print(str(value))
@@ -299,9 +374,10 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.commandPublisher[self.bus].publish(self.motorcommand)
        
     def getMaxSensor(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        self.txtMaxSensor.setText(str(motorparameter(self.cmbServo.currentIndex(), 0xA4).data))
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        self.txtMaxSensor.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0xA4).data))
         
     def setEnabled(self):
         self.motorcommand.id = self.cmbServo.currentIndex()
@@ -310,9 +386,10 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.commandPublisher[self.bus].publish(self.motorcommand)
     
     def getEnabled(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        self.chkEnabled.setChecked(bool(motorparameter(self.cmbServo.currentIndex(), 0x18).data))
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        self.chkEnabled.setChecked(bool(self.motorparameter(self.cmbServo.currentIndex(), 0x18).data))
         
     def setCalibrated(self):
         self.motorcommand.id = self.cmbServo.currentIndex()
@@ -321,13 +398,20 @@ class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
         self.commandPublisher[self.bus].publish(self.motorcommand)
     
     def getCalibrated(self):
-        bus = self.cmbBus.currentIndex()
-        motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        self.chkCalibrated.setChecked(bool(motorparameter(self.cmbServo.currentIndex(), 0xA0).data))
+        #bus = self.cmbBus.currentIndex()
+        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
+        rospy.wait_for_service('/servobus/torso/motorparameter')
+        self.chkCalibrated.setChecked(bool(self.motorparameter(self.cmbServo.currentIndex(), 0xA0).data))
+
+def clamp(n,minn,maxn):
+    return max(min(maxn, n), minn)
 
 def main():
     app = QtGui.QApplication(sys.argv)  # A new instance of QApplication
     app.setStyleSheet(qdarkstyle.load_stylesheet(pyside=False))
+    #sshFile="/home/grey/inmoov-grey/src/inmoov_tools/trainer/darkorange.stylesheet"
+    #with open(sshFile,"r") as fh:
+    #    app.setStyleSheet(fh.read())
     form = ExampleApp()  # We set the form to be our ExampleApp (design)
     form.show()  # Show the form
     app.exec_()  # and execute the app
