@@ -1,5 +1,5 @@
 <package>
-  <name>inmoov_messages</name>
+  <name>inmoov_msgs</name>
   <version>0.1.0</version>
   <description>
     Common messages used throughout inmoov_motor stack.
