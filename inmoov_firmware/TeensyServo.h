@@ -38,6 +38,14 @@ class TeensyServo {
     int deltaMillis;
     int ticksPerSecond = 1500;
 
+    int position = 0;
+    int sampleCount = 0;
+    int sampleBucket = 0;
+    int sampleStartMillis = 0;
+    int sampleDuration = 0;
+
+    bool receivedCommand = false;
+
     int i, j;
 
     Servo servo;
@@ -91,5 +99,7 @@ class TeensyServo {
     bool getMoving();
 
     float readPresentSpeed();
+
+    void updatePosition();
 
 };
