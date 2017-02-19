@@ -25,7 +25,10 @@ from time import sleep
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
 import qdarkstyle
 
-Ui_MainWindow, QtBaseClass = uic.loadUiType("trainer.ui")
+#Ui_MainWindow, QtBaseClass = uic.loadUiType("trainer.ui")
+# https://www.safaribooksonline.com/blog/2014/01/22/create-basic-gui-using-pyqt/
+gui = os.path.join(os.path.dirname(__file__), 'trainer.ui')
+Ui_MainWindow, QtBaseClass = uic.loadUiType(gui)
 
 
 # https://nikolak.com/pyqt-qt-designer-getting-started/
