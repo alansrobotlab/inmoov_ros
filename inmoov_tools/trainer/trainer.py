@@ -5,13 +5,14 @@ import os
 import rospy
 import rospkg
 
+from PyQt5 import QtWidgets, QtCore, uic
 
 from threading import Thread
 
 from python_qt_binding import loadUi
 from python_qt_binding import QtGui
-from python_qt_binding.QtGui import QWidget
-from trainergui import Ui_MainWindow
+from python_qt_binding.QtWidgets import QWidget
+#from trainergui import Ui_MainWindow
 
 from inmoov_msgs.msg import MotorStatus
 from inmoov_msgs.msg import MotorCommand
@@ -21,12 +22,14 @@ from std_msgs.msg import Header
 
 from time import sleep
 
-
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
 import qdarkstyle
 
+Ui_MainWindow, QtBaseClass = uic.loadUiType("trainer.ui")
+
+
 # https://nikolak.com/pyqt-qt-designer-getting-started/
-class ExampleApp(QtGui.QMainWindow, Ui_MainWindow):
+class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         # Explaining super is out of the scope of this article
         # So please google it if you're not familar with it
@@ -407,8 +410,8 @@ def clamp(n,minn,maxn):
     return max(min(maxn, n), minn)
 
 def main():
-    app = QtGui.QApplication(sys.argv)  # A new instance of QApplication
-    app.setStyleSheet(qdarkstyle.load_stylesheet(pyside=False))
+    app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     #sshFile="/home/grey/inmoov-grey/src/inmoov_tools/trainer/darkorange.stylesheet"
     #with open(sshFile,"r") as fh:
     #    app.setStyleSheet(fh.read())
