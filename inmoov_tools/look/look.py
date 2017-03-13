@@ -57,12 +57,12 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         self.enabled = False
         self.random = False
 
-	self.x = 0.0
-	self.y = 0.0
-	self.out = 0.0
-	self.grasp = 0.0
-	self.sliderx = 0.0
-	self.slidery = 0.0
+        self.x = 0.0
+        self.y = 0.0
+        self.out = 0.0
+        self.grasp = 0.0
+        self.sliderx = 0.0
+        self.slidery = 0.0
 
         self.previouspoint = Point()
         self.commandpoint =  Point()
@@ -82,19 +82,19 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
             
         for servo in range (0, 12):
             self.jointNames.append( rospy.get_param('servobus/rightarm/servomap/'+str(servo)+'/name'))
-        
+
         print(self.jointNames)
-    
+
 
         rospy.init_node('look', anonymous=True)
 
         print("INITIALIZED")
-        
+
         self.commandPublisher = []
         self.commandPublisher.append(rospy.Publisher("servobus/torso/motorcommand", MotorCommand, queue_size=10))
         self.commandPublisher.append(rospy.Publisher("servobus/leftarm/motorcommand", MotorCommand, queue_size=10))
         self.commandPublisher.append(rospy.Publisher("servobus/rightarm/motorcommand", MotorCommand, queue_size=10))
-        
+
         print("COMMANDS COMPLETE")
 
         #self.statusSubscriber = []
@@ -114,10 +114,10 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         
         self.chkEnable.stateChanged.connect(self.setEnableAll)
         self.chkRandom.stateChanged.connect(self.setRandom)
-	self.sliderOut.valueChanged.connect(self.setOut)
-	self.sliderGrasp.valueChanged.connect(self.setGrasp)
-	self.sliderX.valueChanged.connect(self.setSliderX)
-	self.sliderY.valueChanged.connect(self.setSliderY)
+        self.sliderOut.valueChanged.connect(self.setOut)
+        self.sliderGrasp.valueChanged.connect(self.setGrasp)
+        self.sliderX.valueChanged.connect(self.setSliderX)
+        self.sliderY.valueChanged.connect(self.setSliderY)
 
         self.pose= [0,0,0,0,0,0,0,0,0,0,0,0,
                     0,0,0,0,0,0,0,0,0,0,0,0,
@@ -164,7 +164,8 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
                 for servo in range (0,12):
                     self.setGoal(bus,servo,self.pose[(bus * 12) + servo])
             #print(self.pose)
-        sleep(1.0/HZ)
+            
+            sleep(1.0/HZ)
 
     def randomDriver(self):
         while self.random == True:
@@ -190,24 +191,24 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         if self.chkFlipY.isChecked() == True:
             y = -y
 
-	self.x = x
-	self.y = y
-	self.out = (float(self.sliderOut.value()) / 100.0)
+        self.x = x
+        self.y = y
+        self.out = (float(self.sliderOut.value()) / 100.0)
         self.grasp = (float(self.sliderGrasp.value()) / 100.0)
-	self.sliderx = (float(self.sliderX.value()) / 100.0) - 0.5
-	self.slidery = (float(self.sliderY.value()) / 100.0) - 0.5
+        self.sliderx = (float(self.sliderX.value()) / 100.0) - 0.5
+        self.slidery = (float(self.sliderY.value()) / 100.0) - 0.5
 
         self.calcValues()
 
 
     def calcValues(self):
 
-	x = self.x
-	y = self.y
-	out = self.out
-	grasp = self.grasp
-	sliderx = self.sliderx
-	slidery = self.slidery
+        x = self.x
+        y = self.y
+        out = self.out
+        grasp = self.grasp
+        sliderx = self.sliderx
+        slidery = self.slidery
 
         if self.radioLookAround.isChecked():
 
@@ -352,21 +353,21 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
             #self.label_15.setText("{:10.2f}".format(ARMOUT * y))
 
     def setOut(self, event):
-	self.out = (float(self.sliderOut.value()) / 100.0)
-	self.calcValues()
+        self.out = (float(self.sliderOut.value()) / 100.0)
+        self.calcValues()
 
     def setGrasp(self, event):
-	self.grasp = (float(self.sliderGrasp.value()) / 100.0)
-	self.calcValues()
+        self.grasp = (float(self.sliderGrasp.value()) / 100.0)
+        self.calcValues()
 
     def setSliderX(self, event):
-	self.sliderx = -((float(self.sliderX.value()) / 100.0) - 0.5) * 2
-	self.calcValues()
+        self.sliderx = -((float(self.sliderX.value()) / 100.0) - 0.5) * 2
+        self.calcValues()
 
     def setSliderY(self, event):
-	self.slidery = ((float(self.sliderY.value()) / 100.0) - 0.5) * 2
-	self.calcValues()
-	print self.slidery
+        self.slidery = ((float(self.sliderY.value()) / 100.0) - 0.5) * 2
+        self.calcValues()
+        print self.slidery
 
 
     def callback0(self, data):
@@ -386,12 +387,6 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
     def sliderChanged(self, i):
         self.txtGoal.setText(str(i/1000.0))
         self.setGoal()
-    
-    #def setEnableAll(self):
-    #
-    #    for servo in range (0, 11):
-    #        for bus in range (1, 3):
-    #            self.setGoal(bus,servo,CENTERARM[servo])
 
     def setRandom(self):
 
@@ -638,7 +633,7 @@ GRABNEUTRAL = [
             109,    #thumb
              64,    #hand
              85,    #bicep
-            -8,    #bicep_rotate
+             -8,    #bicep_rotate
               5,    #shoulder_side
             -45,    #shoulder_up
              00,    #arm-nc-10
