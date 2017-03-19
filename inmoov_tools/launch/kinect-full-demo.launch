@@ -1,6 +1,6 @@
 <launch>
 
-<node name="setup" pkg="inmoov_tools" type="setup_parameters.py" />
+<rosparam file="$(find inmoov_tools)/launch/params.yaml"/>
 
 <include file="$(find inmoov_tools)/launch/servobus.launch" />
 
