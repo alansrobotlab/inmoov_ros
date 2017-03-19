@@ -9,7 +9,7 @@
   <link name="head_base">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/head_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/head_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
@@ -19,7 +19,7 @@
   <link name="head">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/head.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/head.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
@@ -29,7 +29,7 @@
   <link name="jaw">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/jaw.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/jaw.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 3.1415" xyz="0 0 0"/>
       <xacro:cover_color/>
@@ -39,7 +39,7 @@
   <link name="skull">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/skull.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/skull.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
@@ -49,7 +49,7 @@
   <link name="left_ear">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/earleftv1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/earleftv1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
@@ -59,7 +59,7 @@
   <link name="right_ear">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/earrightv1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/earrightv1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>

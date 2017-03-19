@@ -9,7 +9,7 @@
   <link name="mid_stomach">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/mid_stomach.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/mid_stomach.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 1.152"/>
       <xacro:frame_color/>
@@ -19,7 +19,7 @@
   <link name="disk">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/disk.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/disk.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
@@ -29,7 +29,7 @@
   <link name="top_stomach">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/top_stomach.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/top_stomach.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
@@ -39,7 +39,7 @@
   <link name="torso">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/torso.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/torso.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
@@ -49,7 +49,7 @@
   <link name="kinect2_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="1.57 0 0" xyz="0 0 0"/>
       <xacro:kinect_color/>
@@ -59,7 +59,7 @@
   <link name="kinect2_ir_optical_frame">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="1.57 0 0" xyz="0 0 0"/>
       <xacro:kinect_color/>
@@ -69,7 +69,7 @@
   <link name="kinect2_rgb_optical_frame">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="1.57 0 0" xyz="0 0 0"/>
       <xacro:kinect_color/>
@@ -79,7 +79,7 @@
   <link name="chestplate">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/chest.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/chest.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
