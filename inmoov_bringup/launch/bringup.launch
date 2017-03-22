@@ -1,0 +1,26 @@
+<launch>
+
+<rosparam file="$(find inmoov_bringup)/config/config.yaml"/>
+
+<group ns="servobus" >
+  <node pkg="rosserial_python" type="serial_node.py" name="bus0" respawn="true">
+    <param name="port" value="/dev/ttyACM0"/>
+    <param name="baud" value="115200"/>
+  </node>
+</group>
+
+<group ns="servobus" >
+  <node pkg="rosserial_python" type="serial_node.py" name="bus1" respawn="true">
+      <param name="port" value="/dev/ttyACM1"/>
+    <param name="baud" value="115200"/>
+  </node>
+</group>
+
+<group ns="servobus" >
+  <node pkg="rosserial_python" type="serial_node.py" name="bus2" respawn="true">
+    <param name="port" value="/dev/ttyACM2"/>
+    <param name="baud" value="115200"/>
+  </node>
+</group>
+
+</launch>
