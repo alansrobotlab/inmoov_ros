@@ -1,396 +1,8 @@
-joints:
+bringup:
   angles: degrees
-  joint00:
-    bus: 0
-    flip: true
-    maxangle: 2.5223372357846707e-43
-    maxpulse: 0
-    maxsensor: 0
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 2450
-    name: left_shoulder_pitch
-    sensorpin: 0
-    servo: 9
-    servopin: 0
-    smoothing: 0
-  joint01:
-    bus: 0
-    flip: true
-    maxangle: 2.5223372357846707e-43
-    maxpulse: 0
-    maxsensor: 0
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 2450
-    name: left_shoulder_roll
-    sensorpin: 0
-    servo: 8
-    servopin: 0
-    smoothing: 0
-  joint02:
-    bus: 0
-    flip: true
-    maxangle: 90.0
-    maxpulse: 2500
-    maxsensor: 3000
-    maxspeed: 0.0
-    minangle: -90.0
-    minpulse: 500
-    minsensor: 1700
-    name: left_bicep_yaw
-    sensorpin: 0
-    servo: 7
-    servopin: 0
-    smoothing: 0
-  joint03:
-    bus: 0
-    flip: true
-    maxangle: -15.0
-    maxpulse: 1775
-    maxsensor: 2000
-    maxspeed: 0.0
-    minangle: 15.0
-    minpulse: 1325
-    minsensor: 2950
-    name: left_bicep_pitch
-    sensorpin: 0
-    servo: 6
-    servopin: 0
-    smoothing: 0
-  joint04:
-    bus: 0
-    flip: true
-    maxangle: 15.0
-    maxpulse: 1850
-    maxsensor: 3314
-    maxspeed: 0.0
-    minangle: -15.0
-    minpulse: 950
-    minsensor: 1661
-    name: left_wrist_roll
-    sensorpin: 0
-    servo: 5
-    servopin: 0
-    smoothing: 0
-  joint05:
-    bus: 0
-    flip: true
-    maxangle: 20.0
-    maxpulse: 1700
-    maxsensor: 2800
-    maxspeed: 0.0
-    minangle: -20.0
-    minpulse: 950
-    minsensor: 1200
-    name: left_thumb
-    sensorpin: 0
-    servo: 4
-    servopin: 0
-    smoothing: 0
-  joint06:
-    bus: 0
-    flip: true
-    maxangle: 90.0
-    maxpulse: 2450
-    maxsensor: 3615
-    maxspeed: 0.0
-    minangle: -100.0
-    minpulse: 550
-    minsensor: 780
-    name: left_index
-    sensorpin: 0
-    servo: 3
-    servopin: 0
-    smoothing: 0
-  joint07:
-    bus: 0
-    flip: true
-    maxangle: 180.0
-    maxpulse: 2450
-    maxsensor: 2450
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 550
-    name: left_middle
-    sensorpin: 0
-    servo: 2
-    servopin: 0
-    smoothing: 0
-  joint08:
-    bus: 0
-    flip: true
-    maxangle: 15.0
-    maxpulse: 1925
-    maxsensor: 3573
-    maxspeed: 0.0
-    minangle: -30.0
-    minpulse: 1300
-    minsensor: 2337
-    name: left_ring
-    sensorpin: 0
-    servo: 1
-    servopin: 0
-    smoothing: 0
-  joint09:
-    bus: 0
-    flip: true
-    maxangle: 30.0
-    maxpulse: 1800
-    maxsensor: 3615
-    maxspeed: 0.0
-    minangle: -30.0
-    minpulse: 1200
-    minsensor: 2300
-    name: left_pinky
-    sensorpin: 0
-    servo: 0
-    servopin: 0
-    smoothing: 0
-  joint10:
-    bus: 1
-    flip: true
-    maxangle: 135.0
-    maxpulse: 2500
-    maxsensor: 2200
-    maxspeed: 0.0
-    minangle: -45.0
-    minpulse: 550
-    minsensor: 750
-    name: right_shoulder_pitch
-    sensorpin: 0
-    servo: 9
-    servopin: 0
-    smoothing: 0
-  joint11:
-    bus: 1
-    flip: true
-    maxangle: 70.0
-    maxpulse: 1300
-    maxsensor: 2000
-    maxspeed: 0.0
-    minangle: 5.0
-    minpulse: 550
-    minsensor: 680
-    name: right_shoulder_roll
-    sensorpin: 0
-    servo: 8
-    servopin: 0
-    smoothing: 0
-  joint12:
-    bus: 1
-    flip: true
-    maxangle: 90.0
-    maxpulse: 2400
-    maxsensor: 3650
-    maxspeed: 0.0
-    minangle: -90.0
-    minpulse: 700
-    minsensor: 970
-    name: right_bicep_yaw
-    sensorpin: 0
-    servo: 7
-    servopin: 0
-    smoothing: 0
-  joint13:
-    bus: 1
-    flip: true
-    maxangle: 85.0
-    maxpulse: 1400
-    maxsensor: 2180
-    maxspeed: 0.0
-    minangle: 10.0
-    minpulse: 480
-    minsensor: 540
-    name: right_bicep_pitch
-    sensorpin: 0
-    servo: 6
-    servopin: 0
-    smoothing: 0
-  joint14:
-    bus: 1
-    flip: true
-    maxangle: 0.0
-    maxpulse: 1900
-    maxsensor: 2280
-    maxspeed: 0.0
-    minangle: 180.0
-    minpulse: 1400
-    minsensor: 1575
-    name: right_wrist_roll
-    sensorpin: 0
-    servo: 5
-    servopin: 0
-    smoothing: 0
-  joint15:
-    bus: 1
-    flip: true
-    maxangle: 135.0
-    maxpulse: 2450
-    maxsensor: 3300
-    maxspeed: 0.0
-    minangle: -45.0
-    minpulse: 550
-    minsensor: 1020
-    name: right_thumb
-    sensorpin: 0
-    servo: 4
-    servopin: 0
-    smoothing: 0
-  joint16:
-    bus: 1
-    flip: true
-    maxangle: 85.0
-    maxpulse: 2450
-    maxsensor: 3590
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 700
-    name: right_index
-    sensorpin: 0
-    servo: 3
-    servopin: 0
-    smoothing: 0
-  joint17:
-    bus: 1
-    flip: true
-    maxangle: 85.0
-    maxpulse: 2450
-    maxsensor: 3650
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 735
-    name: right_middle
-    sensorpin: 0
-    servo: 2
-    servopin: 0
-    smoothing: 0
-  joint18:
-    bus: 1
-    flip: true
-    maxangle: 75.0
-    maxpulse: 2450
-    maxsensor: 3650
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 800
-    name: right_ring
-    sensorpin: 0
-    servo: 1
-    servopin: 0
-    smoothing: 0
-  joint19:
-    bus: 1
-    flip: true
-    maxangle: 75.0
-    maxpulse: 2450
-    maxsensor: 3540
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 725
-    name: right_pinky
-    sensorpin: 0
-    servo: 0
-    servopin: 0
-    smoothing: 0
-  joint20:
-    bus: 2
-    flip: true
-    maxangle: 90.0
-    maxpulse: 2450
-    maxsensor: 3940
-    maxspeed: 0.0
-    minangle: -90.0
-    minpulse: 650
-    minsensor: 960
-    name: waist_roll
-    sensorpin: 0
-    servo: 7
-    servopin: 0
-    smoothing: 0
-  joint21:
-    bus: 2
-    flip: true
-    maxangle: 80.0
-    maxpulse: 1500
-    maxsensor: 2460
-    maxspeed: 0.0
-    minangle: 5.0
-    minpulse: 550
-    minsensor: 750
-    name: waist_tilt
-    sensorpin: 0
-    servo: 6
-    servopin: 0
-    smoothing: 0
-  joint22:
-    bus: 2
-    flip: true
-    maxangle: 180.0
-    maxpulse: 1550
-    maxsensor: 2410
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 1000
-    minsensor: 1655
-    name: head_roll
-    sensorpin: 0
-    servo: 5
-    servopin: 0
-    smoothing: 0
-  joint23:
-    bus: 2
-    flip: true
-    maxangle: 60.0
-    maxpulse: 2450
-    maxsensor: 3400
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 1000
-    name: head_pitch
-    sensorpin: 0
-    servo: 4
-    servopin: 0
-    smoothing: 0
-  joint24:
-    bus: 2
-    flip: true
-    maxangle: 85.0
-    maxpulse: 2450
-    maxsensor: 3640
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 800
-    name: head_yaw
-    sensorpin: 0
-    servo: 3
-    servopin: 0
-    smoothing: 0
-  joint25:
-    bus: 2
-    flip: true
-    maxangle: 85.0
-    maxpulse: 2450
-    maxsensor: 3800
-    maxspeed: 0.0
-    minangle: 0.0
-    minpulse: 550
-    minsensor: 900
-    name: jaw
-    sensorpin: 0
-    servo: 2
-    servopin: 0
-    smoothing: 0
-  joint26:
+  hz: 40
+joints:
+  eyes_pan_joint:
     bus: 2
     flip: true
     maxangle: 75.0
@@ -400,12 +12,11 @@ joints:
     minangle: 0.0
     minpulse: 550
     minsensor: 1100
-    name: eyes_pitch
     sensorpin: 0
     servo: 1
     servopin: 0
     smoothing: 0
-  joint27:
+  eyes_tilt_joint:
     bus: 2
     flip: true
     maxangle: 75.0
@@ -415,8 +26,371 @@ joints:
     minangle: 0.0
     minpulse: 500
     minsensor: 1200
-    name: eyes_yaw
     sensorpin: 0
     servo: 0
+    servopin: 0
+    smoothing: 0
+  head_pitch_joint:
+    bus: 2
+    flip: true
+    maxangle: 60.0
+    maxpulse: 2450
+    maxsensor: 3400
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 1000
+    sensorpin: 0
+    servo: 4
+    servopin: 0
+    smoothing: 0
+  head_roll_joint:
+    bus: 2
+    flip: true
+    maxangle: 180.0
+    maxpulse: 1550
+    maxsensor: 2410
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 1000
+    minsensor: 1655
+    sensorpin: 0
+    servo: 5
+    servopin: 0
+    smoothing: 0
+  head_yaw_joint:
+    bus: 2
+    flip: true
+    maxangle: 85.0
+    maxpulse: 2450
+    maxsensor: 3640
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 800
+    sensorpin: 0
+    servo: 3
+    servopin: 0
+    smoothing: 0
+  jaw_joint:
+    bus: 2
+    flip: true
+    maxangle: 85.0
+    maxpulse: 2450
+    maxsensor: 3800
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 900
+    sensorpin: 0
+    servo: 2
+    servopin: 0
+    smoothing: 0
+  l_elbow_flex_joint:
+    bus: 0
+    flip: true
+    maxangle: -15.0
+    maxpulse: 1775
+    maxsensor: 2000
+    maxspeed: 0.0
+    minangle: 15.0
+    minpulse: 1325
+    minsensor: 2950
+    sensorpin: 0
+    servo: 6
+    servopin: 0
+    smoothing: 0
+  l_index_joint:
+    bus: 0
+    flip: true
+    maxangle: 90.0
+    maxpulse: 2450
+    maxsensor: 3615
+    maxspeed: 0.0
+    minangle: -100.0
+    minpulse: 550
+    minsensor: 780
+    sensorpin: 0
+    servo: 3
+    servopin: 0
+    smoothing: 0
+  l_middle_joint:
+    bus: 0
+    flip: true
+    maxangle: 180.0
+    maxpulse: 2450
+    maxsensor: 2450
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 550
+    sensorpin: 0
+    servo: 2
+    servopin: 0
+    smoothing: 0
+  l_pinky_joint:
+    bus: 0
+    flip: true
+    maxangle: 30.0
+    maxpulse: 1800
+    maxsensor: 3615
+    maxspeed: 0.0
+    minangle: -30.0
+    minpulse: 1200
+    minsensor: 2300
+    sensorpin: 0
+    servo: 0
+    servopin: 0
+    smoothing: 0
+  l_ring_joint:
+    bus: 0
+    flip: true
+    maxangle: 15.0
+    maxpulse: 1925
+    maxsensor: 3573
+    maxspeed: 0.0
+    minangle: -30.0
+    minpulse: 1300
+    minsensor: 2337
+    sensorpin: 0
+    servo: 1
+    servopin: 0
+    smoothing: 0
+  l_shoulder_lift_joint:
+    bus: 0
+    flip: true
+    maxangle: 2.5223372357846707e-43
+    maxpulse: 0
+    maxsensor: 0
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 2450
+    sensorpin: 0
+    servo: 9
+    servopin: 0
+    smoothing: 0
+  l_shoulder_out_joint:
+    bus: 0
+    flip: true
+    maxangle: 2.5223372357846707e-43
+    maxpulse: 0
+    maxsensor: 0
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 2450
+    sensorpin: 0
+    servo: 8
+    servopin: 0
+    smoothing: 0
+  l_thumb_joint:
+    bus: 0
+    flip: true
+    maxangle: 20.0
+    maxpulse: 1700
+    maxsensor: 2800
+    maxspeed: 0.0
+    minangle: -20.0
+    minpulse: 950
+    minsensor: 1200
+    sensorpin: 0
+    servo: 4
+    servopin: 0
+    smoothing: 0
+  l_upper_arm_roll_joint:
+    bus: 0
+    flip: true
+    maxangle: 90.0
+    maxpulse: 2500
+    maxsensor: 3000
+    maxspeed: 0.0
+    minangle: -90.0
+    minpulse: 500
+    minsensor: 1700
+    sensorpin: 0
+    servo: 7
+    servopin: 0
+    smoothing: 0
+  l_wrist_roll_joint:
+    bus: 0
+    flip: true
+    maxangle: 15.0
+    maxpulse: 1850
+    maxsensor: 3314
+    maxspeed: 0.0
+    minangle: -15.0
+    minpulse: 950
+    minsensor: 1661
+    sensorpin: 0
+    servo: 5
+    servopin: 0
+    smoothing: 0
+  r_elbow_flex_joint:
+    bus: 1
+    flip: true
+    maxangle: 85.0
+    maxpulse: 1400
+    maxsensor: 2180
+    maxspeed: 0.0
+    minangle: 10.0
+    minpulse: 480
+    minsensor: 540
+    sensorpin: 0
+    servo: 6
+    servopin: 0
+    smoothing: 0
+  r_index_joint:
+    bus: 1
+    flip: true
+    maxangle: 85.0
+    maxpulse: 2450
+    maxsensor: 3590
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 700
+    sensorpin: 0
+    servo: 3
+    servopin: 0
+    smoothing: 0
+  r_middle_joint:
+    bus: 1
+    flip: true
+    maxangle: 85.0
+    maxpulse: 2450
+    maxsensor: 3650
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 735
+    sensorpin: 0
+    servo: 2
+    servopin: 0
+    smoothing: 0
+  r_pinky_joint:
+    bus: 1
+    flip: true
+    maxangle: 75.0
+    maxpulse: 2450
+    maxsensor: 3540
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 725
+    sensorpin: 0
+    servo: 0
+    servopin: 0
+    smoothing: 0
+  r_ring_joint:
+    bus: 1
+    flip: true
+    maxangle: 75.0
+    maxpulse: 2450
+    maxsensor: 3650
+    maxspeed: 0.0
+    minangle: 0.0
+    minpulse: 550
+    minsensor: 800
+    sensorpin: 0
+    servo: 1
+    servopin: 0
+    smoothing: 0
+  r_shoulder_lift_joint:
+    bus: 1
+    flip: true
+    maxangle: 135.0
+    maxpulse: 2500
+    maxsensor: 2200
+    maxspeed: 0.0
+    minangle: -45.0
+    minpulse: 550
+    minsensor: 750
+    sensorpin: 0
+    servo: 9
+    servopin: 0
+    smoothing: 0
+  r_shoulder_out_joint:
+    bus: 1
+    flip: true
+    maxangle: 70.0
+    maxpulse: 1300
+    maxsensor: 2000
+    maxspeed: 0.0
+    minangle: 5.0
+    minpulse: 550
+    minsensor: 680
+    sensorpin: 0
+    servo: 8
+    servopin: 0
+    smoothing: 0
+  r_thumb_joint:
+    bus: 1
+    flip: true
+    maxangle: 135.0
+    maxpulse: 2450
+    maxsensor: 3300
+    maxspeed: 0.0
+    minangle: -45.0
+    minpulse: 550
+    minsensor: 1020
+    sensorpin: 0
+    servo: 4
+    servopin: 0
+    smoothing: 0
+  r_upper_arm_roll_joint:
+    bus: 1
+    flip: true
+    maxangle: 90.0
+    maxpulse: 2400
+    maxsensor: 3650
+    maxspeed: 0.0
+    minangle: -90.0
+    minpulse: 700
+    minsensor: 970
+    sensorpin: 0
+    servo: 7
+    servopin: 0
+    smoothing: 0
+  r_wrist_roll_joint:
+    bus: 1
+    flip: true
+    maxangle: 0.0
+    maxpulse: 1900
+    maxsensor: 2280
+    maxspeed: 0.0
+    minangle: 180.0
+    minpulse: 1400
+    minsensor: 1575
+    sensorpin: 0
+    servo: 5
+    servopin: 0
+    smoothing: 0
+  waist_roll_joint:
+    bus: 2
+    flip: true
+    maxangle: 90.0
+    maxpulse: 2450
+    maxsensor: 3940
+    maxspeed: 0.0
+    minangle: -90.0
+    minpulse: 650
+    minsensor: 960
+    sensorpin: 0
+    servo: 7
+    servopin: 0
+    smoothing: 0
+  waist_tilt_joint:
+    bus: 2
+    flip: true
+    maxangle: 80.0
+    maxpulse: 1500
+    maxsensor: 2460
+    maxspeed: 0.0
+    minangle: 5.0
+    minpulse: 550
+    minsensor: 750
+    sensorpin: 0
+    servo: 6
     servopin: 0
     smoothing: 0

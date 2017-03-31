@@ -36,43 +36,37 @@ def exporter():
 def load_config_from_param():
 
     # first, make sure parameter server is even loaded
-    while not rospy.search_param("/joints/angles"):
+    while not rospy.search_param("/joints"):
         rospy.loginfo("waiting for parameter server to load with joint definitions")
         rospy.sleep(1)
 
     rospy.sleep(1)
 
-    i = 0
+    joints = rospy.get_param('/joints')
+    for name in joints:
+        print "found:  " + name
 
-    while rospy.search_param('/joints/joint' + str(i).zfill(2)):
+        s = Servo()
 
-        param = '/joints/joint' + str(i).zfill(2)
+        key = '/joints/' + name + '/'
 
-        print "found " + str(i).zfill(2)
+        s.bus       =  rospy.get_param(key + 'bus')
+        s.servo     =  rospy.get_param(key + 'servo')
+        s.flip      =  rospy.get_param(key + 'flip')
 
-        servo = Servo()
-        servo.key       =  i
-        servo.name      =  rospy.get_param(param + '/name')
-        servo.bus       =  rospy.get_param(param + '/bus')
-        servo.servo     =  rospy.get_param(param + '/servo')
-        servo.flip      =  rospy.get_param(param + '/flip')
+        s.servopin  =  rospy.get_param(key + 'servopin')
+        s.sensorpin =  rospy.get_param(key + 'sensorpin')
+        s.minpulse  =  rospy.get_param(key + 'minpulse')
+        s.maxpulse  =  rospy.get_param(key + 'maxpulse')
+        s.minangle  =  rospy.get_param(key + 'minangle')
+        s.maxangle  =  rospy.get_param(key + 'maxangle')
+        s.minsensor =  rospy.get_param(key + 'minsensor')
+        s.maxsensor =  rospy.get_param(key + 'maxsensor')
+        s.maxspeed  =  rospy.get_param(key + 'maxspeed')
+        s.smoothing =  rospy.get_param(key + 'smoothing')
 
-        servo.servopin  =  rospy.get_param(param + '/servopin')
-        servo.sensorpin =  rospy.get_param(param + '/sensorpin')
-        servo.minpulse  =  rospy.get_param(param + '/minpulse')
-        servo.maxpulse  =  rospy.get_param(param + '/maxpulse')
-        servo.minangle  =  rospy.get_param(param + '/minangle')
-        servo.maxangle  =  rospy.get_param(param + '/maxangle')
-        servo.minsensor =  rospy.get_param(param + '/minsensor')
-        servo.maxsensor =  rospy.get_param(param + '/maxsensor')
-        servo.maxspeed  =  rospy.get_param(param + '/maxspeed')
-        servo.smoothing =  rospy.get_param(param + '/smoothing')
+        servos[name] = s
 
-        servos[servo.name] = servo
-
-        i+=1
-
-    #print servos
 
     print "DONE"
 
@@ -83,7 +77,7 @@ def update_config_from_eeprom():
 
     for name in servos:
         s = servos[name]
-        print s.name
+        print "interrogating eeprom for:  " + name
 
         rospy.wait_for_service("servobus/" + str(s.bus).zfill(2) + "/motorparameter")
 
@@ -117,23 +111,21 @@ def emit_export_yaml():
 
     for name in servos:
         s = servos[name]
-        print s.name
+        print "updating yaml for:  " +  name
 
-        joint = 'joint' + str(s.key).zfill(2)
-
-        y['joints'][joint]['bus'        ] = int(s.bus)
-        y['joints'][joint]['servo'      ] = int(s.servo)
-        y['joints'][joint]['flip'       ] = bool(s.flip)
-        y['joints'][joint]['servopin'   ] = int(s.servopin)
-        y['joints'][joint]['sensorpin'  ] = int(s.sensorpin)
-        y['joints'][joint]['minpulse'   ] = int(s.minpulse)
-        y['joints'][joint]['maxpulse'   ] = int(s.maxpulse)
-        y['joints'][joint]['minangle'   ] = s.minangle
-        y['joints'][joint]['maxangle'   ] = s.maxangle
-        y['joints'][joint]['minsensor'  ] = int(s.minsensor)
-        y['joints'][joint]['maxsensor'  ] = int(s.maxsensor)
-        y['joints'][joint]['smoothing'  ] = int(s.smoothing)
-        y['joints'][joint]['maxspeed'   ] = s.maxspeed
+        y['joints'][name]['bus'        ] = int(s.bus)
+        y['joints'][name]['servo'      ] = int(s.servo)
+        y['joints'][name]['flip'       ] = bool(s.flip)
+        y['joints'][name]['servopin'   ] = int(s.servopin)
+        y['joints'][name]['sensorpin'  ] = int(s.sensorpin)
+        y['joints'][name]['minpulse'   ] = int(s.minpulse)
+        y['joints'][name]['maxpulse'   ] = int(s.maxpulse)
+        y['joints'][name]['minangle'   ] = s.minangle
+        y['joints'][name]['maxangle'   ] = s.maxangle
+        y['joints'][name]['minsensor'  ] = int(s.minsensor)
+        y['joints'][name]['maxsensor'  ] = int(s.maxsensor)
+        y['joints'][name]['smoothing'  ] = int(s.smoothing)
+        y['joints'][name]['maxspeed'   ] = s.maxspeed
 
     with open(outfile, 'w') as yaml_file:
         yaml_file.write( yaml.dump(y, default_flow_style=False))

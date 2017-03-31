@@ -25,455 +25,429 @@
 #                       4 - cos^2 accel/decl ramp, honor maxspeed value
 #     maxspeed:       the maxspeed allowed for motion?
 
+bringup:
+  angles:        degrees
+  hz:            40
+
 joints:
 
-  angles:      degrees
-
-  joint00:
-    name:             l_shoulder_lift_joint
-    bus:            00
-    servo:          09
-    flip:            f
-    servopin:       09
-    sensorpin:      16
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_shoulder_lift_joint:
+    bus:          00
+    servo:        09
+    flip:          1
+    servopin:     09
+    sensorpin:    16
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
     
-  joint01:
-    name:             l_shoulder_out_joint
-    bus:            00
-    servo:          08
-    flip:            f
-    servopin:       08
-    sensorpin:      17
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_shoulder_out_joint:
+    bus:          00
+    servo:        08
+    flip:          1
+    servopin:     08
+    sensorpin:    17
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint02:
-    name:             l_upper_arm_roll_joint
-    bus:            00
-    servo:          07
-    flip:            f
-    servopin:       07
-    sensorpin:      18
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_upper_arm_roll_joint:
+    bus:          00
+    servo:        07
+    flip:          1
+    servopin:     07
+    sensorpin:    18
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint03:
-    name:             l_elbow_flex_joint
-    bus:            00
-    servo:          06
-    flip:            f
-    servopin:       06
-    sensorpin:      19
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_elbow_flex_joint:
+    bus:          00
+    servo:        06
+    flip:          1
+    servopin:     06
+    sensorpin:    19
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint04:
-    name:             l_wrist_roll_joint
-    bus:            00
-    servo:          05
-    flip:            f
-    servopin:       05
-    sensorpin:      20
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_wrist_roll_joint:
+    bus:          00
+    servo:        05
+    flip:          1
+    servopin:     05
+    sensorpin:    20
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint05:
-    name:             l_thumb_joint
-    bus:            00
-    servo:          04
-    flip:            f
-    servopin:       04
-    sensorpin:      21
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_thumb_joint:
+    bus:          00
+    servo:        04
+    flip:          1
+    servopin:     04
+    sensorpin:    21
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint06:
-    name:             l_index_joint
-    bus:            00
-    servo:          03
-    flip:            f
-    servopin:       03
-    sensorpin:      37
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_index_joint:
+    bus:          00
+    servo:        03
+    flip:          1
+    servopin:     03
+    sensorpin:    37
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint07:
-    name:             l_middle_joint
-    bus:           00
-    servo:          02
-    flip:            f
-    servopin:       02
-    sensorpin:      34
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_middle_joint:
+    bus:          00
+    servo:        02
+    flip:          1
+    servopin:     02
+    sensorpin:    34
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint08:
-    name:             l_ring_joint
-    bus:           00
-    servo:          01
-    flip:            f
-    servopin:       01
-    sensorpin:      23
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_ring_joint:
+    bus:          00
+    servo:        01
+    flip:          1
+    servopin:     01
+    sensorpin:    23
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint09:
-    name:             l_pinky_joint
-    bus:           00
-    servo:          00
-    flip:            f
-    servopin:       00
-    sensorpin:      22
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  l_pinky_joint:
+    bus:          00
+    servo:        00
+    flip:          1
+    servopin:     00
+    sensorpin:    22
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint10:
-    name:             r_shoulder_lift_joint
-    bus:           01
-    servo:          09
-    flip:            f
-    servopin:       09
-    sensorpin:      16
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_shoulder_lift_joint:
+    bus:          01
+    servo:        09
+    flip:          1
+    servopin:     09
+    sensorpin:    16
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
     
-  joint11:
-    name:             r_shoulder_out_joint
-    bus:           01
-    servo:          08
-    flip:            f
-    servopin:       08
-    sensorpin:      17
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_shoulder_out_joint:
+    bus:          01
+    servo:        08
+    flip:          1
+    servopin:     08
+    sensorpin:    17
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint12:
-    name:             r_upper_arm_roll_joint
-    bus:           01
-    servo:          07
-    flip:            f
-    servopin:       07
-    sensorpin:      18
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_upper_arm_roll_joint:
+    bus:          01
+    servo:        07
+    flip:          1
+    servopin:     07
+    sensorpin:    18
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint13:
-    name:             r_elbow_flex_joint
-    bus:           01
-    servo:          06
-    flip:            f
-    servopin:       06
-    sensorpin:      19
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_elbow_flex_joint:
+    bus:          01
+    servo:        06
+    flip:          1
+    servopin:     06
+    sensorpin:    19
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint14:
-    name:             r_wrist_roll_joint
-    bus:           01
-    servo:          05
-    flip:            f
-    servopin:       05
-    sensorpin:      20
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_wrist_roll_joint:
+    bus:          01
+    servo:        05
+    flip:          1
+    servopin:     05
+    sensorpin:    20
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint15:
-    name:             r_thumb_joint
-    bus:           01
-    servo:          04
-    flip:            f
-    servopin:       04
-    sensorpin:      21
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_thumb_joint:
+    bus:          01
+    servo:        04
+    flip:          1
+    servopin:     04
+    sensorpin:    21
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint16:
-    name:             r_index_joint
-    bus:           01
-    servo:          03
-    flip:            f
-    servopin:       03
-    sensorpin:      37
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_index_joint:
+    bus:          01
+    servo:        03
+    flip:          1
+    servopin:     03
+    sensorpin:    37
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint17:
-    name:             r_middle_joint
-    bus:           01
-    servo:          02
-    flip:            f
-    servopin:       02
-    sensorpin:      34
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_middle_joint:
+    bus:          01
+    servo:        02
+    flip:          1
+    servopin:     02
+    sensorpin:    34
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint18:
-    name:             r_ring_joint
-    bus:           01
-    servo:          01
-    flip:            f
-    servopin:       01
-    sensorpin:      23
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_ring_joint:
+    bus:          01
+    servo:        01
+    flip:          1
+    servopin:     01
+    sensorpin:    23
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint19:
-    name:             r_pinky_joint
-    bus:           01
-    servo:          00
-    flip:            f
-    servopin:       00
-    sensorpin:      22
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  r_pinky_joint:
+    bus:          01
+    servo:        00
+    flip:          1
+    servopin:     00
+    sensorpin:    22
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
     
-  joint20:
-    name:             waist_roll_joint
-    bus:           02
-    servo:          07
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  waist_roll_joint:
+    bus:          02
+    servo:        07
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint21:
-    name:             waist_tilt_joint
-    bus:           02
-    servo:          06
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  waist_tilt_joint:
+    bus:          02
+    servo:        06
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint22:
-    name:             head_roll_joint
-    bus:           02
-    servo:          05
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  head_roll_joint:
+    bus:          02
+    servo:        05
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint23:
-    name:             head_pitch_joint
-    bus:           02
-    servo:          04
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  head_pitch_joint:
+    bus:          02
+    servo:        04
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint24:
-    name:             head_yaw_joint
-    bus:           02
-    servo:          03
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  head_yaw_joint:
+    bus:          02
+    servo:        03
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint25:
-    name:             jaw_joint
-    bus:           02
-    servo:          02
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  jaw_joint:
+    bus:          02
+    servo:        02
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint26:
-    name:             eyes_pan_joint
-    bus:           02
-    servo:          01
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  eyes_pan_joint:
+    bus:          02
+    servo:        01
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 
-  joint27:
-    name:             eyes_tilt_joint
-    bus:           02
-    servo:          00
-    flip:            f
-    servopin:       -1
-    sensorpin:      -1
-    minangle:       -1
-    maxangle:       -1
-    minpulse:       -1
-    maxpulse:       -1
-    minsensor:      -1
-    maxsensor:      -1
-    smoothing:      -1
-    maxspeed:       -1
+  eyes_tilt_joint:
+    bus:          02
+    servo:        00
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
 

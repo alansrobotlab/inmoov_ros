@@ -8,6 +8,8 @@ class Servo:
     servo = -1
     flip = False
 
+    goal = -1.0
+
     servopin = -1
     sensorpin = -1
     minpulse = -1.0
