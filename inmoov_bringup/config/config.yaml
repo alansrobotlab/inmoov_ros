@@ -30,7 +30,7 @@ joints:
   angles:      degrees
 
   joint00:
-    name:             left_shoulder_pitch
+    name:             l_shoulder_lift_joint
     bus:            00
     servo:          09
     flip:            f
@@ -46,7 +46,7 @@ joints:
     maxspeed:       -1
     
   joint01:
-    name:             left_shoulder_roll
+    name:             l_shoulder_out_joint
     bus:            00
     servo:          08
     flip:            f
@@ -62,8 +62,8 @@ joints:
     maxspeed:       -1
 
   joint02:
-    name:             left_bicep_yaw
-    bus:           00
+    name:             l_upper_arm_roll_joint
+    bus:            00
     servo:          07
     flip:            f
     servopin:       07
@@ -78,8 +78,8 @@ joints:
     maxspeed:       -1
 
   joint03:
-    name:             left_bicep_pitch
-    bus:           00
+    name:             l_elbow_flex_joint
+    bus:            00
     servo:          06
     flip:            f
     servopin:       06
@@ -94,8 +94,8 @@ joints:
     maxspeed:       -1
 
   joint04:
-    name:             left_wrist_roll
-    bus:           00
+    name:             l_wrist_roll_joint
+    bus:            00
     servo:          05
     flip:            f
     servopin:       05
@@ -110,8 +110,8 @@ joints:
     maxspeed:       -1
 
   joint05:
-    name:             left_thumb
-    bus:           00
+    name:             l_thumb_joint
+    bus:            00
     servo:          04
     flip:            f
     servopin:       04
@@ -126,8 +126,8 @@ joints:
     maxspeed:       -1
 
   joint06:
-    name:             left_index
-    bus:           00
+    name:             l_index_joint
+    bus:            00
     servo:          03
     flip:            f
     servopin:       03
@@ -142,7 +142,7 @@ joints:
     maxspeed:       -1
 
   joint07:
-    name:             left_middle
+    name:             l_middle_joint
     bus:           00
     servo:          02
     flip:            f
@@ -158,7 +158,7 @@ joints:
     maxspeed:       -1
 
   joint08:
-    name:             left_ring
+    name:             l_ring_joint
     bus:           00
     servo:          01
     flip:            f
@@ -174,7 +174,7 @@ joints:
     maxspeed:       -1
 
   joint09:
-    name:             left_pinky
+    name:             l_pinky_joint
     bus:           00
     servo:          00
     flip:            f
@@ -190,7 +190,7 @@ joints:
     maxspeed:       -1
 
   joint10:
-    name:             right_shoulder_pitch
+    name:             r_shoulder_lift_joint
     bus:           01
     servo:          09
     flip:            f
@@ -206,7 +206,7 @@ joints:
     maxspeed:       -1
     
   joint11:
-    name:             right_shoulder_roll
+    name:             r_shoulder_out_joint
     bus:           01
     servo:          08
     flip:            f
@@ -222,7 +222,7 @@ joints:
     maxspeed:       -1
 
   joint12:
-    name:             right_bicep_yaw
+    name:             r_upper_arm_roll_joint
     bus:           01
     servo:          07
     flip:            f
@@ -238,7 +238,7 @@ joints:
     maxspeed:       -1
 
   joint13:
-    name:             right_bicep_pitch
+    name:             r_elbow_flex_joint
     bus:           01
     servo:          06
     flip:            f
@@ -254,7 +254,7 @@ joints:
     maxspeed:       -1
 
   joint14:
-    name:             right_wrist_roll
+    name:             r_wrist_roll_joint
     bus:           01
     servo:          05
     flip:            f
@@ -270,7 +270,7 @@ joints:
     maxspeed:       -1
 
   joint15:
-    name:             right_thumb
+    name:             r_thumb_joint
     bus:           01
     servo:          04
     flip:            f
@@ -286,7 +286,7 @@ joints:
     maxspeed:       -1
 
   joint16:
-    name:             right_index
+    name:             r_index_joint
     bus:           01
     servo:          03
     flip:            f
@@ -302,7 +302,7 @@ joints:
     maxspeed:       -1
 
   joint17:
-    name:             right_middle
+    name:             r_middle_joint
     bus:           01
     servo:          02
     flip:            f
@@ -318,7 +318,7 @@ joints:
     maxspeed:       -1
 
   joint18:
-    name:             right_ring
+    name:             r_ring_joint
     bus:           01
     servo:          01
     flip:            f
@@ -334,7 +334,7 @@ joints:
     maxspeed:       -1
 
   joint19:
-    name:             right_pinky
+    name:             r_pinky_joint
     bus:           01
     servo:          00
     flip:            f
@@ -350,7 +350,7 @@ joints:
     maxspeed:       -1
     
   joint20:
-    name:             waist_roll
+    name:             waist_roll_joint
     bus:           02
     servo:          07
     flip:            f
@@ -366,7 +366,7 @@ joints:
     maxspeed:       -1
 
   joint21:
-    name:             waist_tilt
+    name:             waist_tilt_joint
     bus:           02
     servo:          06
     flip:            f
@@ -382,7 +382,7 @@ joints:
     maxspeed:       -1
 
   joint22:
-    name:             head_roll
+    name:             head_roll_joint
     bus:           02
     servo:          05
     flip:            f
@@ -398,7 +398,7 @@ joints:
     maxspeed:       -1
 
   joint23:
-    name:             head_pitch
+    name:             head_pitch_joint
     bus:           02
     servo:          04
     flip:            f
@@ -414,7 +414,7 @@ joints:
     maxspeed:       -1
 
   joint24:
-    name:             head_yaw
+    name:             head_yaw_joint
     bus:           02
     servo:          03
     flip:            f
@@ -430,7 +430,7 @@ joints:
     maxspeed:       -1
 
   joint25:
-    name:             jaw
+    name:             jaw_joint
     bus:           02
     servo:          02
     flip:            f
@@ -446,7 +446,7 @@ joints:
     maxspeed:       -1
 
   joint26:
-    name:             eyes_pitch
+    name:             eyes_pan_joint
     bus:           02
     servo:          01
     flip:            f
@@ -462,7 +462,7 @@ joints:
     maxspeed:       -1
 
   joint27:
-    name:             eyes_yaw
+    name:             eyes_tilt_joint
     bus:           02
     servo:          00
     flip:            f
