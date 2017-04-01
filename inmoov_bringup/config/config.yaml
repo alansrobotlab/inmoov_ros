@@ -32,7 +32,7 @@ bringup:
 joints:
 
   l_shoulder_lift_joint:
-    bus:          00
+    bus:          01
     servo:        09
     flip:          1
     servopin:     09
@@ -47,7 +47,7 @@ joints:
     maxspeed:     -1
     
   l_shoulder_out_joint:
-    bus:          00
+    bus:          01
     servo:        08
     flip:          1
     servopin:     08
@@ -62,7 +62,7 @@ joints:
     maxspeed:     -1
 
   l_upper_arm_roll_joint:
-    bus:          00
+    bus:          01
     servo:        07
     flip:          1
     servopin:     07
@@ -77,7 +77,7 @@ joints:
     maxspeed:     -1
 
   l_elbow_flex_joint:
-    bus:          00
+    bus:          01
     servo:        06
     flip:          1
     servopin:     06
@@ -92,7 +92,7 @@ joints:
     maxspeed:     -1
 
   l_wrist_roll_joint:
-    bus:          00
+    bus:          01
     servo:        05
     flip:          1
     servopin:     05
@@ -107,7 +107,7 @@ joints:
     maxspeed:     -1
 
   l_thumb_joint:
-    bus:          00
+    bus:          01
     servo:        04
     flip:          1
     servopin:     04
@@ -122,7 +122,7 @@ joints:
     maxspeed:     -1
 
   l_index_joint:
-    bus:          00
+    bus:          01
     servo:        03
     flip:          1
     servopin:     03
@@ -137,7 +137,7 @@ joints:
     maxspeed:     -1
 
   l_middle_joint:
-    bus:          00
+    bus:          01
     servo:        02
     flip:          1
     servopin:     02
@@ -152,7 +152,7 @@ joints:
     maxspeed:     -1
 
   l_ring_joint:
-    bus:          00
+    bus:          01
     servo:        01
     flip:          1
     servopin:     01
@@ -167,7 +167,7 @@ joints:
     maxspeed:     -1
 
   l_pinky_joint:
-    bus:          00
+    bus:          01
     servo:        00
     flip:          1
     servopin:     00
@@ -182,7 +182,7 @@ joints:
     maxspeed:     -1
 
   r_shoulder_lift_joint:
-    bus:          01
+    bus:          02
     servo:        09
     flip:          1
     servopin:     09
@@ -197,7 +197,7 @@ joints:
     maxspeed:     -1
     
   r_shoulder_out_joint:
-    bus:          01
+    bus:          02
     servo:        08
     flip:          1
     servopin:     08
@@ -212,7 +212,7 @@ joints:
     maxspeed:     -1
 
   r_upper_arm_roll_joint:
-    bus:          01
+    bus:          02
     servo:        07
     flip:          1
     servopin:     07
@@ -227,7 +227,7 @@ joints:
     maxspeed:     -1
 
   r_elbow_flex_joint:
-    bus:          01
+    bus:          02
     servo:        06
     flip:          1
     servopin:     06
@@ -242,7 +242,7 @@ joints:
     maxspeed:     -1
 
   r_wrist_roll_joint:
-    bus:          01
+    bus:          02
     servo:        05
     flip:          1
     servopin:     05
@@ -257,7 +257,7 @@ joints:
     maxspeed:     -1
 
   r_thumb_joint:
-    bus:          01
+    bus:          02
     servo:        04
     flip:          1
     servopin:     04
@@ -272,7 +272,7 @@ joints:
     maxspeed:     -1
 
   r_index_joint:
-    bus:          01
+    bus:          02
     servo:        03
     flip:          1
     servopin:     03
@@ -287,7 +287,7 @@ joints:
     maxspeed:     -1
 
   r_middle_joint:
-    bus:          01
+    bus:          02
     servo:        02
     flip:          1
     servopin:     02
@@ -302,7 +302,7 @@ joints:
     maxspeed:     -1
 
   r_ring_joint:
-    bus:          01
+    bus:          02
     servo:        01
     flip:          1
     servopin:     01
@@ -317,7 +317,7 @@ joints:
     maxspeed:     -1
 
   r_pinky_joint:
-    bus:          01
+    bus:          02
     servo:        00
     flip:          1
     servopin:     00
@@ -332,7 +332,7 @@ joints:
     maxspeed:     -1
     
   waist_roll_joint:
-    bus:          02
+    bus:          00
     servo:        07
     flip:          1
     servopin:     -1
@@ -347,7 +347,7 @@ joints:
     maxspeed:     -1
 
   waist_tilt_joint:
-    bus:          02
+    bus:          00
     servo:        06
     flip:          1
     servopin:     -1
@@ -362,7 +362,7 @@ joints:
     maxspeed:     -1
 
   head_roll_joint:
-    bus:          02
+    bus:          00
     servo:        05
     flip:          1
     servopin:     -1
@@ -376,23 +376,8 @@ joints:
     smoothing:    -1
     maxspeed:     -1
 
-  head_pitch_joint:
-    bus:          02
-    servo:        04
-    flip:          1
-    servopin:     -1
-    sensorpin:    -1
-    minangle:     -1
-    maxangle:     -1
-    minpulse:     -1
-    maxpulse:     -1
-    minsensor:    -1
-    maxsensor:    -1
-    smoothing:    -1
-    maxspeed:     -1
-
-  head_yaw_joint:
-    bus:          02
+  head_pan_joint:
+    bus:          00
     servo:        03
     flip:          1
     servopin:     -1
@@ -406,8 +391,23 @@ joints:
     smoothing:    -1
     maxspeed:     -1
 
+  head_tilt_joint:
+    bus:          00
+    servo:        04
+    flip:          1
+    servopin:     -1
+    sensorpin:    -1
+    minangle:     -1
+    maxangle:     -1
+    minpulse:     -1
+    maxpulse:     -1
+    minsensor:    -1
+    maxsensor:    -1
+    smoothing:    -1
+    maxspeed:     -1
+
   jaw_joint:
-    bus:          02
+    bus:          00
     servo:        02
     flip:          1
     servopin:     -1
@@ -422,8 +422,8 @@ joints:
     maxspeed:     -1
 
   eyes_pan_joint:
-    bus:          02
-    servo:        01
+    bus:          00
+    servo:        00
     flip:          1
     servopin:     -1
     sensorpin:    -1
@@ -437,8 +437,8 @@ joints:
     maxspeed:     -1
 
   eyes_tilt_joint:
-    bus:          02
-    servo:        00
+    bus:          00
+    servo:        01
     flip:          1
     servopin:     -1
     sensorpin:    -1

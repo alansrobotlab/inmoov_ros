@@ -10,7 +10,7 @@ from os.path import dirname, abspath
 #hacky way to add include directory to sys path
 sys.path.append(os.path.join(dirname(dirname(abspath(__file__))),'include'))
 
-from constants import Protocol
+from constants import PROTOCOL
 from servos import Servo
 
 from inmoov_msgs.srv import MotorParameter
@@ -83,16 +83,16 @@ def update_config_from_eeprom():
 
         motorparameter = rospy.ServiceProxy("servobus/" + str(s.bus).zfill(2) + "/motorparameter", MotorParameter)
 
-        s.servopin  = motorparameter(int(s.servo), Protocol.SERVOPIN).data
-        s.sensorpin = motorparameter(int(s.servo), Protocol.SENSORPIN).data
-        s.minpulse  = motorparameter(int(s.servo), Protocol.MINPULSE).data
-        s.maxpulse  = motorparameter(int(s.servo), Protocol.MAXPULSE).data
-        s.minangle  = motorparameter(int(s.servo), Protocol.MINANGLE).data
-        s.maxangle  = motorparameter(int(s.servo), Protocol.MAXANGLE).data
-        s.minsensor = motorparameter(int(s.servo), Protocol.MINSENSOR).data
-        s.maxsensor = motorparameter(int(s.servo), Protocol.MAXSENSOR).data
-        s.maxspeed  = motorparameter(int(s.servo), Protocol.MAXSPEED).data
-        s.smoothing = motorparameter(int(s.servo), Protocol.SMOOTH).data
+        s.servopin  = motorparameter(int(s.servo), PROTOCOL.SERVOPIN).data
+        s.sensorpin = motorparameter(int(s.servo), PROTOCOL.SENSORPIN).data
+        s.minpulse  = motorparameter(int(s.servo), PROTOCOL.MINPULSE).data
+        s.maxpulse  = motorparameter(int(s.servo), PROTOCOL.MAXPULSE).data
+        s.minangle  = motorparameter(int(s.servo), PROTOCOL.MINANGLE).data
+        s.maxangle  = motorparameter(int(s.servo), PROTOCOL.MAXANGLE).data
+        s.minsensor = motorparameter(int(s.servo), PROTOCOL.MINSENSOR).data
+        s.maxsensor = motorparameter(int(s.servo), PROTOCOL.MAXSENSOR).data
+        s.maxspeed  = motorparameter(int(s.servo), PROTOCOL.MAXSPEED).data
+        s.smoothing = motorparameter(int(s.servo), PROTOCOL.SMOOTH).data
 
     print "DONE"
 

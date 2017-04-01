@@ -3,7 +3,7 @@
 
 from enum import Enum
 
-class Protocol():
+class PROTOCOL():
     #Protocol Constants
     WRITE             = 0x03
     READ              = 0x02
