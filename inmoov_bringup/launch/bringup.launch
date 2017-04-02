@@ -25,4 +25,9 @@
 
 <node pkg="inmoov_bringup" type="generate_export_yaml.py" name="generate_export_yaml" respawn="false"/>
 
+<node pkg="inmoov_bringup" type="joint_command_dispatcher.py" name="joint_command_dispatcher" respawn="true"/>
+
+<node pkg="inmoov_bringup" type="enabler.py" name="enable_manager" respawn="true"/>
+
+
 </launch>

@@ -20,65 +20,70 @@ sys.path.append(os.path.join(dirname(dirname(abspath(__file__))),'include'))
 from constants import PROTOCOL
 from servos import Servo
 
-servos = {}     # servo configuration data for robot
-joints = {}     # dict of joint names and position values
+servos = {}
+lookup = {}
 
-bus = {}        # dict of motorcommand busses indexed by ordinal
+joints = {}
+bus = {}
+
+state = {}
+
+jointstatus = JointState()
 
 def init():
-
-    rospy.init_node('joint_command_dispatcher', anonymous=False)
+    
+    rospy.init_node('joint_state_dispatcher', anonymous=False)
     rate = rospy.Rate(40) # 40hz
-
-    rospy.Subscriber("joint_command", JointState, dispatcher)
 
     load_config_from_param()
 
-    for j,b in rospy.get_param('/joints').items():
-        
-        number = rospy.get_param('/joints/' + j + '/bus')
-        busname = '/servobus/' + str(number).zfill(2) + '/motorcommand'
+    #now, load lookup name by (bus*255+servo id)
+    for n,s in servos.items():
+        key = ((int(s.bus)*255)+int(s.servo))
+        lookup[key] = n
+        print 'key:  ' + str(key)
 
+    publisher = rospy.Publisher("joint_status", JointState, queue_size=10)
+
+    for j,b in rospy.get_param('/joints').items():
+    
+        #create motorstatus bus name
+        number = rospy.get_param('/joints/' + j + '/bus')
+        busname = '/servobus/' + str(number).zfill(2) + '/motorstatus'
+
+        # and if it's not already in the bus{}, then add it
+        # (not sure if the check is required)
         if not bus.has_key(number):
-            bus[number] = rospy.Publisher(busname, MotorCommand, queue_size=10)
+            bus[number] = rospy.Subscriber(busname, MotorStatus, dispatcher, (number))
             rospy.loginfo('adding:  ' + busname)
 
     while not rospy.is_shutdown():
 
-        #iterate through joints and publish
+        #jointstatus = JointState()
+        jointstatus.header = Header()
+        jointstatus.header.stamp = rospy.Time.now()
+        jointstatus.name = []
+        jointstatus.position = []
+        jointstatus.velocity = []
+        jointstatus.effort = []
+
+
         for j,p in joints.items():
+            jointstatus.name.append(j)
+            jointstatus.position.append(p)
 
-            #try:
-                motorcommand = MotorCommand()
-                motorcommand.id = int(servos[j].servo)
-                motorcommand.parameter = PROTOCOL.GOALPOSITION
-                motorcommand.value = p
+        if jointstatus.name.count > 0:
+            publisher.publish(jointstatus)
 
-                bus[servos[j].bus].publish(motorcommand)
-            #except:
-            #    jointlist = ''
-            #    for n in servos:
-            #        jointlist = jointlist + ' ' + n
-
-            #    rospy.logerr("couldn't find:  " + j + " in:  " + jointlist)
-            #finally:
-            #    print
-                
-
-        #clear joints cache
         joints.clear()
         rate.sleep()
 
     rospy.spin()
 
-def dispatcher(js):
-    #print "OHAI!"
-
-    # iterate through array and stuff name + position into dict object
-    for x in range(0, len(js.name)):
-        joints[js.name[x]] = js.position[x]
-
-
+def dispatcher(data, bus):
+    print "OHAI! bus:" + str(bus) + " servo:" + str(data.id)
+    key = lookup[((int(bus)*255)+int(data.id))]
+    joints[key] = data.position
 
 def load_config_from_param():
 
@@ -115,7 +120,6 @@ def load_config_from_param():
         servos[name] = s
 
     print "DONE"
-
 
 
 if __name__ == '__main__':

@@ -331,7 +331,7 @@ joints:
     smoothing:    -1
     maxspeed:     -1
     
-  waist_roll_joint:
+  waist_pan_joint:
     bus:          00
     servo:        07
     flip:          1
@@ -346,7 +346,7 @@ joints:
     smoothing:    -1
     maxspeed:     -1
 
-  waist_tilt_joint:
+  waist_roll_joint:
     bus:          00
     servo:        06
     flip:          1
