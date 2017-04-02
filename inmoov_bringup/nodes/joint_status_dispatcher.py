@@ -32,7 +32,7 @@ jointstatus = JointState()
 
 def init():
     
-    rospy.init_node('joint_state_dispatcher', anonymous=False)
+    rospy.init_node('joint_status_dispatcher', anonymous=False)
     rate = rospy.Rate(40) # 40hz
 
     load_config_from_param()
@@ -81,9 +81,14 @@ def init():
     rospy.spin()
 
 def dispatcher(data, bus):
-    print "OHAI! bus:" + str(bus) + " servo:" + str(data.id)
-    key = lookup[((int(bus)*255)+int(data.id))]
-    joints[key] = data.position
+    try:
+        #print "OHAI! bus:" + str(bus) + " servo:" + str(data.id)
+        key = lookup[((int(bus)*255)+int(data.id))]
+        joints[key] = data.position
+    except:
+        rospy.logwarn('joint_status_dispatcher:  unknown servo at bus:'+str(bus)+' servo:'+str(data.id))
+    
+
 
 def load_config_from_param():
 

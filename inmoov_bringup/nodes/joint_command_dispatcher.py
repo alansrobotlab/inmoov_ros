@@ -48,21 +48,16 @@ def init():
         #iterate through joints and publish
         for j,p in joints.items():
 
-            #try:
+            try:
                 motorcommand = MotorCommand()
                 motorcommand.id = int(servos[j].servo)
                 motorcommand.parameter = PROTOCOL.GOALPOSITION
                 motorcommand.value = p
 
                 bus[servos[j].bus].publish(motorcommand)
-            #except:
-            #    jointlist = ''
-            #    for n in servos:
-            #        jointlist = jointlist + ' ' + n
-
-            #    rospy.logerr("couldn't find:  " + j + " in:  " + jointlist)
-            #finally:
-            #    print
+            except:
+                rospy.logwarn('joint_command_dispatcher:  unknown joint:' + j)
+    
                 
 
         #clear joints cache
