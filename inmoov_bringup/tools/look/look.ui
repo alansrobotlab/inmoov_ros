@@ -302,6 +302,9 @@
      </property>
     </widget>
     <widget class="QRadioButton" name="radioSpeaking">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -315,6 +318,9 @@
      </property>
     </widget>
     <widget class="QRadioButton" name="radioPunch">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -328,6 +334,9 @@
      </property>
     </widget>
     <widget class="QRadioButton" name="radioBoxerJab">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -341,6 +350,9 @@
      </property>
     </widget>
     <widget class="QRadioButton" name="radioBoxerGuard">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -354,6 +366,9 @@
      </property>
     </widget>
     <widget class="QRadioButton" name="radioBeverage">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -367,6 +382,9 @@
      </property>
     </widget>
     <widget class="QSlider" name="sliderX">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -389,6 +407,9 @@
      </property>
     </widget>
     <widget class="QSlider" name="sliderY">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>250</x>
@@ -470,6 +491,9 @@
     </property>
    </widget>
    <widget class="QSlider" name="sliderOut">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>560</x>
