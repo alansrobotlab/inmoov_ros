@@ -233,6 +233,9 @@ void setup() {
 
 int pushmotorstatus = 0;  // which motorstatus to update
 
+char joint[2] = " ";
+byte bus = 0;
+
 void loop() {
 
   updateServos();
@@ -267,7 +270,9 @@ void loop() {
 
   if ((millis() - updateMillis) >= UPDATEPERIOD) {
     for (int servo = 0; servo < NUMSERVOS; servo++) {
-      
+
+      status_msg.joint        = joint;
+      status_msg.bus          = bus;
       status_msg.id           = servo;
       status_msg.goal         = tServo[servo]->getGoal();
       status_msg.position     = tServo[servo]->readPositionAngle();
