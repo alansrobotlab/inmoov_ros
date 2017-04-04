@@ -22,6 +22,10 @@ from std_msgs.msg import Header
 
 from time import sleep
 
+import os
+import sys
+from os.path import dirname, abspath
+
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
 import qdarkstyle
 
@@ -30,9 +34,14 @@ import qdarkstyle
 gui = os.path.join(os.path.dirname(__file__), 'trainer.ui')
 Ui_MainWindow, QtBaseClass = uic.loadUiType(gui)
 
+#hacky way to add include directory to sys path
+sys.path.append(os.path.join(dirname(dirname(dirname(abspath(__file__)))),'include'))
+
+from constants import PROTOCOL
+from servos import Servo
 
 # https://nikolak.com/pyqt-qt-designer-getting-started/
-class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
+class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         # Explaining super is out of the scope of this article
         # So please google it if you're not familar with it
@@ -42,56 +51,41 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)  # This is defined in design.py file automatically
         # It sets up layout and widgets that are defined
 
-        self.parameterTopic = ["servobus/torso/motorparameter","servobus/leftarm/motorparameter","servobus/rightarm/motorparameter"]
+        self.servos = {}
+        self.load_config_from_param()
+
+        self.servicebus = {}
+        self.commandbus = {}
+
+        self.joint = Servo()  # which joint is currently selected
+
+        self.values = {}
+
+        # iterate through servo collection
+        for j,b in rospy.get_param('/joints').items():
+            
+            number = rospy.get_param('/joints/' + j + '/bus')
+            commandbusname = '/servobus/' + str(number).zfill(2) + '/motorcommand'
+            servicebusname = '/servobus/' + str(number).zfill(2) + '/motorparameter'
+
+            # index by busnumber, add to collection if busnumber not found in collection
+            if not self.servicebus.has_key(number):
+                self.commandbus[number] = rospy.Publisher(commandbusname, MotorCommand, queue_size=10)
+                self.servicebus[number] = rospy.ServiceProxy(servicebusname, MotorParameter)
+
+        self.setupDropDowns()
 
         self.motorcommand = MotorCommand()
+        self.motorparameter = MotorParameter()
         self.jointcommand = JointState()
         
         self.jointNames = []
-        
-        for servo in range (0, 12):
-            self.jointNames.append( rospy.get_param('servobus/torso/servomap/'+str(servo)+'/name'))
-            
-        for servo in range (0, 12):
-            self.jointNames.append( rospy.get_param('servobus/leftarm/servomap/'+str(servo)+'/name'))
-            
-        for servo in range (0, 12):
-            self.jointNames.append( rospy.get_param('servobus/rightarm/servomap/'+str(servo)+'/name'))
-        
-        print(self.jointNames)
-        
-        
-            #'right_pinky','right_ring','right_middle','right_index','right_thumb',
-            #'right_hand','right_bicep','right_bicep_rotate','right_shoulder_side','right_shoulder_up','','',
-            
-            #'eye_leftright','eyes_updown','jaw','head_leftright','head_updown','head_tilt','waist_lean','waist_rotate','','','','',  
-            
-            #'left_pinky','left_ring','left_middle','left_index','left_thumb',
-            #'left_hand','left_bicep','left_bicep_rotate','left_shoulder_side','left_shoulder_up','','',
-            
-
-
-        self.setupDropDowns()
-        
-
-
-
 
         rospy.init_node('trainer', anonymous=True)
 
         print("INITIALIZED")
-        
-        self.commandPublisher = []
-        self.commandPublisher.append(rospy.Publisher("servobus/torso/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/leftarm/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/rightarm/motorcommand", MotorCommand, queue_size=10))
-        
-        print("COMMANDS COMPLETE")
 
-        self.statusSubscriber = []
-        self.statusSubscriber.append(rospy.Subscriber("servobus/torso/motorstatus", MotorStatus, self.callback0))
-        self.statusSubscriber.append(rospy.Subscriber("servobus/leftarm/motorstatus", MotorStatus, self.callback1))
-        self.statusSubscriber.append(rospy.Subscriber("servobus/rightarm/motorstatus", MotorStatus, self.callback2))
+        self.statusSubscriber = rospy.Subscriber("motor_status", MotorStatus, self.motorstatus)
         
         print("SUBSCRIBER COMPLETE")
 
@@ -99,326 +93,231 @@ class ExampleApp(QtWidgets.QMainWindow, Ui_MainWindow):
         
         print("JOINTPUBLISHER COMPLETE")
 
-        self.bus = 0
         self.servo = 0
-        self.motorparameter = rospy.ServiceProxy(self.parameterTopic[self.bus], MotorParameter)
-        
-        self.busChanged()
 
+        self.connectUI()
         self.servoChanged()
-
-        self.cmbBus.currentIndexChanged.connect(self.busChanged)
-        self.cmbServo.currentIndexChanged.connect(self.servoChanged)
-
-        self.txtGoal.editingFinished.connect(self.setGoal)
-        self.txtMinPulse.editingFinished.connect(self.setMinPulse)
-        self.txtMaxPulse.editingFinished.connect(self.setMaxPulse)
-        self.txtMinGoal.editingFinished.connect(self.setMinGoal)
-        self.txtMaxGoal.editingFinished.connect(self.setMaxGoal)
-        self.txtMinSensor.editingFinished.connect(self.setMinSensor)
-        self.txtMaxSensor.editingFinished.connect(self.setMaxSensor)
-        self.chkEnabled.stateChanged.connect(self.setEnabled)
-        self.chkCalibrated.stateChanged.connect(self.setCalibrated)
-        
-        self.sliderGoal.valueChanged.connect(self.sliderChanged)
-
-        self.chkEnableAll.stateChanged.connect(self.setEnableAll)
         
         print("INIT COMPLETE")
 
-    def busChanged(self):
+    def connectUI(self):
+        self.cmbServo.currentIndexChanged.connect(self.servoChanged)
+
+        self.txtGoal.editingFinished.connect(lambda: self.valueChanged(self.txtGoal, PROTOCOL.GOALPOSITION))
+        self.txtMinPulse.editingFinished.connect(lambda: self.valueChanged(self.txtMinPulse, PROTOCOL.MINPULSE))
+        self.txtMaxPulse.editingFinished.connect(lambda: self.valueChanged(self.txtMaxPulse, PROTOCOL.MAXPULSE))
+        self.txtMinGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMinGoal, PROTOCOL.MINANGLE))
+        self.txtMaxGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMaxGoal, PROTOCOL.MAXANGLE))
+        self.txtMaxSpeed.editingFinished.connect(lambda: self.valueChanged(self.txtMaxSpeed, PROTOCOL.MAXSPEED))
+        self.txtMinSensor.editingFinished.connect(lambda: self.valueChanged(self.txtMinSensor, PROTOCOL.MINSENSOR))
+        self.txtMaxSensor.editingFinished.connect(lambda: self.valueChanged(self.txtMaxSensor, PROTOCOL.MAXSENSOR))
+        self.chkEnabled.stateChanged.connect(lambda: self.valueChanged(self.chkEnabled, PROTOCOL.ENABLE))
+        self.chkCalibrated.stateChanged.connect(lambda: self.valueChanged(self.chkCalibrated, PROTOCOL.CALIBRATED))
         
-        print("BUSCHANGED")
+        self.sliderGoal.valueChanged.connect(lambda: self.valueChanged(self.sliderGoal, PROTOCOL.GOALPOSITION))
 
-        self.bus = self.cmbBus.currentIndex()
-        self.motorparameter = rospy.ServiceProxy(self.parameterTopic[self.bus], MotorParameter)
+    def disconnectUI(self):
+        self.cmbServo.currentIndexChanged.disconnect()
+
+        self.txtGoal.editingFinished.disconnect()
+        self.txtMinPulse.editingFinished.disconnect()
+        self.txtMaxPulse.editingFinished.disconnect()
+        self.txtMinGoal.editingFinished.disconnect()
+        self.txtMaxGoal.editingFinished.disconnect()
+        self.txtMaxSpeed.editingFinished.disconnect()
+        self.txtMinSensor.editingFinished.disconnect()
+        self.txtMaxSensor.editingFinished.disconnect()
+        self.chkEnabled.stateChanged.disconnect()
+        self.chkCalibrated.stateChanged.disconnect()
         
-        #self.cmbServo.currentIndexChanged.disconnect(self.servoChanged)
+        self.sliderGoal.valueChanged.disconnect()
 
-        self.cmbServo.clear()
-        
-        for s in range(0, 11):
-            self.cmbServo.addItem(self.jointNames[(self.bus * 12) + s])
-
-        #self.cmbServo.currentIndexChanged.connect(self.servoChanged)
-
-        #self.servoChanged()
 
     def servoChanged(self):
     
         print("SERVOCHANGED")
 
-        if self.cmbServo.count() > 0:
-            print("SERVICECALLS")
-            self.servo = self.cmbServo.currentIndex()
-            
-            sdir = 0.1
+        self.disconnectUI()
 
-            self.getMinPulse()
-            #print("MINPULSE")
-            sleep(sdir)
-            self.getMaxPulse()
-            #print("MAXPULSE")
-            sleep(sdir)     
-            self.getMinMaxGoal()       
-            #self.getMinGoal()
-            #print("MINGOAL")
-            #sleep(sdir)
-            #self.getMaxGoal()
-            #print("MAXGOAL")
-            sleep(sdir)
-            self.getGoal()
-            #print("GOAL")
-            sleep(sdir)
-            self.getMinSensor()
-            #print("MINSENSOR")
-            sleep(sdir)
-            self.getMaxSensor()
-            #print("MAXSENSOR")
-            sleep(sdir)
-            self.getEnabled()
-            #print("ENABLED")
-            sleep(sdir)
-            self.getCalibrated()
-            #print("CALIBRATED")
-            sleep(sdir)
-    
+        self.joint = self.servos[self.cmbServo.currentText()]
 
-    def callback0(self, data):
-        if data.id == self.servo and self.bus == 0:
-            #print data.posraw
-            #self.chkEnabled.setChecked(bool(data.enabled))
-            self.txtPosition.setText(str(round(data.position,4)))
-            self.txtSpeed.setText(str(data.presentspeed))
-            self.txtSensorRaw.setText(str(data.posraw))
-            self.chkMoving.setChecked(bool(data.moving))
-            self.chkPower.setChecked(bool(data.power))
-            #self.txtGoal.setText(str(data.goal))
-            
-    def callback1(self, data):
-        if data.id == self.servo and self.bus == 1:
-            #print data.posraw
-            #self.chkEnabled.setChecked(bool(data.enabled))
-            self.txtPosition.setText(str(round(data.position,4)))
-            self.txtSpeed.setText(str(data.presentspeed))
-            self.txtSensorRaw.setText(str(data.posraw))
-            self.chkMoving.setChecked(bool(data.moving))
-            self.chkPower.setChecked(bool(data.power))
-            #self.txtGoal.setText(str(data.goal))
+        val = str(round(self.getParameter(PROTOCOL.GOALPOSITION ),3))
+        self.txtGoal.setText(val)
 
-    def callback2(self, data):
-        if data.id == self.servo and self.bus == 2:
-            #print data.posraw
-            #self.chkEnabled.setChecked(bool(data.enabled))
-            self.txtPosition.setText(str(round(data.position,4)))
-            self.txtSpeed.setText(str(data.presentspeed))
-            self.txtSensorRaw.setText(str(data.posraw))
-            self.chkMoving.setChecked(bool(data.moving))
-            self.chkPower.setChecked(bool(data.power))
-            #self.txtGoal.setText(str(data.goal))
-    
-    def degreestoradians(self, d):
-        return d*(3.1415926/180.0)
-    
-    def setupDropDowns(self):
-    
-        self.cmbBus.addItem(rospy.get_param('/servobus/torso/name'))
-        self.cmbBus.addItem(rospy.get_param('/servobus/leftarm/name'))
-        self.cmbBus.addItem(rospy.get_param('/servobus/rightarm/name'))
+        val = str(int(self.getParameter(PROTOCOL.SERVOPIN )))
+        self.txtServoPin.setText(val)
 
-        for servo in range (0, 11):
-            #print('/servobus/torso/servomap/' + str(servo) + '/name')
-            self.cmbServo.addItem(rospy.get_param('/servobus/torso/servomap/' + str(servo) + '/name'))
+        val = str(int(self.getParameter(PROTOCOL.SENSORPIN )))
+        self.txtSensorPin.setText(val)
 
-        self.cmbSmoothing.addItem('0 - Instant')
-        self.cmbSmoothing.addItem('1 - Max Speed')
-        self.cmbSmoothing.addItem('2 - Linear Ramp')
-        self.cmbSmoothing.addItem('3 - COS Ramp')
-        self.cmbSmoothing.addItem('4 - COS^2 Ramp')
+        val = str(int(self.getParameter(PROTOCOL.MINPULSE )))
+        self.txtMinPulse.setText(val)
+
+        val = str(int(self.getParameter(PROTOCOL.MAXPULSE )))
+        self.txtMaxPulse.setText(val)
+
+        val = str(round(self.getParameter(PROTOCOL.MINANGLE ),3))
+        self.txtMinGoal.setText(val)
+
+        val = str(round(self.getParameter(PROTOCOL.MAXANGLE ),3))
+        self.txtMaxGoal.setText(val)
+
+        val = str(round(self.getParameter(PROTOCOL.MAXSPEED ),3))
+        self.txtMaxSpeed.setText(val)
+
+        val = str(int(self.getParameter(PROTOCOL.MINSENSOR )))
+        self.txtMinSensor.setText(val)
+
+        val = str(int(self.getParameter(PROTOCOL.MAXSENSOR )))
+        self.txtMaxSensor.setText(val)
+
+        # now set up the slider
+        minval = self.values[PROTOCOL.MINANGLE]
+        maxval = self.values[PROTOCOL.MAXANGLE]
+        goal   = self.values[PROTOCOL.GOALPOSITION]
         
-    def sliderChanged(self, i):
-        self.txtGoal.setText(str(i/1000.0))
-        self.setGoal()
-    
-    def setEnableAll(self):
-        for servo in range (0, 12):
-            for bus in range (0, 3):
-                self.motorcommand.id = servo
-                self.motorcommand.parameter = 0x18
-                self.motorcommand.value = float(self.chkEnableAll.isChecked())
-                self.commandPublisher[bus].publish(self.motorcommand)
-            #sleep(0.1)
-
-    def setParameter(self, bus, servo, parameter, value):
-        rospy.wait_for_service('motorparameter')
-
-
-    def setGoal(self):
-        print("SETGOAL")
-        #print(str(value))
-
-        goal = float(self.txtGoal.text())
-
-        self.sliderGoal.setValue(int(goal)*1000.0)
-
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0x1E
-        self.motorcommand.value = goal
-        #print(self.motorcommand.value)
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-        
-        self.jointcommand.header = Header()
-        self.jointcommand.header.stamp = rospy.Time.now()
-        self.jointcommand.name = [self.jointNames[((self.bus * 12) + self.servo)]]
-        self.jointcommand.position = [self.degreestoradians(goal)]
-        self.jointcommand.velocity = []
-        self.jointcommand.effort = []
-        self.jointPublisher.publish(self.jointcommand)
-        
-    
-    def getGoal(self):
-        print("GETGOAL")
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        value = self.motorparameter(self.cmbServo.currentIndex(), 0x1E).data
-        self.txtGoal.setText(str(value))
-        val = clamp(int(value * 1000.00),-360000,360000)
-        self.sliderGoal.setValue(val)
-        #self.sliderGoal.setValue(int(value * 1000.0))
-       
-    def setMinPulse(self):
-        #print(str(value))
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0x14
-        self.motorcommand.value = float(self.txtMinPulse.text())
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-       
-    def getMinPulse(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        self.txtMinPulse.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0x14).data))
-    
-    def setMaxPulse(self):
-        #print(str(value))
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0x16
-        self.motorcommand.value = float(self.txtMaxPulse.text())
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-       
-    def getMaxPulse(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        self.txtMaxPulse.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0x16).data))
-        
-    def setMinGoal(self):
-        #print(str(value))
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0x06
-        self.motorcommand.value = float(self.txtMinGoal.text())
-        self.sliderGoal.setMinimum(int(self.motorcommand.value * 1000.0))
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-
-    def getMinMaxGoal(self):
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        minval = self.motorparameter(self.cmbServo.currentIndex(), 0x06).data
-        self.txtMinGoal.setText(str(minval))
-        
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        maxval = self.motorparameter(self.cmbServo.currentIndex(), 0x08).data
-        self.txtMaxGoal.setText(str(maxval))
         if minval < maxval :
             self.sliderGoal.setMinimum(int(minval * 1000.0))
             self.sliderGoal.setMaximum(int(maxval * 1000.0))
         else:
             self.sliderGoal.setMinimum(int(maxval * 1000.0))
             self.sliderGoal.setMaximum(int(minval * 1000.0))
-       
-    def getMinGoal(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        value = self.motorparameter(self.cmbServo.currentIndex(), 0x06).data
-        self.txtMinGoal.setText(str(value))
-        self.sliderGoal.setMinimum(int(value * 1000.0))
+
+        self.sliderGoal.setValue(int(goal)*1000.0)
+
+
+        self.connectUI()
+
     
-    def setMaxGoal(self):
-        #print(str(value))
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0x08
-        self.motorcommand.value = float(self.txtMaxGoal.text())
-        self.sliderGoal.setMaximum(int(self.motorcommand.value * 1000.0))
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-       
-    def getMaxGoal(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        value = self.motorparameter(self.cmbServo.currentIndex(), 0x08).data
-        self.txtMaxGoal.setText(str(value))
-        self.sliderGoal.setMaximum(int(value * 1000.0))
-        
-    def setMinSensor(self):
-        #print(str(value))
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0xA2
-        self.motorcommand.value = float(self.txtMinSensor.text())
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-       
-    def getMinSensor(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        self.txtMinSensor.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0xA2).data))
+    def getParameter(self, parameter):
+
+        j = self.joint
+
+        try:
+            val = self.servicebus[j.bus](j.servo, parameter).data
+            self.values[parameter] = val
+            print val
+            return val
+        except:
+            return 0.0
+
+    def setParameter(self, parameter, value):
+
+        j = self.joint
+
+        # send to arduino directly
+        try:
+            motorcommand = MotorCommand()
+            motorcommand.id = int(j.servo)
+            motorcommand.parameter = parameter
+            motorcommand.value = value
+
+            self.commandbus[j.bus].publish(motorcommand)
+        except:
+            rospy.logwarn('trainer:  bad parameter or something.')
+
+        # send to parameter server
+
+        # record to config.yaml?
+
+        # update config.xacro?
+
+    def valueChanged(self, field, parameter):
+        if field.metaObject().className() == 'QLineEdit':
+            if field.text() != self.values[parameter]:
+                print field.text()
+                self.setParameter(parameter, float(field.text()))
+                self.values[parameter] = field.text()
+            if field.objectName() == 'txtGoal':
+                self.sliderGoal.setValue(float(self.values[PROTOCOL.GOALPOSITION])*1000.0)
+            return
+
+        if field.metaObject().className() == 'QCheckBox':
+            field.blockSignals(True)
+            self.setParameter(parameter, float(field.isChecked()))
+            field.blockSignals(False)
+            return
+
+        if field.metaObject().className() == 'QSlider':
+            val = float(field.value())/1000.0
+            self.setParameter(parameter, val)
+            self.values[parameter] = str(round(val,3))
+            self.txtGoal.setText(str(round(val,3)))
+            return
+
+    def motorstatus(self, data):
+        if data.joint == self.cmbServo.currentText():
+            self.txtSensorRaw.setText(str(int(data.posraw)))
+            self.txtPosition.setText(str(round(data.position,3)))
+            self.txtSpeed.setText(str(data.presentspeed))
+
+            # these don't work yet
+            self.chkEnabled.setChecked(data.enabled)
+            self.chkMoving.setChecked(data.moving)
+            self.chkPower.setChecked(data.power)
+
     
-    def setMaxSensor(self):
-        #print(str(value))
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0xA4
-        self.motorcommand.value = float(self.txtMaxSensor.text())
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-       
-    def getMaxSensor(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        self.txtMaxSensor.setText(str(self.motorparameter(self.cmbServo.currentIndex(), 0xA4).data))
-        
-    def setEnabled(self):
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0x18
-        self.motorcommand.value = float(self.chkEnabled.isChecked())
-        self.commandPublisher[self.bus].publish(self.motorcommand)
+    def degreestoradians(self, d):
+        return d*(3.1415926/180.0)
     
-    def getEnabled(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        self.chkEnabled.setChecked(bool(self.motorparameter(self.cmbServo.currentIndex(), 0x18).data))
-        
-    def setCalibrated(self):
-        self.motorcommand.id = self.cmbServo.currentIndex()
-        self.motorcommand.parameter = 0xA0
-        self.motorcommand.value = float(self.chkCalibrated.isChecked())
-        self.commandPublisher[self.bus].publish(self.motorcommand)
-    
-    def getCalibrated(self):
-        #bus = self.cmbBus.currentIndex()
-        #motorparameter = rospy.ServiceProxy(self.parameterTopic[bus], MotorParameter)
-        rospy.wait_for_service('/servobus/torso/motorparameter')
-        self.chkCalibrated.setChecked(bool(self.motorparameter(self.cmbServo.currentIndex(), 0xA0).data))
+    def setupDropDowns(self):
+
+        for name in self.servos:
+            self.cmbServo.addItem(name)
+
+        self.cmbServo.model().sort(0)
+        self.cmbServo.setCurrentIndex(0)
+
+        self.cmbSmoothing.addItem('0 - Instant')
+        self.cmbSmoothing.addItem('1 - Max Speed')
+        self.cmbSmoothing.addItem('2 - Linear Ramp')
+        self.cmbSmoothing.addItem('3 - COS Ramp')
+        self.cmbSmoothing.addItem('4 - COS^2 Ramp')
+
+
+    def load_config_from_param(self):
+
+        # first, make sure parameter server is even loaded
+        while not rospy.search_param("/joints"):
+            rospy.loginfo("waiting for parameter server to load with joint definitions")
+            rospy.sleep(1)
+
+        rospy.sleep(1)
+
+        joints = rospy.get_param('/joints')
+        for name in joints:
+            rospy.loginfo( "found:  " + name )
+
+            s = Servo()
+
+            key = '/joints/' + name + '/'
+
+            s.bus       =  int(rospy.get_param(key + 'bus'))
+            s.servo     =  int(rospy.get_param(key + 'servo'))
+            s.flip      =  int(rospy.get_param(key + 'flip'))
+
+            s.servopin  =  int(rospy.get_param(key + 'servopin'))
+            s.sensorpin =  int(rospy.get_param(key + 'sensorpin'))
+            s.minpulse  =  int(rospy.get_param(key + 'minpulse'))
+            s.maxpulse  =  int(rospy.get_param(key + 'maxpulse'))
+            s.minangle  =  float(rospy.get_param(key + 'minangle'))
+            s.maxangle  =  float(rospy.get_param(key + 'maxangle'))
+            s.minsensor =  int(rospy.get_param(key + 'minsensor'))
+            s.maxsensor =  int(rospy.get_param(key + 'maxsensor'))
+            s.maxspeed  =  float(rospy.get_param(key + 'maxspeed'))
+            s.smoothing =  int(rospy.get_param(key + 'smoothing'))
+
+            self.servos[name] = s
 
 def clamp(n,minn,maxn):
     return max(min(maxn, n), minn)
 
+
+
 def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    #sshFile="/home/grey/inmoov-grey/src/inmoov_tools/trainer/darkorange.stylesheet"
-    #with open(sshFile,"r") as fh:
-    #    app.setStyleSheet(fh.read())
-    form = ExampleApp()  # We set the form to be our ExampleApp (design)
+    form = TrainerApp()  # We set the form to be our ExampleApp (design)
     form.show()  # Show the form
     app.exec_()  # and execute the app
    

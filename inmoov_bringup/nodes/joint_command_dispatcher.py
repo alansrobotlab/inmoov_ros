@@ -28,7 +28,7 @@ bus = {}        # dict of motorcommand busses indexed by ordinal
 def init():
 
     rospy.init_node('joint_command_dispatcher', anonymous=False)
-    rate = rospy.Rate(40) # 40hz
+    rate = rospy.Rate(20) # 40hz
 
     rospy.Subscriber("joint_command", JointState, dispatcher)
 

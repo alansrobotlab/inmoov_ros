@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>321</width>
-    <height>664</height>
+    <width>263</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,10 +23,10 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>301</width>
-      <height>511</height>
+      <x>0</x>
+      <y>80</y>
+      <width>261</width>
+      <height>531</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -38,8 +38,8 @@
     <widget class="QLineEdit" name="txtMinPulse">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>250</y>
+       <x>104</x>
+       <y>140</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -48,8 +48,8 @@
     <widget class="QLineEdit" name="txtMaxSensor">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>280</y>
+       <x>104</x>
+       <y>290</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -58,8 +58,8 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>250</y>
+       <x>14</x>
+       <y>140</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -74,8 +74,8 @@
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>220</y>
+       <x>4</x>
+       <y>110</y>
        <width>91</width>
        <height>21</height>
       </rect>
@@ -90,8 +90,8 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>310</y>
+       <x>14</x>
+       <y>320</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -106,8 +106,8 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>160</y>
+       <x>14</x>
+       <y>170</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -122,8 +122,8 @@
     <widget class="QLineEdit" name="txtMaxPulse">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>220</y>
+       <x>104</x>
+       <y>110</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -132,8 +132,8 @@
     <widget class="QCheckBox" name="chkCalibrated">
      <property name="geometry">
       <rect>
-       <x>42</x>
-       <y>340</y>
+       <x>24</x>
+       <y>350</y>
        <width>97</width>
        <height>22</height>
       </rect>
@@ -148,8 +148,8 @@
     <widget class="QLineEdit" name="txtMaxGoal">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>160</y>
+       <x>104</x>
+       <y>170</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -158,8 +158,8 @@
     <widget class="QLineEdit" name="txtMinSensor">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>310</y>
+       <x>104</x>
+       <y>320</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -168,8 +168,8 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>190</y>
+       <x>34</x>
+       <y>200</y>
        <width>61</width>
        <height>21</height>
       </rect>
@@ -187,8 +187,8 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>122</x>
-       <y>110</y>
+       <x>104</x>
+       <y>260</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -196,12 +196,12 @@
     </widget>
     <widget class="QLabel" name="label_8">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>28</x>
-       <y>80</y>
+       <x>10</x>
+       <y>230</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -219,21 +219,21 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>122</x>
-       <y>80</y>
+       <x>104</x>
+       <y>230</y>
        <width>101</width>
        <height>27</height>
       </rect>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>280</y>
+       <x>14</x>
+       <y>290</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -254,8 +254,8 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>22</x>
-       <y>110</y>
+       <x>4</x>
+       <y>260</y>
        <width>91</width>
        <height>21</height>
       </rect>
@@ -270,18 +270,21 @@
     <widget class="QLineEdit" name="txtMinGoal">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>190</y>
+       <x>104</x>
+       <y>200</y>
        <width>101</width>
        <height>27</height>
       </rect>
      </property>
     </widget>
     <widget class="QLabel" name="label_7">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>470</y>
+       <x>12</x>
+       <y>490</y>
        <width>81</width>
        <height>16</height>
       </rect>
@@ -295,12 +298,12 @@
     </widget>
     <widget class="QLineEdit" name="txtSpeed">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>430</y>
+       <x>120</x>
+       <y>450</y>
        <width>81</width>
        <height>27</height>
       </rect>
@@ -311,12 +314,12 @@
     </widget>
     <widget class="QCheckBox" name="chkPower">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>42</x>
-       <y>410</y>
+       <x>22</x>
+       <y>430</y>
        <width>97</width>
        <height>22</height>
       </rect>
@@ -325,20 +328,20 @@
       <enum>Qt::RightToLeft</enum>
      </property>
      <property name="text">
-      <string/>
+      <string>Power</string>
      </property>
      <property name="checkable">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLineEdit" name="txtPosition">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>122</x>
-       <y>380</y>
+       <x>102</x>
+       <y>400</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -349,12 +352,12 @@
     </widget>
     <widget class="QLineEdit" name="txtSensorRaw">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>124</x>
-       <y>470</y>
+       <x>104</x>
+       <y>490</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -364,10 +367,13 @@
      </property>
     </widget>
     <widget class="QLabel" name="label_10">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>52</x>
-       <y>380</y>
+       <x>32</x>
+       <y>400</y>
        <width>61</width>
        <height>21</height>
       </rect>
@@ -379,43 +385,11 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_11">
-     <property name="geometry">
-      <rect>
-       <x>22</x>
-       <y>410</y>
-       <width>91</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Power</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="chkEnabled">
-     <property name="geometry">
-      <rect>
-       <x>42</x>
-       <y>10</y>
-       <width>97</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string>Enabled</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>52</x>
-       <y>40</y>
+       <x>34</x>
+       <y>10</y>
        <width>61</width>
        <height>21</height>
       </rect>
@@ -430,8 +404,8 @@
     <widget class="QLineEdit" name="txtGoal">
      <property name="geometry">
       <rect>
-       <x>122</x>
-       <y>40</y>
+       <x>104</x>
+       <y>10</y>
        <width>101</width>
        <height>27</height>
       </rect>
@@ -439,12 +413,12 @@
     </widget>
     <widget class="QCheckBox" name="chkMoving">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>42</x>
-       <y>430</y>
+       <x>22</x>
+       <y>450</y>
        <width>97</width>
        <height>22</height>
       </rect>
@@ -453,35 +427,19 @@
       <enum>Qt::RightToLeft</enum>
      </property>
      <property name="text">
-      <string/>
+      <string>moving</string>
      </property>
      <property name="checkable">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_15">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>430</y>
-       <width>91</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Moving</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QSlider" name="sliderGoal">
      <property name="geometry">
       <rect>
-       <x>260</x>
+       <x>220</x>
        <y>10</y>
        <width>31</width>
-       <height>491</height>
+       <height>511</height>
       </rect>
      </property>
      <property name="maximum">
@@ -509,68 +467,94 @@
       <number>10000</number>
      </property>
     </widget>
-   </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>-10</x>
-      <y>50</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Bus</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
+    <widget class="QLineEdit" name="txtServoPin">
+     <property name="geometry">
+      <rect>
+       <x>104</x>
+       <y>50</y>
+       <width>101</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>50</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Servo Pin</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="txtSensorPin">
+     <property name="geometry">
+      <rect>
+       <x>104</x>
+       <y>80</y>
+       <width>101</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>80</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Sensor Pin</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
       <x>-10</x>
-      <y>80</y>
+      <y>10</y>
       <width>71</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Servo</string>
+     <string>Servo:</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QComboBox" name="cmbBus">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>50</y>
-      <width>241</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="frame">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QComboBox" name="cmbServo">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>80</y>
+      <x>10</x>
+      <y>40</y>
       <width>241</width>
       <height>27</height>
      </rect>
     </property>
+    <property name="insertPolicy">
+     <enum>QComboBox::InsertAlphabetically</enum>
+    </property>
    </widget>
-   <widget class="QCheckBox" name="chkEnableAll">
+   <widget class="QCheckBox" name="chkEnabled">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>150</x>
       <y>10</y>
-      <width>121</width>
+      <width>97</width>
       <height>22</height>
      </rect>
     </property>
@@ -578,7 +562,7 @@
      <enum>Qt::RightToLeft</enum>
     </property>
     <property name="text">
-     <string>Enable All</string>
+     <string>Enabled</string>
     </property>
    </widget>
   </widget>
@@ -589,7 +573,6 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>chkEnabled</tabstop>
   <tabstop>txtGoal</tabstop>
   <tabstop>txtMaxSpeed</tabstop>
   <tabstop>cmbSmoothing</tabstop>
