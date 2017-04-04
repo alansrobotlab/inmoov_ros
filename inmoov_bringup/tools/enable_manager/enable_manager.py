@@ -16,6 +16,7 @@ from python_qt_binding import QtGui
 from python_qt_binding.QtWidgets import QWidget
 
 from PyQt5 import QtWidgets, QtCore, uic
+from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QVBoxLayout
 
 #from lookgui import Ui_MainWindow
 
@@ -41,7 +42,7 @@ from time import sleep
 import qdarkstyle
 
 # https://www.safaribooksonline.com/blog/2014/01/22/create-basic-gui-using-pyqt/
-gui = os.path.join(os.path.dirname(__file__), 'enabler.ui')
+gui = os.path.join(os.path.dirname(__file__), 'enable_manager.ui')
 form_class = uic.loadUiType(gui)[0]
 
 # https://nikolak.com/pyqt-qt-designer-getting-started/
@@ -60,14 +61,14 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
         self.bus = {}
 
-        self.parameterTopic = ["servobus/torso/motorparameter","servobus/leftarm/motorparameter","servobus/rightarm/motorparameter"]
+        self.checkboxes = {}
 
         self.motorcommand = MotorCommand()
         self.jointcommand = JointState()
         
         self.jointNames = []
         
-        rospy.init_node('enabler', anonymous=True)
+        rospy.init_node('enable_manager', anonymous=True)
 
         print("INITIALIZED")
 
@@ -79,33 +80,92 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
             busname = '/servobus/' + str(number).zfill(2) + '/motorcommand'
 
             if not self.bus.has_key(number):
-                self.bus[number] = rospy.Publisher(busname, MotorCommand, queue_size=10)
+                self.bus[number] = rospy.Publisher(busname, MotorCommand, queue_size=40)
                 rospy.loginfo('adding:  ' + busname)
 
-        self.commandPublisher = []
-        self.commandPublisher.append(rospy.Publisher("servobus/torso/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/leftarm/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/rightarm/motorcommand", MotorCommand, queue_size=10))
+        self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=40)
 
-        print("COMMANDS COMPLETE")
-
-        #self.statusSubscriber = []
-        #self.statusSubscriber.append(rospy.Subscriber("servobus/torso/motorstatus", MotorStatus, self.callback0))
-        #self.statusSubscriber.append(rospy.Subscriber("servobus/leftarm/motorstatus", MotorStatus, self.callback1))
-        #self.statusSubscriber.append(rospy.Subscriber("servobus/rightarm/motorstatus", MotorStatus, self.callback2))
-        
-        print("SUBSCRIBER COMPLETE")
-
-        self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
-        
-        print("JOINTPUBLISHER COMPLETE")
+        self.statusSubscriber = rospy.Subscriber("motor_status", MotorStatus, self.statusListener)
 
         self.btnEnableAll.clicked.connect(self.setEnableAll)
         self.btnDisableAll.clicked.connect(self.setDisableAll)
 
         print("INIT COMPLETE")  
 
+        joints = rospy.get_param('/joints')
+        for name, s  in self.servos.items():
+            print name
+            chk = QCheckBox(name)
+            chk.setText(name)
+            chk.setStyleSheet(checkboxstylesheet)
+            #chk.setEnabled(False)
+            chk.stateChanged.connect(self.checkChanged)
+            self.layout.addWidget(chk)
+            self.checkboxes[name] = chk
+
+    def statusListener(self, s):
+        j = s.joint
+        chk = self.checkboxes[j]
+        chk.blockSignals(True)
+        chk.setChecked(s.enabled)
+        chk.blockSignals(False)
+        return
+
+    def checkChanged(self):
+        sender = self.sender()
+        print sender.text()
+
+        s = self.servos[sender.text()]
+        chk = self.checkboxes[sender.text()]
+
+        motorcommand = MotorCommand()
+        motorcommand.id = int(s.servo)
+        motorcommand.parameter = PROTOCOL.ENABLE
+        motorcommand.value = sender.isChecked()
+        #if chk.isChecked():
+        #    motorcommand.value = True
+        ##else:
+        #    motorcommand.value = False
+        #motorcommand.value = float(chk.isChecked())
+
+        print 'checkChanged:  ' + sender.text() + 'to:  ' + str(sender.isChecked())
+
+        self.bus[s.bus].publish(motorcommand)
+
+    def checkChanged2(self, chk):
+
+        #self.statusSubscriber.unregister()
+
+        #chk = self.checkboxes[name]
+
+        s = self.servos[name]
+
+        motorcommand = MotorCommand()
+        motorcommand.id = int(s.servo)
+        motorcommand.parameter = PROTOCOL.ENABLE
+        if chk.isChecked():
+            motorcommand.value = True
+        else:
+            motorcommand.value = False
+        #motorcommand.value = float(chk.isChecked())
+
+        print 'checkChanged:  ' + name
+
+        self.bus[s.bus].publish(motorcommand)
+
+        #rospy.sleep(0.5)
+        #self.statusSubscriber = rospy.Subscriber("motor_status", MotorStatus, self.statusListener)
+
+        print 'YATZEE!!!!'
+
     def setEnableAll(self):
+
+        #self.statusSubscriber.unregister()
+
+        #disconnect events
+        #for j,chk in self.checkboxes.items():
+        #    chk.disconnect()
+
         for j,s in self.servos.items():
 
 
@@ -114,11 +174,12 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
             motorcommand.parameter = PROTOCOL.ENABLE
             motorcommand.value = 1
 
-            print self.bus[s.bus]
+            #print str(j)
 
             self.bus[s.bus].publish(motorcommand)
+            #rospy.sleep(0.1)
 
-
+        #self.statusSubscriber = rospy.Subscriber("motor_status", MotorStatus, self.statusListener)
 
     def setDisableAll(self):
         for j,s in self.servos.items():
@@ -128,9 +189,10 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
             motorcommand.parameter = PROTOCOL.ENABLE
             motorcommand.value = 0
 
-            print self.bus[s.bus]
+            print j
 
             self.bus[s.bus].publish(motorcommand)
+            #rospy.sleep(0.1)
 
 
     def closeEvent(self, event):
@@ -173,6 +235,20 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
             self.servos[name] = s
 
         print "DONE"
+
+checkboxstylesheet = \
+    'QCheckBox::indicator {' + \
+    'width: 12px;' + \
+    'height: 12px;' + \
+    'border-style: outset;' + \
+    'border-width: 1px;' + \
+    'border-radius: 4px;' + \
+    'border-color: rgb(125, 125, 125);' + \
+    'border: 1px solid rgb(0,0,0);' + \
+    'background-color: rgb(130, 7, 7);' + \
+    '}' + \
+    'QCheckBox::indicator:unchecked {background-color: rgb(130, 7, 7);}' + \
+    'QCheckBox::indicator:checked {background-color: rgb(11, 145, 1);}'
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
