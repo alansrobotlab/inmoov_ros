@@ -66,6 +66,10 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.joint = Servo()  # which joint is currently selected
         self.jointName = 'none'       # name of the joint currently selected
 
+        self.positions = {}  # we're going to collect positions from motorstatus
+                             # so we can initialize the goal and goal slider
+                             # to the last command value
+
         self.values = {}
 
         self.saved = True
@@ -127,7 +131,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.chkEnabled.stateChanged.connect(lambda: self.valueChanged(self.chkEnabled, PROTOCOL.ENABLE))
         self.chkCalibrated.stateChanged.connect(lambda: self.valueChanged(self.chkCalibrated, PROTOCOL.CALIBRATED))
         
-        self.sliderGoal.valueChanged.connect(lambda: self.valueChanged(self.sliderGoal, PROTOCOL.GOALPOSITION))
+        self.sliderGoal.valueChanged.connect(lambda: self.valueChanged(self.sliderGoal, PROTOCOL.GOAL))
 
     def disconnectUI(self):
         self.cmbServo.currentIndexChanged.disconnect()
@@ -322,6 +326,19 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.sliderGoal.blockSignals(True)
                 self.sliderGoal.setValue(float(self.values[PROTOCOL.GOAL])*1000.0)
                 self.sliderGoal.blockSignals(False)
+
+            # now set up the slider
+            minval = float(self.values[PROTOCOL.MINGOAL])
+            maxval = float(self.values[PROTOCOL.MAXGOAL])
+            goal   = float(self.values[PROTOCOL.GOAL])
+        
+            if minval < maxval :
+                self.sliderGoal.setMinimum(int(minval * 1000.0))
+                self.sliderGoal.setMaximum(int(maxval * 1000.0))
+            else:
+                self.sliderGoal.setMinimum(int(maxval * 1000.0))
+                self.sliderGoal.setMaximum(int(minval * 1000.0))
+
             return
 
         if field.metaObject().className() == 'QCheckBox':
@@ -340,6 +357,9 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             return
 
     def motorstatus(self, data):
+
+        self.positions[data.joint] = float(data.goal)
+
         if data.joint == self.cmbServo.currentText():
             self.txtSensorRaw.setText(str(int(data.posraw)))
             self.txtPosition.setText(str(round(data.position,3)))
