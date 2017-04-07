@@ -132,32 +132,6 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
         self.bus[s.bus].publish(motorcommand)
 
-    def checkChanged2(self, chk):
-
-        #self.statusSubscriber.unregister()
-
-        #chk = self.checkboxes[name]
-
-        s = self.servos[name]
-
-        motorcommand = MotorCommand()
-        motorcommand.id = int(s.servo)
-        motorcommand.parameter = PROTOCOL.ENABLE
-        if chk.isChecked():
-            motorcommand.value = True
-        else:
-            motorcommand.value = False
-        #motorcommand.value = float(chk.isChecked())
-
-        print 'checkChanged:  ' + name
-
-        self.bus[s.bus].publish(motorcommand)
-
-        #rospy.sleep(0.5)
-        #self.statusSubscriber = rospy.Subscriber("motor_status", MotorStatus, self.statusListener)
-
-        print 'YATZEE!!!!'
-
     def setEnableAll(self):
 
         #self.statusSubscriber.unregister()

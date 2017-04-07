@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>263</width>
-    <height>635</height>
+    <height>689</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -563,6 +563,19 @@
     </property>
     <property name="text">
      <string>Enabled</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnWriteConfiguration">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>630</y>
+      <width>221</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save Configuration</string>
     </property>
    </widget>
   </widget>

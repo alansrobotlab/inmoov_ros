@@ -5,7 +5,10 @@ import os
 import rospy
 import rospkg
 
+import yaml
+
 from PyQt5 import QtWidgets, QtCore, uic
+from PyQt5.QtWidgets import QPushButton, QMessageBox
 
 from threading import Thread
 
@@ -40,6 +43,9 @@ sys.path.append(os.path.join(dirname(dirname(dirname(abspath(__file__)))),'inclu
 from constants import PROTOCOL
 from servos import Servo
 
+from export_yaml import export_yaml
+from load_config_from_param import load_config_from_param
+
 # https://nikolak.com/pyqt-qt-designer-getting-started/
 class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -51,15 +57,18 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)  # This is defined in design.py file automatically
         # It sets up layout and widgets that are defined
 
-        self.servos = {}
-        self.load_config_from_param()
+        self.servos = load_config_from_param()
+        #self.load_config_from_param()
 
         self.servicebus = {}
         self.commandbus = {}
 
         self.joint = Servo()  # which joint is currently selected
+        self.jointName = 'none'       # name of the joint currently selected
 
         self.values = {}
+
+        self.saved = True
 
         # iterate through servo collection
         for j,b in rospy.get_param('/joints').items():
@@ -97,17 +106,21 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.connectUI()
         self.servoChanged()
+
+        self.btnWriteConfiguration.clicked.connect(self.writeConfiguration)
         
         print("INIT COMPLETE")
 
     def connectUI(self):
         self.cmbServo.currentIndexChanged.connect(self.servoChanged)
 
-        self.txtGoal.editingFinished.connect(lambda: self.valueChanged(self.txtGoal, PROTOCOL.GOALPOSITION))
+        self.txtGoal.editingFinished.connect(lambda: self.valueChanged(self.txtGoal, PROTOCOL.GOAL))
+        self.txtServoPin.editingFinished.connect(lambda: self.valueChanged(self.txtServoPin, PROTOCOL.SERVOPIN))
+        self.txtSensorPin.editingFinished.connect(lambda: self.valueChanged(self.txtSensorPin, PROTOCOL.SENSORPIN))
         self.txtMinPulse.editingFinished.connect(lambda: self.valueChanged(self.txtMinPulse, PROTOCOL.MINPULSE))
         self.txtMaxPulse.editingFinished.connect(lambda: self.valueChanged(self.txtMaxPulse, PROTOCOL.MAXPULSE))
-        self.txtMinGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMinGoal, PROTOCOL.MINANGLE))
-        self.txtMaxGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMaxGoal, PROTOCOL.MAXANGLE))
+        self.txtMinGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMinGoal, PROTOCOL.MINGOAL))
+        self.txtMaxGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMaxGoal, PROTOCOL.MAXGOAL))
         self.txtMaxSpeed.editingFinished.connect(lambda: self.valueChanged(self.txtMaxSpeed, PROTOCOL.MAXSPEED))
         self.txtMinSensor.editingFinished.connect(lambda: self.valueChanged(self.txtMinSensor, PROTOCOL.MINSENSOR))
         self.txtMaxSensor.editingFinished.connect(lambda: self.valueChanged(self.txtMaxSensor, PROTOCOL.MAXSENSOR))
@@ -120,6 +133,8 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cmbServo.currentIndexChanged.disconnect()
 
         self.txtGoal.editingFinished.disconnect()
+        self.txtServoPin.editingFinished.disconnect()
+        self.txtSensorPin.editingFinished.disconnect()
         self.txtMinPulse.editingFinished.disconnect()
         self.txtMaxPulse.editingFinished.disconnect()
         self.txtMinGoal.editingFinished.disconnect()
@@ -132,6 +147,9 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         
         self.sliderGoal.valueChanged.disconnect()
 
+    def writeConfiguration(self):
+        self.saved = True
+        export_yaml('config.yaml')
 
     def servoChanged(self):
     
@@ -140,41 +158,52 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.disconnectUI()
 
         self.joint = self.servos[self.cmbServo.currentText()]
+        self.jointName = self.cmbServo.currentText()
 
-        val = str(round(self.getParameter(PROTOCOL.GOALPOSITION ),3))
+        val = str(round(self.getParameter(PROTOCOL.GOAL ),3))
         self.txtGoal.setText(val)
+        self.values[PROTOCOL.GOAL] = val
 
         val = str(int(self.getParameter(PROTOCOL.SERVOPIN )))
         self.txtServoPin.setText(val)
+        self.values[PROTOCOL.SERVOPIN] = val
 
         val = str(int(self.getParameter(PROTOCOL.SENSORPIN )))
         self.txtSensorPin.setText(val)
+        self.values[PROTOCOL.SENSORPIN] = val
 
         val = str(int(self.getParameter(PROTOCOL.MINPULSE )))
         self.txtMinPulse.setText(val)
+        self.values[PROTOCOL.MINPULSE] = val
 
         val = str(int(self.getParameter(PROTOCOL.MAXPULSE )))
         self.txtMaxPulse.setText(val)
+        self.values[PROTOCOL.MAXPULSE] = val
 
-        val = str(round(self.getParameter(PROTOCOL.MINANGLE ),3))
+        val = str(round(self.getParameter(PROTOCOL.MINGOAL ),3))
         self.txtMinGoal.setText(val)
+        self.values[PROTOCOL.MINGOAL] = val
 
-        val = str(round(self.getParameter(PROTOCOL.MAXANGLE ),3))
+        val = str(round(self.getParameter(PROTOCOL.MAXGOAL ),3))
         self.txtMaxGoal.setText(val)
+        self.values[PROTOCOL.MAXGOAL] = val
 
         val = str(round(self.getParameter(PROTOCOL.MAXSPEED ),3))
         self.txtMaxSpeed.setText(val)
+        self.values[PROTOCOL.MAXSPEED] = val
 
         val = str(int(self.getParameter(PROTOCOL.MINSENSOR )))
         self.txtMinSensor.setText(val)
+        self.values[PROTOCOL.MINSENSOR] = val
 
         val = str(int(self.getParameter(PROTOCOL.MAXSENSOR )))
         self.txtMaxSensor.setText(val)
+        self.values[PROTOCOL.MAXSENSOR] = val
 
         # now set up the slider
-        minval = self.values[PROTOCOL.MINANGLE]
-        maxval = self.values[PROTOCOL.MAXANGLE]
-        goal   = self.values[PROTOCOL.GOALPOSITION]
+        minval = float(self.values[PROTOCOL.MINGOAL])
+        maxval = float(self.values[PROTOCOL.MAXGOAL])
+        goal   = float(self.values[PROTOCOL.GOAL])
         
         if minval < maxval :
             self.sliderGoal.setMinimum(int(minval * 1000.0))
@@ -194,33 +223,94 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         j = self.joint
 
         try:
-            val = self.servicebus[j.bus](j.servo, parameter).data
-            self.values[parameter] = val
-            print val
+            key = '/joints/' + self.jointName + '/'
+
+            if   parameter == PROTOCOL.SERVOPIN:
+                val = rospy.get_param(key + 'servoPin')
+            elif parameter == PROTOCOL.SENSORPIN:
+                val = rospy.get_param(key + 'sensorPin')
+            elif parameter == PROTOCOL.MINGOAL:
+                val = rospy.get_param(key + 'minGoal')
+            elif parameter == PROTOCOL.MAXGOAL:
+                val = rospy.get_param(key + 'maxGoal')
+            elif parameter == PROTOCOL.REST:
+                val = rospy.get_param(key + 'rest')
+            elif parameter == PROTOCOL.MINPULSE:
+                val = rospy.get_param(key + 'minPulse')
+            elif parameter == PROTOCOL.MAXPULSE:
+                val = rospy.get_param(key + 'maxPulse')
+            elif parameter == PROTOCOL.MINSENSOR:
+                val = rospy.get_param(key + 'minSensor')
+            elif parameter == PROTOCOL.MAXSENSOR:
+                val = rospy.get_param(key + 'maxSensor')
+            elif parameter == PROTOCOL.MAXSPEED:
+                val = rospy.get_param(key + 'maxSpeed')
+            elif parameter == PROTOCOL.SMOOTH:
+                val = rospy.get_param(key + 'smooth')
             return val
         except:
-            return 0.0
+            return -1.0
 
     def setParameter(self, parameter, value):
 
-        j = self.joint
+        #try:
 
-        # send to arduino directly
-        try:
+            s = self.joint
+
+            # send to arduino directly
             motorcommand = MotorCommand()
-            motorcommand.id = int(j.servo)
+            motorcommand.id = int(s.servo)
             motorcommand.parameter = parameter
             motorcommand.value = value
 
-            self.commandbus[j.bus].publish(motorcommand)
-        except:
+            self.commandbus[s.bus].publish(motorcommand)
+
+            # send to joint_command
+            self.jointcommand.name = []
+            self.jointcommand.position = []
+
+            self.jointcommand.header = Header()
+            self.jointcommand.header.stamp = rospy.Time.now()
+            self.jointcommand.name.append(self.jointName)
+            self.jointcommand.position.append(value)
+            self.jointcommand.velocity = []
+            self.jointcommand.effort= []
+            self.jointPublisher.publish(self.jointcommand)
+
+            # update param server and servo{}
+            partial = '/joints/' + self.jointName + '/'
+
+            if   parameter == PROTOCOL.SERVOPIN:
+                s.servoPin = value
+                rospy.set_param(partial + 'servoPin', value)
+                print str(value)
+                print str(s.servoPin)
+                print rospy.get_param(partial + 'servoPin')
+            elif parameter == PROTOCOL.SENSORPIN:
+                s.sensorPin = value
+                rospy.set_param(partial + 'sensorPin', value)
+            elif parameter == PROTOCOL.MINGOAL:
+                rospy.set_param(partial + 'minGoal', value)
+            elif parameter == PROTOCOL.MAXGOAL:
+                rospy.set_param(partial + 'maxGoal', value)
+            elif parameter == PROTOCOL.REST:
+                rospy.set_param(partial + 'rest', s.rest)
+            elif parameter == PROTOCOL.MINPULSE:
+                rospy.set_param(partial + 'minPulse', value)
+            elif parameter == PROTOCOL.MAXPULSE:
+                rospy.set_param(partial + 'maxPulse', value)
+            elif parameter == PROTOCOL.MINSENSOR:
+                rospy.set_param(partial + 'minSensor', value)
+            elif parameter == PROTOCOL.MAXSENSOR:
+                rospy.set_param(partial + 'maxSensor', value)
+            elif parameter == PROTOCOL.MAXSPEED:
+                rospy.set_param(partial + 'maxSpeed', value)
+            elif parameter == PROTOCOL.SMOOTH:
+                rospy.set_param(partial + 'smooth', value)
+
+            self.saved = False
+        #except:
             rospy.logwarn('trainer:  bad parameter or something.')
-
-        # send to parameter server
-
-        # record to config.yaml?
-
-        # update config.xacro?
 
     def valueChanged(self, field, parameter):
         if field.metaObject().className() == 'QLineEdit':
@@ -229,7 +319,9 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.setParameter(parameter, float(field.text()))
                 self.values[parameter] = field.text()
             if field.objectName() == 'txtGoal':
-                self.sliderGoal.setValue(float(self.values[PROTOCOL.GOALPOSITION])*1000.0)
+                self.sliderGoal.blockSignals(True)
+                self.sliderGoal.setValue(float(self.values[PROTOCOL.GOAL])*1000.0)
+                self.sliderGoal.blockSignals(False)
             return
 
         if field.metaObject().className() == 'QCheckBox':
@@ -242,7 +334,9 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             val = float(field.value())/1000.0
             self.setParameter(parameter, val)
             self.values[parameter] = str(round(val,3))
+            self.txtGoal.blockSignals(True)
             self.txtGoal.setText(str(round(val,3)))
+            self.txtGoal.blockSignals(False)
             return
 
     def motorstatus(self, data):
@@ -252,7 +346,9 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.txtSpeed.setText(str(data.presentspeed))
 
             # these don't work yet
+            self.chkEnabled.blockSignals(True)
             self.chkEnabled.setChecked(data.enabled)
+            self.chkEnabled.blockSignals(False)
             self.chkMoving.setChecked(data.moving)
             self.chkPower.setChecked(data.power)
 
@@ -309,6 +405,18 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.servos[name] = s
 
+    def closeEvent(self, event):
+        if not self.saved:
+            event.ignore()
+            buttonReply = QMessageBox.question(self, 'Warning', "You have unsaved parameter Changes!", QMessageBox.Ok, QMessageBox.Ok)
+            return
+        else:
+            self.running = False
+            self.enabled = False
+            self.random = False
+            #self.emit_export_yaml()
+            print "GOODBYE!"
+
 def clamp(n,minn,maxn):
     return max(min(maxn, n), minn)
 
@@ -319,6 +427,7 @@ def main():
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     form = TrainerApp()  # We set the form to be our ExampleApp (design)
     form.show()  # Show the form
+    #app.aboutToQuit.connect(form.emit_export_yaml) # myExitHandler is a callable
     app.exec_()  # and execute the app
    
 if __name__ == '__main__':  # if we're running file directly and not importing it

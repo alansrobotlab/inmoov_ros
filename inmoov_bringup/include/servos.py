@@ -6,23 +6,19 @@ class Servo:
     name = ""
     bus = -1
     servo = -1
-    flip = False
 
     goal = -1.0
 
-    servopin = -1
-    sensorpin = -1
-    minpulse = -1.0
-    maxpulse = -1.0
-    minangle = -1.0
-    maxangle = -1.0
-    minangle = -1.0
-    maxangle = -1.0
-    minsensor = -1.0
-    maxsensor = -1.0
+    servoPin = -1
+
+    minPulse = -1.0
+    maxPulse = -1.0
+    minGoal = -1.0
+    maxGoal = -1.0
+    rest = -1.0
     smoothing = -1
-    maxspeed = -1.0
+    maxSpeed = -1.0
 
-    
-     
-
+    sensorPin = -1
+    minSensor = -1.0
+    maxSensor = -1.0

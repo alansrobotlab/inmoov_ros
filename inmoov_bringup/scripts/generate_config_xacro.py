@@ -19,7 +19,7 @@ servos = {}
 
 def exporter():
 
-    rospy.init_node("generate_export_yaml", log_level=rospy.INFO)
+    rospy.init_node("generate_config_xacro", log_level=rospy.INFO)
 
     load_config_from_param()
 
@@ -27,7 +27,7 @@ def exporter():
 
     update_config_from_eeprom()
 
-    emit_export_yaml()
+    emit_config_xacro()
 
     print "DONE!"
 
@@ -96,40 +96,38 @@ def update_config_from_eeprom():
 
     print "DONE"
 
-def emit_export_yaml():
+def emit_config_xacro():
 
     # this is the fastest way to do it, but doesn't preserve the original yaml format
     # wouldn't be hard to rewrite the function to bigbang the yaml file
     # in the exact format of config.yaml
 
-    infile = os.path.join(dirname(dirname(abspath(__file__))),'config','config.yaml')
-    outfile = os.path.join(dirname(dirname(abspath(__file__))),'config','export.yaml')
-    print infile
+    #infile = os.path.join(dirname(dirname(abspath(__file__))),'config','config.yaml')
+    outfile = os.path.join(dirname(dirname(abspath(__file__))),'config','config.xacro')
+    #print infile
     print outfile
 
-    y = yaml.load(open(infile, 'r'))
+    #y = yaml.load(open(infile, 'r'))
 
-    for name in servos:
-        s = servos[name]
-        print "updating yaml for:  " +  name
+    with open(outfile, 'w') as xacro:
+        xacro.write('<?xml version="1.0"?>' + '\n')
+        xacro.write('\n')
+        xacro.write('<robot xmlns:xacro="http://ros.org/wiki/xacro">' + '\n')
+        xacro.write('\n')
 
-        y['joints'][name]['bus'        ] = int(s.bus)
-        y['joints'][name]['servo'      ] = int(s.servo)
-        y['joints'][name]['flip'       ] = bool(s.flip)
-        y['joints'][name]['servopin'   ] = int(s.servopin)
-        y['joints'][name]['sensorpin'  ] = int(s.sensorpin)
-        y['joints'][name]['minpulse'   ] = int(s.minpulse)
-        y['joints'][name]['maxpulse'   ] = int(s.maxpulse)
-        y['joints'][name]['minangle'   ] = s.minangle
-        y['joints'][name]['maxangle'   ] = s.maxangle
-        y['joints'][name]['minsensor'  ] = int(s.minsensor)
-        y['joints'][name]['maxsensor'  ] = int(s.maxsensor)
-        y['joints'][name]['smoothing'  ] = int(s.smoothing)
-        y['joints'][name]['maxspeed'   ] = s.maxspeed
+        for name in servos:
+            s = servos[name]
+            print "updating yaml for:  " +  name
+            
+            xacro.write('<xacro:property name="' + name + '_lower"    value="${pi*' + str(round(s.minangle,3)) +'/180.0}" /> \n')
+            xacro.write('<xacro:property name="' + name + '_upper"    value="${pi*' + str(round(s.maxangle,3)) +'/180.0}" /> \n')
+            xacro.write('<xacro:property name="' + name + '_velocity" value="${pi*' + str(round(s.maxspeed,3)) +'/180.0}" /> \n')
 
-    with open(outfile, 'w') as yaml_file:
-        yaml_file.write( yaml.dump(y, default_flow_style=False))
+            xacro.write('\n')
 
+        xacro.write('</robot>')
+
+        xacro.close()
 
     print "DONE"
 
