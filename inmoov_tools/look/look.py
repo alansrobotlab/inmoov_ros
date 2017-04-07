@@ -46,14 +46,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         self.setupUi(self)  # This is defined in design.py file automatically
         # It sets up layout and widgets that are defined
 
-        # set up command Thread
-        self.commandthread = Thread(target = self.commandBuffer)
-        self.randomthread = Thread(target=self.randomDriver)
-        #self.threadstarted = False
-        #self.commandthread.start()
-
-        #flag to stop threads during exit
-        #self.running = False
+        self.running = True
         self.enabled = False
         self.random = False
 
@@ -67,42 +60,17 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         self.previouspoint = Point()
         self.commandpoint =  Point()
 
-        self.parameterTopic = ["servobus/torso/motorparameter","servobus/leftarm/motorparameter","servobus/rightarm/motorparameter"]
-
-        self.motorcommand = MotorCommand()
         self.jointcommand = JointState()
         
-        self.jointNames = []
-        
-        for servo in range (0, 12):
-            self.jointNames.append( rospy.get_param('servobus/torso/servomap/'+str(servo)+'/name'))
+        self.joints ={}
 
-        for servo in range (0, 12):
-            self.jointNames.append( rospy.get_param('servobus/leftarm/servomap/'+str(servo)+'/name'))
-            
-        for servo in range (0, 12):
-            self.jointNames.append( rospy.get_param('servobus/rightarm/servomap/'+str(servo)+'/name'))
+        self.randomrate = 0.01
+        self.minrandomduration = 3.0
+        self.maxrandomduration = 5.0
 
-        print(self.jointNames)
-
-
-        rospy.init_node('look', anonymous=True)
+        rospy.init_node('look', anonymous=False)
 
         print("INITIALIZED")
-
-        self.commandPublisher = []
-        self.commandPublisher.append(rospy.Publisher("servobus/torso/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/leftarm/motorcommand", MotorCommand, queue_size=10))
-        self.commandPublisher.append(rospy.Publisher("servobus/rightarm/motorcommand", MotorCommand, queue_size=10))
-
-        print("COMMANDS COMPLETE")
-
-        #self.statusSubscriber = []
-        #self.statusSubscriber.append(rospy.Subscriber("servobus/torso/motorstatus", MotorStatus, self.callback0))
-        #self.statusSubscriber.append(rospy.Subscriber("servobus/leftarm/motorstatus", MotorStatus, self.callback1))
-        #self.statusSubscriber.append(rospy.Subscriber("servobus/rightarm/motorstatus", MotorStatus, self.callback2))
-        
-        print("SUBSCRIBER COMPLETE")
 
         self.jointPublisher = rospy.Publisher("joint_command", JointState, queue_size=10)
         
@@ -110,8 +78,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
         self.bus = 0
         self.servo = 0
-        self.motorparameter = rospy.ServiceProxy(self.parameterTopic[self.bus], MotorParameter)
-        
+
         self.chkEnable.stateChanged.connect(self.setEnableAll)
         self.chkRandom.stateChanged.connect(self.setRandom)
         self.sliderOut.valueChanged.connect(self.setOut)
@@ -123,62 +90,83 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
                     0,0,0,0,0,0,0,0,0,0,0,0,
                     0,0,0,0,0,0,0,0,0,0,0,0
                     ]
-        for servo in range (0,11):
-            self.pose[12 + servo] = CENTERARM[servo]
-            self.pose[24 + servo] = CENTERARM[servo]
+
+        #have default position for when enabled           
+        #for servo in range (0,11):
+        #    self.pose[12 + servo] = CENTERARM[servo]
+        #    self.pose[24 + servo] = CENTERARM[servo]
+
+        # set up command Thread
+        self.commandthread = Thread(target = self.commandBuffer)
+        self.commandthread.start()
+
+        self.randomthread = Thread(target=self.randomDriver)
+        self.randomthread.start()
 
         print("INIT COMPLETE")  
 
     def commandBuffer(self):
-        while self.enabled == True:
-            #self.setgoal(0,3,90)
-            #print("triggered!")
-            #self.label_15.setText("TRIGGERED!")
 
-            if self.random == True:
+        while self.running:
+         
+            while self.enabled:
 
-                #normalize from 0 to 2
-                oldpoint = Point()
-                destinationpoint = Point()
-                oldpoint.x = self.previouspoint.x
-                oldpoint.y = self.previouspoint.y
-                destinationpoint.x = self.commandpoint.x
-                destinationpoint.y = self.commandpoint.y
+                if self.random == True:
+
+                    #normalize from 0 to 2
+                    oldpoint = Point()
+                    destinationpoint = Point()
+                    oldpoint.x = self.previouspoint.x
+                    oldpoint.y = self.previouspoint.y
+                    destinationpoint.x = self.commandpoint.x
+                    destinationpoint.y = self.commandpoint.y
 
 
-                deltax = destinationpoint.x - oldpoint.x
-                deltay = destinationpoint.y - oldpoint.y
+                    deltax = destinationpoint.x - oldpoint.x
+                    deltay = destinationpoint.y - oldpoint.y
+                    
+                    deltax = clamp(deltax,-self.randomrate, self.randomrate)
+                    deltay = clamp(deltay,-self.randomrate, self.randomrate)
+
+                    self.x = self.previouspoint.x + deltax
+                    self.y = self.previouspoint.y + deltay
+
+                    self.calcValues()
+
+                    self.previouspoint.x = self.x
+                    self.previouspoint.y = self.y
                 
-                deltax = clamp(deltax,-0.0015, 0.0015)
-                deltay = clamp(deltay,-0.0015, 0.0015)
 
-                self.x = self.previouspoint.x + deltax
-                self.y = self.previouspoint.y + deltay
+                if len(self.joints) > 0:
+                    #clear JointCommand for previous set of positions
+                    self.jointcommand.name = []
+                    self.jointcommand.position = []
 
-                self.calcValues()
+                    self.jointcommand.header = Header()
+                    self.jointcommand.header.stamp = rospy.Time.now()
+                    for name, val in self.joints.items():
+                        self.jointcommand.name.append(name)
+                        self.jointcommand.position.append(val)
+                    self.jointcommand.velocity = []
+                    self.jointcommand.effort= []
+                    self.jointPublisher.publish(self.jointcommand)
 
-                self.previouspoint.x = self.x
-                self.previouspoint.y = self.y
+                    #clear joints cache for next round.  (thread safe?)
+                    self.joints.clear()
 
-            for bus in range (0,3):
-                for servo in range (0,12):
-                    self.setGoal(bus,servo,self.pose[(bus * 12) + servo])
-            #print(self.pose)
-            
+                sleep(1.0/HZ)
             sleep(1.0/HZ)
 
     def randomDriver(self):
-        while self.random == True:
-            self.commandpoint.x = random.uniform(-1.0, 1.0)
-            self.commandpoint.y = random.uniform(-0.75, 0.75)
-            print self.commandpoint
-            sleep(random.uniform(3.0, 5.0))
+        while self.running:
+
+            while self.random == True:
+                self.commandpoint.x = random.uniform(-1.0, 1.0)
+                self.commandpoint.y = random.uniform(-0.75, 0.75)
+                sleep(random.uniform(self.minrandomduration, self.maxrandomduration))
+            sleep(1.0/HZ)
 
     def mouseMoveEvent(self,event):
-        #print("Mouse Cursor Coordinates(x/y):  " + str(event.x()) + "/" + str(event.y()))
-
-        #print( str(self.frameGeometry().width()) + " " + str(self.frameGeometry().height()))
-
         # grab mouse coord, convert to [-1,1] and clamp
         x = (((float(event.x())/float(self.frame.frameGeometry().width())) * 2) - 1.0)
         x = clamp(x,-1.0,1.0)
@@ -212,76 +200,83 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
         if self.radioLookAround.isChecked():
 
-            self.pose[0] = clamp(EYERIGHT * x * 2, -EYERIGHT, EYERIGHT)
-            self.pose[1] = clamp(EYEUP * y * 2, -EYEUP, EYEUP)
-            self.pose[4] = HEADUP * y
-            self.pose[3] = HEADRIGHT * x
-            self.pose[5] = HEADTILT * y * x
+            self.joints['eyes_pan_joint'] = clamp(EYERIGHT * x * 2, -EYERIGHT, EYERIGHT)
 
-            self.pose[7] = WAISTRIGHT * x
+            self.joints['eyes_tilt_joint'] = clamp(EYEUP * y * 2, -EYEUP, EYEUP)
 
-            #if self.chkFlip.isChecked():
-            #    waisttilt = -WAISTTILT * y * x
-            #else:
-            #    waisttilt = WAISTTILT * y * x
+            self.joints['head_tilt_joint'] = HEADUP * y
 
-            self.pose[6] = clamp(WAISTTILT * (x * y * 2), -WAISTTILT,WAISTTILT)
+            self.joints['head_pan_joint'] = HEADRIGHT * x
 
-            #now for the arms...
-            for servo in range (0, 12):
+            self.joints['head_roll_joint'] = HEADTILT * y * x
+
+            self.joints['waist_pan_joint'] = WAISTRIGHT * x
+
+            self.joints['waist_roll_joint'] = clamp(WAISTTILT * (x * y * 2), -WAISTTILT,WAISTTILT)
+
+            for name,angle in CENTERARM.items():
                 if ( x >= 0 and y < 0):
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x* y) ) )
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
+                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
                 if ( x >= 0 and y>= 0):
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
+                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
                 if ( x < 0 and y >= 0):
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x* y) ) )
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
+                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x* y)))
+                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
                 if ( x < 0 and y < 0):
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
+                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+
+            #currently there's no guarantee that the joint key is still there when these are updated
+            #self.label_8.setText( "{:10.2f}".format(self.joints['eyes_pan_joint']))
+            #self.label_9.setText( "{:10.2f}".format(self.joints['eyes_tilt_joint']))
+            #self.label_10.setText("{:10.2f}".format(self.joints['head_pan_joint']))
+            #self.label_11.setText("{:10.2f}".format(self.joints['head_tilt_joint']))
+            #self.label_12.setText("{:10.2f}".format(self.joints['head_roll_joint']))
+            #self.label_13.setText("{:10.2f}".format(self.joints['waist_pan_joint']))
+            #self.label_14.setText("{:10.2f}".format(self.joints['waist_roll_joint']))
+            #self.label_15.setText("{:10.2f}".format(ARMOUT * y))
 
         if self.radioLookOut.isChecked():
 
-            self.pose[0] = clamp(EYERIGHT * x * 2, -EYERIGHT, EYERIGHT)
-            self.pose[1] = clamp(EYEUP * y * 2, -EYEUP, EYEUP)
-            self.pose[4] = HEADUP * y
-            self.pose[3] = HEADRIGHT * x
-            self.pose[5] = HEADTILT * y * x
+            self.joints['eyes_pan_joint'] = clamp(EYERIGHT * x * 2, -EYERIGHT, EYERIGHT)
 
-            self.pose[7] = WAISTRIGHT * x
+            self.joints['eyes_tilt_joint'] = clamp(EYEUP * y * 2, -EYEUP, EYEUP)
 
-            #if self.chkFlip.isChecked():
-            #    waisttilt = -WAISTTILT * y * x
-            #else:
-            #    waisttilt = WAISTTILT * y * x
+            self.joints['head_tilt_joint'] = HEADUP * y
 
-            self.pose[6] = clamp(-WAISTTILT * (x * y * 2), -WAISTTILT,WAISTTILT)
-           
-            #now for the arms...
-            for servo in range (0, 12):
-                if ( x < 0 and y < 0):
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x* y) ) )
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
-                if ( x < 0 and y>= 0):
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
-                if ( x >= 0 and y >= 0):
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x* y) ) )
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
+            self.joints['head_pan_joint'] = HEADRIGHT * x
+
+            self.joints['head_roll_joint'] = HEADTILT * y * x
+
+            self.joints['waist_pan_joint'] = WAISTRIGHT * x
+
+            self.joints['waist_roll_joint'] = clamp(-WAISTTILT * (x * y * 2), -WAISTTILT,WAISTTILT)
+
+            for name,angle in CENTERARM.items():
                 if ( x >= 0 and y < 0):
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((OUTSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((INSIDEARM[servo] - CENTERARM[servo]) * abs(x * y) ))
+                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                if ( x >= 0 and y>= 0):
+                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                if ( x < 0 and y >= 0):
+                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x* y)))
+                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                if ( x < 0 and y < 0):
+                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
 
-        self.label_8.setText("{:10.2f}".format(self.pose[0]))
-        self.label_9.setText("{:10.2f}".format(self.pose[1]))
-        self.label_10.setText("{:10.2f}".format(self.pose[3]))
-        self.label_11.setText("{:10.2f}".format(self.pose[4]))
-        self.label_12.setText("{:10.2f}".format(self.pose[5]))
-        self.label_13.setText("{:10.2f}".format(self.pose[7]))
-        self.label_14.setText("{:10.2f}".format(self.pose[6]))
-        #self.label_15.setText("{:10.2f}".format(ARMOUT * y))
+            #currently there's no guarantee that the joint key is still there when these are updated
+            #self.label_8.setText( "{:10.2f}".format(self.joints['eyes_pan_joint']))
+            #self.label_9.setText( "{:10.2f}".format(self.joints['eyes_tilt_joint']))
+            #self.label_10.setText("{:10.2f}".format(self.joints['head_pan_joint']))
+            #self.label_11.setText("{:10.2f}".format(self.joints['head_tilt_joint']))
+            #self.label_12.setText("{:10.2f}".format(self.joints['head_roll_joint']))
+            #self.label_13.setText("{:10.2f}".format(self.joints['waist_pan_joint']))
+            #self.label_14.setText("{:10.2f}".format(self.joints['waist_roll_joint']))
+            #self.label_15.setText("{:10.2f}".format(ARMOUT * y))
 
         if self.radioPunch.isChecked():
 
@@ -333,23 +328,34 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
         if self.radioArmOut.isChecked():
             #now for the arms...
-            for servo in range (0, 12):
-                if x < 0:
-                    self.pose[12 + servo] = ( CENTERARM[servo] )
-                    self.pose[24 + servo] = (CENTERARM[servo] + ((ARMOUT[servo] - CENTERARM[servo]) * abs(x) ))
 
-                if x >= 0:
-                    self.pose[24 + servo] = ( CENTERARM[servo] )
-                    self.pose[12 + servo] = (CENTERARM[servo] + ((ARMOUT[servo] - CENTERARM[servo]) * abs(x) ))
+            for name,angle in CENTERARM.items():
+                if ( x >= 0):
+                    self.joints['l_' + name] = (angle + (( ARMOUT[name] - angle) * abs(x)))
+                    self.joints['r_' + name] = (angle)
+                if ( x < 0):
+                    self.joints['l_' + name] = (angle)
+                    self.joints['r_' + name] = (angle + (( ARMOUT[name] - angle) * abs(x)))
+               
+
+            #for servo in range (0, 12):
+            #    if x < 0:
+            #        self.pose[12 + servo] = ( CENTERARM[servo] )
+            #        self.pose[24 + servo] = (CENTERARM[servo] + ((ARMOUT[servo] - CENTERARM[servo]) * abs(x) ))
+
+            #    if x >= 0:
+            #        self.pose[24 + servo] = ( CENTERARM[servo] )
+            #        self.pose[12 + servo] = (CENTERARM[servo] + ((ARMOUT[servo] - CENTERARM[servo]) * abs(x) ))
         
 
-            self.label_8.setText("{:10.2f}".format(self.pose[0]))
-            self.label_9.setText("{:10.2f}".format(self.pose[1])) 
-            self.label_10.setText("{:10.2f}".format(self.pose[3]))
-            self.label_11.setText("{:10.2f}".format(self.pose[4]))
-            self.label_12.setText("{:10.2f}".format(self.pose[5]))
-            self.label_13.setText("{:10.2f}".format(self.pose[7]))
-            self.label_14.setText("{:10.2f}".format(self.pose[6]))
+            #currently there's no guarantee that the joint key is still there when these are updated
+            #self.label_8.setText( "{:10.2f}".format(self.joints['eyes_pan_joint']))
+            #self.label_9.setText( "{:10.2f}".format(self.joints['eyes_tilt_joint']))
+            #self.label_10.setText("{:10.2f}".format(self.joints['head_pan_joint']))
+            #self.label_11.setText("{:10.2f}".format(self.joints['head_tilt_joint']))
+            #self.label_12.setText("{:10.2f}".format(self.joints['head_roll_joint']))
+            #self.label_13.setText("{:10.2f}".format(self.joints['waist_pan_joint']))
+            #self.label_14.setText("{:10.2f}".format(self.joints['waist_roll_joint']))
             #self.label_15.setText("{:10.2f}".format(ARMOUT * y))
 
     def setOut(self, event):
@@ -389,32 +395,11 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         self.setGoal()
 
     def setRandom(self):
-
         self.random = self.chkRandom.isChecked()
 
-        if self.random == True:
-            self.randomthread.start()
-
     def setEnableAll(self):
-        for servo in range (0, 12):
-            for bus in range (0, 3):
-                self.motorcommand.id = servo
-                self.motorcommand.parameter = 0x18
-                self.motorcommand.value = float(self.chkEnable.isChecked())
-                self.commandPublisher[bus].publish(self.motorcommand)
-            sleep(0.01)
-
-
         self.enabled = self.chkEnable.isChecked()
 
-        if self.enabled == True:
-            self.commandthread.start()
-
-
-        #if self.chkEnable.isChecked() == True:
-        #    self.running = True
-        #else:
-        #    self.running = False
 
     def setParameter(self, bus, servo, parameter, value):
         rospy.wait_for_service('motorparameter')
@@ -483,6 +468,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         self.chkEnabled.setChecked(bool(self.motorparameter(self.cmbServo.currentIndex(), 0x18).data))
 
     def closeEvent(self, event):
+        self.running = False
         self.enabled = False
         self.random = False
         print "GOODBYE!"
@@ -505,7 +491,21 @@ WAISTRIGHT  =  30
 WAISTTILT   =  15  
 ARMOUT      =  15
 
-CENTERARM = [
+
+CENTERARM = {
+    'pinky_joint':            60,    #pinky
+    'ring_joint':             60,    #ring
+    'middle_joint':           80,    #middle
+    'index_joint':            60,    #index
+    'thumb_joint':            45,    #thumb
+    'wrist_roll_joint':       45,    #hand
+    'elbow_flex_joint':       40,    #bicep
+    'upper_arm_roll_joint':  -20,    #bicep_rotate
+    'shoulder_out_joint':      5,    #shoulder_side
+    'shoulder_lift_joint':   -20,    #shoulder_up
+}
+
+CENTERARM_OLD = [
              60,    #pinky
              60,    #ring
              80,    #middle
@@ -520,7 +520,20 @@ CENTERARM = [
              00     #arm-nc-11
 ]
 
-OUTSIDEARM = [
+OUTSIDEARM = {
+    'pinky_joint':            24,    #pinky
+    'ring_joint':             12,    #ring
+    'middle_joint':           21,    #middle
+    'index_joint':            10,    #index
+    'thumb_joint':            10,    #thumb
+    'wrist_roll_joint':       90,    #hand
+    'elbow_flex_joint':       21,    #bicep
+    'upper_arm_roll_joint':   00,    #bicep_rotate
+    'shoulder_out_joint':     15,    #shoulder_side
+    'shoulder_lift_joint':   -15,    #shoulder_up
+}
+
+OUTSIDEARM_OLD = [
              24,    #pinky
              12,    #ring
              21,    #middle
@@ -535,7 +548,20 @@ OUTSIDEARM = [
              00     #arm-nc-11
         ]
 
-INSIDEARM = [
+INSIDEARM = {
+    'pinky_joint':            60,    #pinky
+    'ring_joint':             60,    #ring
+    'middle_joint':           80,    #middle
+    'index_joint':            60,    #index
+    'thumb_joint':            45,    #thumb
+    'wrist_roll_joint':       45,    #hand
+    'elbow_flex_joint':       30,    #bicep
+    'upper_arm_roll_joint':  -37,    #bicep_rotate
+    'shoulder_out_joint':     10,    #shoulder_side
+    'shoulder_lift_joint':   -15,    #shoulder_up
+}
+
+INSIDEARM_OLD = [
              60,    #pinky
              60,    #ring
              80,    #middle
@@ -640,7 +666,20 @@ GRABNEUTRAL = [
              00     #arm-nc-11
         ]
 
-ARMOUT = [
+ARMOUT = {
+    'pinky_joint':            10,    #pinky
+    'ring_joint':             12,    #ring
+    'middle_joint':           13,    #middle
+    'index_joint':            21,    #index
+    'thumb_joint':            12,    #thumb
+    'wrist_roll_joint':      105,    #hand
+    'elbow_flex_joint':       29,    #bicep
+    'upper_arm_roll_joint':   54,    #bicep_rotate
+    'shoulder_out_joint':     50,    #shoulder_side
+    'shoulder_lift_joint':    00,    #shoulder_up
+}
+
+ARMOUT_OLD = [
              10,    #pinky
              12,    #ring
              13,    #middle
