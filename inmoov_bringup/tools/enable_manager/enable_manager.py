@@ -35,6 +35,7 @@ sys.path.append(os.path.join(dirname(dirname(dirname(abspath(__file__)))),'inclu
 
 from constants import PROTOCOL
 from servos import Servo
+from load_config_from_param import load_config_from_param
 
 from time import sleep
 
@@ -57,7 +58,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         self.setupUi(self)  # This is defined in design.py file automatically
         # It sets up layout and widgets that are defined
 
-        self.servos = {}
+        self.servos = load_config_from_param()
 
         self.bus = {}
 
@@ -71,8 +72,6 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         rospy.init_node('enable_manager', anonymous=True)
 
         print("INITIALIZED")
-
-        self.load_config_from_param()
 
         for j,b in rospy.get_param('/joints').items():
         
@@ -119,7 +118,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         chk = self.checkboxes[sender.text()]
 
         motorcommand = MotorCommand()
-        motorcommand.id = int(s.servo)
+        motorcommand.id = int(s.servoPin)
         motorcommand.parameter = PROTOCOL.ENABLE
         motorcommand.value = sender.isChecked()
         #if chk.isChecked():
@@ -144,7 +143,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
 
             motorcommand = MotorCommand()
-            motorcommand.id = int(s.servo)
+            motorcommand.id = int(s.servoPin)
             motorcommand.parameter = PROTOCOL.ENABLE
             motorcommand.value = 1
 
@@ -159,7 +158,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         for j,s in self.servos.items():
 
             motorcommand = MotorCommand()
-            motorcommand.id = int(s.servo)
+            motorcommand.id = int(s.servoPin)
             motorcommand.parameter = PROTOCOL.ENABLE
             motorcommand.value = 0
 
@@ -173,42 +172,6 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         self.enabled = False
         self.random = False
         print "GOODBYE!"
-
-    def load_config_from_param(self):
-
-        # first, make sure parameter server is even loaded
-        while not rospy.search_param("/joints"):
-            rospy.loginfo("waiting for parameter server to load with joint definitions")
-            rospy.sleep(1)
-
-        rospy.sleep(1)
-
-        joints = rospy.get_param('/joints')
-        for name in joints:
-            rospy.loginfo( "found:  " + name )
-
-            s = Servo()
-
-            key = '/joints/' + name + '/'
-
-            s.bus       =  rospy.get_param(key + 'bus')
-            s.servo     =  rospy.get_param(key + 'servo')
-            s.flip      =  rospy.get_param(key + 'flip')
-
-            s.servopin  =  rospy.get_param(key + 'servopin')
-            s.sensorpin =  rospy.get_param(key + 'sensorpin')
-            s.minpulse  =  rospy.get_param(key + 'minpulse')
-            s.maxpulse  =  rospy.get_param(key + 'maxpulse')
-            s.minangle  =  rospy.get_param(key + 'minangle')
-            s.maxangle  =  rospy.get_param(key + 'maxangle')
-            s.minsensor =  rospy.get_param(key + 'minsensor')
-            s.maxsensor =  rospy.get_param(key + 'maxsensor')
-            s.maxspeed  =  rospy.get_param(key + 'maxspeed')
-            s.smoothing =  rospy.get_param(key + 'smoothing')
-
-            self.servos[name] = s
-
-        print "DONE"
 
 checkboxstylesheet = \
     'QCheckBox::indicator {' + \

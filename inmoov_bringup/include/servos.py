@@ -5,7 +5,6 @@ class Servo:
     key = -1
     name = ""
     bus = -1
-    servo = -1
 
     goal = -1.0
 

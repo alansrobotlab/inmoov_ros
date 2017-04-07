@@ -14,11 +14,21 @@ import os
 import sys
 from os.path import dirname, abspath
 
+from PyQt5 import QtWidgets, QtCore, uic
+from PyQt5.QtWidgets import QPushButton, QMessageBox
+
+from threading import Thread
+
+from python_qt_binding import loadUi
+from python_qt_binding import QtGui
+from python_qt_binding.QtWidgets import QWidget
+
 #hacky way to add include directory to sys path
-sys.path.append(os.path.join(dirname(dirname(abspath(__file__))),'include'))
+sys.path.append(os.path.join(dirname(dirname(dirname(abspath(__file__)))),'include'))
 
 from constants import PROTOCOL
 from servos import Servo
+from load_config_from_param import load_config_from_param
 
 servos = {}     # servo configuration data for robot
 joints = {}     # dict of joint names and position values
@@ -31,7 +41,7 @@ PI = 3.1415926539
 import qdarkstyle
 
 # https://www.safaribooksonline.com/blog/2014/01/22/create-basic-gui-using-pyqt/
-gui = os.path.join(os.path.dirname(__file__), 'enable_manager.ui')
+gui = os.path.join(os.path.dirname(__file__), 'rviz_manager.ui')
 form_class = uic.loadUiType(gui)[0]
 
 def commandDispatcher(data):
@@ -80,42 +90,6 @@ def init():
 
 
     rospy.spin()
-
-def load_config_from_param():
-
-    # first, make sure parameter server is even loaded
-    while not rospy.search_param("/joints"):
-        rospy.loginfo("waiting for parameter server to load with joint definitions")
-        rospy.sleep(1)
-
-    rospy.sleep(1)
-
-    joints = rospy.get_param('/joints')
-    for name in joints:
-        rospy.loginfo( "found:  " + name )
-
-        s = Servo()
-
-        key = '/joints/' + name + '/'
-
-        s.bus       =  int(rospy.get_param(key + 'bus'))
-        s.servo     =  int(rospy.get_param(key + 'servo'))
-        s.flip      =  int(rospy.get_param(key + 'flip'))
-
-        s.servopin  =  int(rospy.get_param(key + 'servopin'))
-        s.sensorpin =  int(rospy.get_param(key + 'sensorpin'))
-        s.minpulse  =  int(rospy.get_param(key + 'minpulse'))
-        s.maxpulse  =  int(rospy.get_param(key + 'maxpulse'))
-        s.minangle  =  float(rospy.get_param(key + 'minangle'))
-        s.maxangle  =  float(rospy.get_param(key + 'maxangle'))
-        s.minsensor =  int(rospy.get_param(key + 'minsensor'))
-        s.maxsensor =  int(rospy.get_param(key + 'maxsensor'))
-        s.maxspeed  =  float(rospy.get_param(key + 'maxspeed'))
-        s.smoothing =  int(rospy.get_param(key + 'smoothing'))
-
-        servos[name] = s
-
-    print "DONE"
 
 
 

@@ -19,6 +19,7 @@ sys.path.append(os.path.join(dirname(dirname(abspath(__file__))),'include'))
 
 from constants import PROTOCOL
 from servos import Servo
+from load_config_from_param import load_config_from_param
 
 servos = {}     # servo configuration data for robot
 joints = {}     # dict of joint names and position values
@@ -32,7 +33,7 @@ def init():
 
     rospy.Subscriber("joint_command", JointState, dispatcher)
 
-    load_config_from_param()
+    servos = load_config_from_param()
 
     for j,b in rospy.get_param('/joints').items():
         
@@ -50,8 +51,8 @@ def init():
 
             try:
                 motorcommand = MotorCommand()
-                motorcommand.id = int(servos[j].servo)
-                motorcommand.parameter = PROTOCOL.GOALPOSITION
+                motorcommand.id = int(servos[j].servoPin)
+                motorcommand.parameter = PROTOCOL.GOAL
                 motorcommand.value = p
 
                 bus[servos[j].bus].publish(motorcommand)
@@ -72,44 +73,8 @@ def dispatcher(js):
     # iterate through array and stuff name + position into dict object
     for x in range(0, len(js.name)):
         joints[js.name[x]] = js.position[x]
+        print"YATZEE"
 
-
-
-def load_config_from_param():
-
-    # first, make sure parameter server is even loaded
-    while not rospy.search_param("/joints"):
-        rospy.loginfo("waiting for parameter server to load with joint definitions")
-        rospy.sleep(1)
-
-    rospy.sleep(1)
-
-    joints = rospy.get_param('/joints')
-    for name in joints:
-        rospy.loginfo( "found:  " + name )
-
-        s = Servo()
-
-        key = '/joints/' + name + '/'
-
-        s.bus       =  int(rospy.get_param(key + 'bus'))
-        s.servo     =  int(rospy.get_param(key + 'servo'))
-        s.flip      =  int(rospy.get_param(key + 'flip'))
-
-        s.servopin  =  int(rospy.get_param(key + 'servopin'))
-        s.sensorpin =  int(rospy.get_param(key + 'sensorpin'))
-        s.minpulse  =  int(rospy.get_param(key + 'minpulse'))
-        s.maxpulse  =  int(rospy.get_param(key + 'maxpulse'))
-        s.minangle  =  float(rospy.get_param(key + 'minangle'))
-        s.maxangle  =  float(rospy.get_param(key + 'maxangle'))
-        s.minsensor =  int(rospy.get_param(key + 'minsensor'))
-        s.maxsensor =  int(rospy.get_param(key + 'maxsensor'))
-        s.maxspeed  =  float(rospy.get_param(key + 'maxspeed'))
-        s.smoothing =  int(rospy.get_param(key + 'smoothing'))
-
-        servos[name] = s
-
-    print "DONE"
 
 
 

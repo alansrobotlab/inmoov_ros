@@ -23,8 +23,6 @@
   </node>
 </group>
 
-<node pkg="inmoov_bringup" type="generate_export_yaml.py" name="generate_export_yaml" respawn="false"/>
-
 <node pkg="inmoov_bringup" type="joint_command_dispatcher.py" name="joint_command_dispatcher" respawn="true"/>
 
 <node pkg="inmoov_bringup" type="joint_status_dispatcher.py" name="joint_status_dispatcher" respawn="true"/>
@@ -32,6 +30,8 @@
 <node pkg="inmoov_bringup" type="motor_status_dispatcher.py" name="motor_status_dispatcher" respawn="true"/>
 
 <node pkg="inmoov_bringup" type="enable_manager.py" name="enable_manager" respawn="true"/>
+
+<node pkg="inmoov_bringup" type="rviz_manager.py" name="rviz_manager" respawn="true"/>
 
 
 </launch>

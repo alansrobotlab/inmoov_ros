@@ -34,8 +34,6 @@ def export_yaml(filename):
             export.write(str('  ' + name + ':').ljust(20) + '\n')
             val = rospy.get_param(key + 'bus')
             export.write(str('    bus:').ljust(20) + str(int(val)) + '\n')
-            val = rospy.get_param(key + 'servo')
-            export.write(str('    servo:').ljust(20) + str(int(val)) + '\n')
             val = rospy.get_param(key + 'servoPin')
             export.write(str('    servoPin:').ljust(20) + str(int(val)) + '\n')
             val = rospy.get_param(key + 'minPulse')

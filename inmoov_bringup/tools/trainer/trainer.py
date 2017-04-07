@@ -245,7 +245,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 val = rospy.get_param(key + 'maxSensor')
             elif parameter == PROTOCOL.MAXSPEED:
                 val = rospy.get_param(key + 'maxSpeed')
-            elif parameter == PROTOCOL.SMOOTH:
+            elif parameter == PROTOCOL.SMOOTHING:
                 val = rospy.get_param(key + 'smooth')
             return val
         except:
@@ -259,7 +259,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
             # send to arduino directly
             motorcommand = MotorCommand()
-            motorcommand.id = int(s.servo)
+            motorcommand.id = int(s.servoPin)
             motorcommand.parameter = parameter
             motorcommand.value = value
 
@@ -305,12 +305,12 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 rospy.set_param(partial + 'maxSensor', value)
             elif parameter == PROTOCOL.MAXSPEED:
                 rospy.set_param(partial + 'maxSpeed', value)
-            elif parameter == PROTOCOL.SMOOTH:
+            elif parameter == PROTOCOL.SMOOTHING:
                 rospy.set_param(partial + 'smooth', value)
 
             self.saved = False
         #except:
-            rospy.logwarn('trainer:  bad parameter or something.')
+            #rospy.logwarn('trainer:  bad parameter or something.')
 
     def valueChanged(self, field, parameter):
         if field.metaObject().className() == 'QLineEdit':

@@ -34,7 +34,6 @@ def load_config_from_param():
         key = '/joints/' + name + '/'
 
         s.bus       =  rospy.get_param(key + 'bus')
-        s.servo     =  rospy.get_param(key + 'servo')
 
         s.servoPin  =  rospy.get_param(key + 'servoPin')
         s.minPulse  =  rospy.get_param(key + 'minPulse')

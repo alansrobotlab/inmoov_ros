@@ -6,7 +6,6 @@ joints:
 
   l_wrist_roll_joint:
     bus:            1
-    servo:          5
     servoPin:       5
     minPulse:       1401
     maxPulse:       1901
@@ -21,7 +20,6 @@ joints:
 
   r_shoulder_lift_joint:
     bus:            2
-    servo:          9
     servoPin:       9
     minPulse:       550
     maxPulse:       2500
@@ -36,7 +34,6 @@ joints:
 
   l_ring_joint:     
     bus:            1
-    servo:          1
     servoPin:       1
     minPulse:       550
     maxPulse:       2450
@@ -51,7 +48,6 @@ joints:
 
   l_index_joint:    
     bus:            1
-    servo:          3
     servoPin:       3
     minPulse:       550
     maxPulse:       2450
@@ -66,7 +62,6 @@ joints:
 
   head_roll_joint:  
     bus:            0
-    servo:          5
     servoPin:       5
     minPulse:       950
     maxPulse:       1850
@@ -81,7 +76,6 @@ joints:
 
   r_thumb_joint:    
     bus:            2
-    servo:          4
     servoPin:       4
     minPulse:       550
     maxPulse:       2450
@@ -96,7 +90,6 @@ joints:
 
   r_wrist_roll_joint:
     bus:            2
-    servo:          5
     servoPin:       5
     minPulse:       1000
     maxPulse:       1550
@@ -111,7 +104,6 @@ joints:
 
   l_middle_joint:   
     bus:            1
-    servo:          2
     servoPin:       2
     minPulse:       550
     maxPulse:       2450
@@ -126,7 +118,6 @@ joints:
 
   l_thumb_joint:    
     bus:            1
-    servo:          4
     servoPin:       4
     minPulse:       550
     maxPulse:       2450
@@ -141,7 +132,6 @@ joints:
 
   l_elbow_flex_joint:
     bus:            1
-    servo:          6
     servoPin:       6
     minPulse:       480
     maxPulse:       1400
@@ -156,7 +146,6 @@ joints:
 
   jaw_joint:        
     bus:            0
-    servo:          2
     servoPin:       2
     minPulse:       550
     maxPulse:       2450
@@ -171,7 +160,6 @@ joints:
 
   r_middle_joint:   
     bus:            2
-    servo:          2
     servoPin:       2
     minPulse:       550
     maxPulse:       2450
@@ -186,7 +174,6 @@ joints:
 
   r_elbow_flex_joint:
     bus:            2
-    servo:          6
     servoPin:       6
     minPulse:       550
     maxPulse:       1500
@@ -201,9 +188,8 @@ joints:
 
   eyes_pan_joint:   
     bus:            0
-    servo:          0
     servoPin:       0
-    minPulse:       1200
+    minPulse:       1201
     maxPulse:       1800
     minGoal:        -30.0
     maxGoal:        30.0
@@ -216,7 +202,6 @@ joints:
 
   r_ring_joint:     
     bus:            2
-    servo:          1
     servoPin:       1
     minPulse:       550
     maxPulse:       2450
@@ -231,7 +216,6 @@ joints:
 
   l_shoulder_lift_joint:
     bus:            1
-    servo:          9
     servoPin:       9
     minPulse:       550
     maxPulse:       2500
@@ -246,7 +230,6 @@ joints:
 
   head_tilt_joint:  
     bus:            0
-    servo:          4
     servoPin:       4
     minPulse:       950
     maxPulse:       1700
@@ -261,7 +244,6 @@ joints:
 
   r_index_joint:    
     bus:            2
-    servo:          3
     servoPin:       3
     minPulse:       550
     maxPulse:       2450
@@ -276,7 +258,6 @@ joints:
 
   l_pinky_joint:    
     bus:            1
-    servo:          0
     servoPin:       0
     minPulse:       550
     maxPulse:       2450
@@ -291,7 +272,6 @@ joints:
 
   head_pan_joint:   
     bus:            0
-    servo:          3
     servoPin:       3
     minPulse:       550
     maxPulse:       2450
@@ -306,7 +286,6 @@ joints:
 
   r_pinky_joint:    
     bus:            2
-    servo:          0
     servoPin:       0
     minPulse:       500
     maxPulse:       2450
@@ -321,7 +300,6 @@ joints:
 
   l_shoulder_out_joint:
     bus:            1
-    servo:          8
     servoPin:       8
     minPulse:       550
     maxPulse:       1300
@@ -336,7 +314,6 @@ joints:
 
   waist_pan_joint:  
     bus:            0
-    servo:          7
     servoPin:       7
     minPulse:       500
     maxPulse:       2500
@@ -351,7 +328,6 @@ joints:
 
   waist_roll_joint: 
     bus:            0
-    servo:          6
     servoPin:       6
     minPulse:       1325
     maxPulse:       1775
@@ -366,7 +342,6 @@ joints:
 
   r_upper_arm_roll_joint:
     bus:            2
-    servo:          7
     servoPin:       7
     minPulse:       650
     maxPulse:       2450
@@ -381,7 +356,6 @@ joints:
 
   l_upper_arm_roll_joint:
     bus:            1
-    servo:          7
     servoPin:       7
     minPulse:       700
     maxPulse:       2400
@@ -396,7 +370,6 @@ joints:
 
   eyes_tilt_joint:  
     bus:            0
-    servo:          1
     servoPin:       1
     minPulse:       1300
     maxPulse:       1925
@@ -411,7 +384,6 @@ joints:
 
   r_shoulder_out_joint:
     bus:            2
-    servo:          8
     servoPin:       8
     minPulse:       550
     maxPulse:       1100
