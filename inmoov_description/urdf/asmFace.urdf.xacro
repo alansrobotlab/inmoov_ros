@@ -4,9 +4,11 @@
 
 <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
 
+<xacro:include filename="$(find inmoov_description)/urdf/asmEye.urdf.xacro" />
+
 <xacro:macro name="face" params="covers">
 
-  <link name="face">
+  <link name="face_link">
     <visual>
       <geometry>
         <mesh filename="package://inmoov_meshes/meshes/face.stl" scale="0.001 0.001 0.001"/>
@@ -16,105 +18,43 @@
     </visual>
   </link>
 
-  <joint name="eyes_updown" type="revolute">
+  <joint name="eyes_tilt_joint" type="revolute">
    <axis xyz="0 1 0"/>
    <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
-   <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-   <parent link="face"/>
-   <child link="eyesupport"/>
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <parent link="face_link"/>
+   <child link="eyesupport_link"/>
   </joint>
 
-  <link name="eyesupport">
+  <link name="eyesupport_link">
     <visual>
       <geometry>
         <mesh filename="package://inmoov_meshes/meshes/eyesupport.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
-
-<xacro:asmEye side="right" flip="1" />
-
-  <joint name="eye_leftright" type="revolute">
-   <axis xyz="0 0 1"/>
-   <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
-   <origin rpy="0 0 3.1415" xyz="0 0.033 -0.0036"/>
-   <parent link="eyesupport"/>
-   <child link="right_eyesupport"/>
-  </joint>
-
-<xacro:asmEye side="left" flip="-1" />
-
-  <joint name="left_eye_leftright" type="revolute">
-   <axis xyz="0 0 1"/>
-   <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
-   <mimic joint="eye_leftright" multiplier="1" offset="0"/>
-   <origin rpy="0 0 3.1415" xyz="0 -0.033 -0.0036"/>
-   <parent link="eyesupport"/>
-   <child link="left_eyesupport"/>
-  </joint>
-
-</xacro:macro>
-
-<xacro:macro name="asmEye" params="side flip">
-
-  <link name="${side}_eyesupport">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_eyesupport.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
   </link>
 
-  <link name="${side}_camera">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/camera.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <xacro:camera_color/>
-    </visual>
-  </link>
+<xacro:asmEye side="r"/>
 
-  <link name="${side}_eye">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/eye.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <xacro:eyeball_color/>
-    </visual>
-  </link>
-
-  <link name="${side}_iris">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/iris.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <xacro:iris_color/>
-    </visual>
-  </link>
-
-  <joint name="${side}_camera" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.001 0 0"/>
-    <parent link="${side}_eyesupport"/>
-    <child link="${side}_camera"/>
+  <joint name="eyes_pan_joint" type="revolute">
+   <axis xyz="0 0 1"/>
+   <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
+   <origin rpy="0 0 0" xyz="0 0.033 -0.0036"/>
+   <parent link="eyesupport_link"/>
+   <child link="r_eyesupport_link"/>
   </joint>
 
-  <joint name="${side}_eye" type="fixed">
-    <origin rpy="0 0 0" xyz="0.003 0 0"/>
-    <parent link="${side}_eyesupport"/>
-    <child link="${side}_eye"/>
-  </joint>
+<xacro:asmEye side="l" />
 
-  <joint name="${side}_iris" type="fixed">
-    <origin rpy="0 0 0" xyz="0.0061 0 0"/>
-    <parent link="${side}_eyesupport"/>
-    <child link="${side}_iris"/>
+  <joint name="l_eye_pan_joint" type="revolute">
+   <axis xyz="0 0 1"/>
+   <limit effort="1000.0" lower="-0.45" upper="0.45" velocity="0.5"/>
+   <mimic joint="eyes_pan_joint" multiplier="1" offset="0"/>
+   <origin rpy="0 0 0" xyz="0 -0.033 -0.0036"/>
+   <parent link="eyesupport_link"/>
+   <child link="l_eyesupport_link"/>
   </joint>
 
 </xacro:macro>

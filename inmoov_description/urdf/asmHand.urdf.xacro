@@ -1,472 +1,471 @@
 <?xml version="1.0"?>
+<robot name="inmoov" 
+  xmlns:xacro="http://ros.org/wiki/xacro">
 
-<robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
 
-<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+  <xacro:include filename="$(find inmoov_bringup)/config/config.xacro" />
 
+  <xacro:property name="filename" value="$(find inmoov_bringup)/config/config.yaml"/>
+  <!--xacro:property name="p" value="${load_yaml(filename)}"/-->
 
+  <xacro:macro name="hand" params="side flip covers">
 
-<xacro:macro name="hand" params="side neg flip covers">
+    <link name="${side}_hand_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_hand.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_thumb1_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_thumb5_1.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_thumb2_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/thumb5_2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_thumb3_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/thumb5_3.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_index1_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/index3_1.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_index2_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/index3_2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_index3_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/index3_3.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_middle1_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/middle3_1.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_middle2_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/middle3_2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_middle3_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/middle3_3.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_ring1_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_ring3_1.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
 
-  <link name="${side}_hand">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_hand.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <link name="${side}_ring2_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/ring3_2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
 
-  <link name="${side}_thumb1">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_thumb5_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="3.1415 0 0" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <link name="${side}_ring3_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/ring3_3.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
 
-  <link name="${side}_thumb2">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/thumb5_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <link name="${side}_ring4_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/ring3_4.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
 
-  <link name="${side}_thumb3">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/thumb5_3.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <link name="${side}_pinky1_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_pinky3_1.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
 
-  <link name="${side}_index1">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/index3_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <link name="${side}_pinky2_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/pinky3_2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
+    <link name="${side}_pinky3_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/pinky3_3.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
 
-  <link name="${side}_index2">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/index3_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <link name="${side}_pinky4_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/pinky3_4.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:frame_color/>
+      </visual>
+    </link>
 
-  <link name="${side}_index3">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/index3_3.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_thumb1_joint" type="revolute">
+      <axis xyz="0 0 1"/>
+      <limit effort="1000.0" lower="0" upper="${flip *-1.57}" velocity="0.5"/>
+      <origin rpy="${flip * 0.1} 0 0" xyz="0 ${flip * 0.029} -0.0577"/>
+      <mimic joint="${side}_thumb_joint" multiplier="${flip *0.75}" offset="0"/>
+      <parent link="${side}_hand_link"/>
+      <child link="${side}_thumb1_link"/>
+    </joint>
 
-  <link name="${side}_middle1">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/middle3_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_thumb_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <!--limit effort="1000.0" lower="${p['joints']['r_thumb_joint']['mingoal']}" upper="${p['joints']['r_thumb_joint']['maxgoal']}" velocity="${p['joints']['r_thumb_joint']['maxspeed']}"/-->
+      <limit effort="1000.0" lower="-0.1" upper="1.1" velocity="0.5"/>
+      <origin rpy="${flip * 0.825} -0.1 ${flip * 0.3}" xyz="-0.00052 ${flip * 0.02725}  -0.013"/>
+      <parent link="${side}_thumb1_link"/>
+      <child link="${side}_thumb2_link"/>
+    </joint>
 
-  <link name="${side}_middle2">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/middle3_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_thumb3_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.035"/>
+      <mimic joint="${side}_thumb_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_thumb2_link"/>
+      <child link="${side}_thumb3_link"/>
+    </joint>
 
-  <link name="${side}_middle3">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/middle3_3.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_index1_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="0.1" upper="-1.5" velocity="0.5"/>
+      <origin rpy="${flip * 0.1} 0 0" xyz="-0.0015 ${flip * 0.0342}  -0.119"/>
+      <mimic joint="${side}_index_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_hand_link"/>
+      <child link="${side}_index1_link"/>
+    </joint>
 
-  <link name="${side}_ring1">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_ring3_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_index_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-0.1" upper="1.5" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0.001 -0.03595"/>
+      <parent link="${side}_index1_link"/>
+      <child link="${side}_index2_link"/>
+    </joint>
 
-  <link name="${side}_ring2">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/ring3_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_index3_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="0.1" upper="-1.5" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.024"/>
+      <mimic joint="${side}_index_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_index2_link"/>
+      <child link="${side}_index3_link"/>
+    </joint>
 
-  <link name="${side}_ring3">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/ring3_3.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_middle1_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="0.1" upper="-1.5" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="-0.00175 ${flip * 0.007}  -0.12325"/>
+      <mimic joint="${side}_middle_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_hand_link"/>
+      <child link="${side}_middle1_link"/>
+    </joint>
 
-  <link name="${side}_ring4">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/ring3_4.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_middle_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-0.1" upper="1.5" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0.000 -0.0389"/>
+      <parent link="${side}_middle1_link"/>
+      <child link="${side}_middle2_link"/>
+    </joint>
 
-  <link name="${side}_pinky1">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_pinky3_1.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_middle3_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-1.57" upper="0.1" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0.0005 -0.0259"/>
+      <mimic joint="${side}_middle_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_middle2_link"/>
+      <child link="${side}_middle3_link"/>
+    </joint>
 
-  <link name="${side}_pinky2">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/pinky3_2.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_ring1_joint" type="revolute">
+      <axis xyz="0 0 1"/>
+      <limit effort="1000.0" lower="${flip *-1.57}" upper="0" velocity="0.5"/>
+      <origin rpy="${flip * 0.7} 0 0" xyz="0 ${flip * -0.00705} -0.0794"/>
+      <mimic joint="${side}_ring_joint" multiplier="${flip * -0.1}" offset="0"/>
+      <parent link="${side}_hand_link"/>
+      <child link="${side}_ring1_link"/>
+    </joint>
 
-  <link name="${side}_pinky3">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/pinky3_3.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_ring_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-0.1" upper="1.5" velocity="0.5"/>
+      <origin rpy="${flip * -0.7775} 0 0" xyz="0.00126 ${flip * -0.0351} -0.0166"/>
+      <parent link="${side}_ring1_link"/>
+      <child link="${side}_ring2_link"/>
+    </joint>
 
-  <link name="${side}_pinky4">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/pinky3_4.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:frame_color/>
-    </visual>
-  </link>
+    <joint name="${side}_ring3_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0.0005 -0.0345"/>
+      <mimic joint="${side}_ring_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_ring2_link"/>
+      <child link="${side}_ring3_link"/>
+    </joint>
 
-  <joint name="${side}_thumb1" type="revolute">
-   <axis xyz="0 0 1"/>
-   <limit effort="1000.0" lower="0" upper="${neg *1.57}" velocity="0.5"/>
-   <origin rpy="3.1415 ${neg * 0.1} 0" xyz="${neg * -0.029} 0 -0.0577"/>
-   <mimic joint="${side}_thumb" multiplier="${neg *-0.75}" offset="0"/>
-   <parent link="${side}_hand"/>
-   <child link="${side}_thumb1"/>
-  </joint>
+    <joint name="${side}_ring4_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0.0004 -0.0229"/>
+      <mimic joint="${side}_ring_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_ring3_link"/>
+      <child link="${side}_ring4_link"/>
+    </joint>
 
-  <joint name="${side}_thumb" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-    <origin rpy="0 ${neg * 2.3} ${neg * -0.3}" xyz="${neg * -0.02725} -0.0006 0.014"/>
-    <parent link="${side}_thumb1"/>
-    <child link="${side}_thumb2"/>
-  </joint>
+    <joint name="${side}_pinky1_joint" type="revolute">
+      <axis xyz="0 0 1"/>
+      <limit effort="1000.0" lower="${flip *-1.57}" upper="0" velocity="0.5"/>
+      <origin rpy="${flip * 0.7} 0 0" xyz="0 ${flip * -0.0270} -0.0555"/>
+      <mimic joint="${side}_pinky_joint" multiplier="${flip * -0.1}" offset="0"/>
+      <parent link="${side}_hand_link"/>
+      <child link="${side}_pinky1_link"/>
+    </joint>
 
-  <joint name="${side}_thumb3" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0 -0.035"/>
-    <mimic joint="${side}_thumb" multiplier="1" offset="0"/>
-    <parent link="${side}_thumb2"/>
-    <child link="${side}_thumb3"/>
-  </joint>
+    <joint name="${side}_pinky_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-0.1" upper="1.5" velocity="0.5"/>
+      <origin rpy="${flip * -0.93} 0 0" xyz="0 ${flip * -0.046} -0.0228"/>
+      <parent link="${side}_pinky1_link"/>
+      <child link="${side}_pinky2_link"/>
+    </joint>
 
-  <joint name="${side}_index1" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-<origin rpy="0 ${neg * -0.1} 3.1415" xyz="${neg * -0.0342} -0.0015 -0.119"/>
-    <mimic joint="${side}_index" multiplier="1" offset="0"/>
-    <parent link="${side}_hand"/>
-    <child link="${side}_index1"/>
-  </joint>
+    <joint name="${side}_pinky3_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0.0005 -0.031"/>
+      <mimic joint="${side}_pinky_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_pinky2_link"/>
+      <child link="${side}_pinky3_link"/>
+    </joint>
 
-  <joint name="${side}_index" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0.001 -0.03595"/>
-    <parent link="${side}_index1"/>
-    <child link="${side}_index2"/>
-  </joint>
+    <joint name="${side}_pinky4_joint" type="revolute">
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0 0.0004 -0.0208"/>
+      <mimic joint="${side}_pinky_joint" multiplier="1" offset="0"/>
+      <parent link="${side}_pinky3_link"/>
+      <child link="${side}_pinky4_link"/>
+    </joint>
 
-  <joint name="${side}_index3" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0 -0.024"/>
-    <mimic joint="${side}_index" multiplier="1" offset="0"/>
-    <parent link="${side}_index2"/>
-    <child link="${side}_index3"/>
-  </joint>
+    <link name="${side}_handcover_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_hand.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
 
-  <joint name="${side}_middle1" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-<origin rpy="0 0 3.1415" xyz="${neg * -0.007} -0.00175 -0.12325"/>
-    <mimic joint="${side}_middle" multiplier="1" offset="0"/>
-    <parent link="${side}_hand"/>
-    <child link="${side}_middle1"/>
-  </joint>
+    <link name="${side}_cover_handring_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_handring.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
 
-  <joint name="${side}_middle" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0.000 -0.0389"/>
-    <parent link="${side}_middle1"/>
-    <child link="${side}_middle2"/>
-  </joint>
+    <link name="${side}_cover_handpinky_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_handpinky.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
+    
+    <link name="${side}_cover_thumb_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_thumb.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
 
-  <joint name="${side}_middle3" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0.0005 -0.0259"/>
-    <mimic joint="${side}_middle" multiplier="1" offset="0"/>
-    <parent link="${side}_middle2"/>
-    <child link="${side}_middle3"/>
-  </joint>
+    <link name="${side}_cover_index_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_index.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
 
-  <joint name="${side}_ring1" type="revolute">
-   <axis xyz="0 0 1"/>
-<limit effort="1000.0" lower="${neg *-1.57}" upper="0" velocity="0.5"/>
-<origin rpy="0 ${neg * -0.7} 3.1415" xyz="${neg * 0.00705} 0 -0.0794"/>
-    <mimic joint="${side}_ring" multiplier="${neg * -0.1}" offset="0"/>
-    <parent link="${side}_hand"/>
-    <child link="${side}_ring1"/>
-  </joint>
+    <link name="${side}_cover_middle_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_middle.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
 
-  <joint name="${side}_ring" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-<origin rpy="0 ${neg * 0.7775} 0" xyz="${neg * -0.0351} 0.00126 -0.0166"/>
-    <parent link="${side}_ring1"/>
-    <child link="${side}_ring2"/>
-  </joint>
+    <link name="${side}_cover_ring_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_ring.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
 
-  <joint name="${side}_ring3" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0.0005 -0.0345"/>
-    <mimic joint="${side}_ring" multiplier="1" offset="0"/>
-    <parent link="${side}_ring2"/>
-    <child link="${side}_ring3"/>
-  </joint>
+    <link name="${side}_cover_pinky_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://inmoov_meshes/meshes/${side}_cover_pinky.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <xacro:cover_color/>
+      </visual>
+    </link>
 
-  <joint name="${side}_ring4" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0.0004 -0.0229"/>
-    <mimic joint="${side}_ring" multiplier="1" offset="0"/>
-    <parent link="${side}_ring3"/>
-    <child link="${side}_ring4"/>
-  </joint>
+    <joint name="${side}_handcover_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0.009 ${flip * 0.0192} -0.0977"/>
+      <parent link="${side}_hand_link"/>
+      <child link="${side}_handcover_link"/>
+    </joint>
 
-  <joint name="${side}_pinky1" type="revolute">
-   <axis xyz="0 0 1"/>
-<limit effort="1000.0" lower="${neg *-1.57}" upper="0" velocity="0.5"/>
-<origin rpy="0 ${neg * -0.7} 3.1415" xyz="${neg * 0.0270} 0 -0.0555"/>
-    <mimic joint="${side}_pinky" multiplier="${neg * -0.1}" offset="0"/>
-    <parent link="${side}_hand"/>
-    <child link="${side}_pinky1"/>
-  </joint>
+    <joint name="${side}_cover_handpinky_joint" type="fixed">
+      <origin rpy="${flip * -0.7} 0 0" xyz="0.01 ${flip * -0.02025} -0.0071"/>
+      <parent link="${side}_pinky1_link"/>
+      <child link="${side}_cover_handpinky_link"/>
+    </joint>
 
-  <joint name="${side}_pinky" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="0" upper="1.5" velocity="0.5"/>
-<origin rpy="0 ${neg * 0.93} 0" xyz="${neg * -0.046} -0 -0.0228"/>
-    <parent link="${side}_pinky1"/>
-    <child link="${side}_pinky2"/>
-  </joint>
+    <joint name="${side}_cover_handring_joint" type="fixed">
+      <origin rpy="${flip * -0.7} 0 0" xyz="0.009 ${flip * -0.015} -0.0008"/>
+      <parent link="${side}_ring1_link"/>
+      <child link="${side}_cover_handring_link"/>
+    </joint>
 
-  <joint name="${side}_pinky3" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0.0005 -0.031"/>
-    <mimic joint="${side}_pinky" multiplier="1" offset="0"/>
-    <parent link="${side}_pinky2"/>
-    <child link="${side}_pinky3"/>
-  </joint>
+    <joint name="${side}_cover_middle_joint" type="fixed">
+      <origin rpy="0 ${flip * -0.05} 0" xyz="0.0071 0 -0.012"/>
+      <parent link="${side}_middle1_link"/>
+      <child link="${side}_cover_middle_link"/>
+    </joint>
 
-  <joint name="${side}_pinky4" type="revolute">
-   <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="-1.57" upper="0" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0.0004 -0.0208"/>
-    <mimic joint="${side}_pinky" multiplier="1" offset="0"/>
-    <parent link="${side}_pinky3"/>
-    <child link="${side}_pinky4"/>
-  </joint>
+    <joint name="${side}_cover_thumb_joint" type="fixed">
+      <origin rpy="0.05 0 0" xyz="0.01 ${flip * 0.02125} 0.0047"/>
+      <parent link="${side}_thumb1_link"/>
+      <child link="${side}_cover_thumb_link"/>
+    </joint>
 
+    <joint name="${side}_cover_index_joint" type="fixed">
+      <origin rpy="0 ${flip * 0.05} 0" xyz="0.0071 0 -0.012"/>
+      <parent link="${side}_index1_link"/>
+      <child link="${side}_cover_index_link"/>
+    </joint>
 
-  <link name="${side}_handcover">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_hand.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
+    <joint name="${side}_cover_ring_joint" type="fixed">
+      <origin rpy="${flip * 0.1} ${flip * -0.05} 0" xyz="0.005 0 -0.011"/>
+      <parent link="${side}_ring2_link"/>
+      <child link="${side}_cover_ring_link"/>
+    </joint>
 
-  <link name="${side}_cover_handring">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_handring.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
-
-  <link name="${side}_cover_handpinky">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_handpinky.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
-
-  <link name="${side}_cover_thumb">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_thumb.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="3.1415 0 0" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
-
-  <link name="${side}_cover_index">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_index.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
-
-  <link name="${side}_cover_middle">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_middle.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
-
-  <link name="${side}_cover_ring">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_ring.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
-
-  <link name="${side}_cover_pinky">
-    <visual>
-      <geometry>
-        <mesh filename="package://inmoov_meshes/meshes/${side}_cover_pinky.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
-      <xacro:cover_color/>
-    </visual>
-  </link>
-
-  <joint name="${side}_handcover" type="fixed">
-<origin rpy="0 0 0" xyz="${neg * -0.0192} 0.009 -0.0977"/>
-    <parent link="${side}_hand"/>
-    <child link="${side}_handcover"/>
-  </joint>
-
-  <joint name="${side}_cover_handring" type="fixed">
-<origin rpy="0 ${neg * 0.7} 0" xyz="${neg * -0.015} -0.009 -0.0008"/>
-    <parent link="${side}_ring1"/>
-    <child link="${side}_cover_handring"/>
-  </joint>
-
-  <joint name="${side}_cover_handpinky" type="fixed">
-<origin rpy="0 ${neg * 0.7} 0" xyz="${neg * -0.0205} -0.01 -0.0069"/>
-    <parent link="${side}_pinky1"/>
-    <child link="${side}_cover_handpinky"/>
-  </joint>
-
-  <joint name="${side}_cover_thumb" type="fixed">
-    <origin rpy="0 ${neg * 3.1} 0" xyz="${neg * -0.02125} -0.01 -0.0047"/>
-    <parent link="${side}_thumb1"/>
-    <child link="${side}_cover_thumb"/>
-  </joint>
-
-  <joint name="${side}_cover_index" type="fixed">
-    <origin rpy="${neg * 0.05} 0 0" xyz="0 -0.0071 -0.012"/>
-    <parent link="${side}_index1"/>
-    <child link="${side}_cover_index"/>
-  </joint>
-
-  <joint name="${side}_cover_middle" type="fixed">
-    <origin rpy="${neg * -0.05} 0 0" xyz="0 -0.0071 -0.012"/>
-    <parent link="${side}_middle1"/>
-    <child link="${side}_cover_middle"/>
-  </joint>
-
-  <joint name="${side}_cover_ring" type="fixed">
-    <origin rpy="${neg * -0.05} ${neg * -0.1} 0" xyz="0 -0.005 -0.011"/>
-    <parent link="${side}_ring2"/>
-    <child link="${side}_cover_ring"/>
-  </joint>
-
-  <joint name="${side}_cover_pinky" type="fixed">
-    <origin rpy="${neg * -0.05} ${neg * -0.1} 0" xyz="0 -0.005 -0.0105"/>
-    <parent link="${side}_pinky2"/>
-    <child link="${side}_cover_pinky"/>
-  </joint>
-
-</xacro:macro>
-
-
-
+    <joint name="${side}_cover_pinky_joint" type="fixed">
+      <origin rpy="${flip * 0.1} ${flip * -0.05} 0" xyz="0.005 0 -0.0105"/>
+      <parent link="${side}_pinky2_link"/>
+      <child link="${side}_cover_pinky_link"/>
+    </joint>
+    
+  </xacro:macro>
 </robot>

@@ -2,6 +2,7 @@
 
 <robot name="inmoov_hand" xmlns:xacro="http://ros.org/wiki/xacro">
 
+<xacro:include filename="$(find inmoov_description)/urdf/config.urdf.xacro" />
 <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
 <xacro:include filename="$(find inmoov_description)/urdf/asmHand.urdf.xacro" />
 
@@ -17,14 +18,14 @@
     </visual>
   </link>
 
-  <xacro:hand side="right" neg="1" flip="0" covers="yes" />
+  <xacro:hand side="r" flip="1" covers="yes" />
 
-  <joint name="base_to_hand" type="revolute">
+  <joint name="base_to_hand_joint" type="revolute">
    <axis xyz="0 0 1"/>
 <limit effort="1000.0" lower="-3.14" upper="0" velocity="0.5"/>
-<origin rpy="0 3.1415 0" xyz="0 0 0"/>
+<origin rpy="0 0 0" xyz="0 0 0"/>
     <parent link="base_link"/>
-    <child link="right_hand"/>
+    <child link="r_hand_link"/>
   </joint>
 
 

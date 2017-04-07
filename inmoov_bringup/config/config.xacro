@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:property name="pi" value = "3.1415926539"/>
+
+<xacro:property name="r_middle_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="r_middle_joint_upper"    value="${pi*85.0/180.0}" /> 
+<xacro:property name="r_middle_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_shoulder_lift_joint_lower"    value="${pi*-45.0/180.0}" /> 
+<xacro:property name="r_shoulder_lift_joint_upper"    value="${pi*135.0/180.0}" /> 
+<xacro:property name="r_shoulder_lift_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_ring_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="l_ring_joint_upper"    value="${pi*75.0/180.0}" /> 
+<xacro:property name="l_ring_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_index_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="l_index_joint_upper"    value="${pi*85.0/180.0}" /> 
+<xacro:property name="l_index_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="head_roll_joint_lower"    value="${pi*-15.0/180.0}" /> 
+<xacro:property name="head_roll_joint_upper"    value="${pi*15.0/180.0}" /> 
+<xacro:property name="head_roll_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="waist_roll_joint_lower"    value="${pi*15.0/180.0}" /> 
+<xacro:property name="waist_roll_joint_upper"    value="${pi*-15.0/180.0}" /> 
+<xacro:property name="waist_roll_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_wrist_roll_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="r_wrist_roll_joint_upper"    value="${pi*180.0/180.0}" /> 
+<xacro:property name="r_wrist_roll_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_middle_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="l_middle_joint_upper"    value="${pi*85.0/180.0}" /> 
+<xacro:property name="l_middle_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_thumb_joint_lower"    value="${pi*-45.0/180.0}" /> 
+<xacro:property name="l_thumb_joint_upper"    value="${pi*135.0/180.0}" /> 
+<xacro:property name="l_thumb_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_elbow_flex_joint_lower"    value="${pi*10.0/180.0}" /> 
+<xacro:property name="l_elbow_flex_joint_upper"    value="${pi*85.0/180.0}" /> 
+<xacro:property name="l_elbow_flex_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="jaw_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="jaw_joint_upper"    value="${pi*180.0/180.0}" /> 
+<xacro:property name="jaw_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_wrist_roll_joint_lower"    value="${pi*180.0/180.0}" /> 
+<xacro:property name="l_wrist_roll_joint_upper"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="l_wrist_roll_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_elbow_flex_joint_lower"    value="${pi*5.0/180.0}" /> 
+<xacro:property name="r_elbow_flex_joint_upper"    value="${pi*80.0/180.0}" /> 
+<xacro:property name="r_elbow_flex_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="eyes_pan_joint_lower"    value="${pi*-30.0/180.0}" /> 
+<xacro:property name="eyes_pan_joint_upper"    value="${pi*30.0/180.0}" /> 
+<xacro:property name="eyes_pan_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_ring_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="r_ring_joint_upper"    value="${pi*75.0/180.0}" /> 
+<xacro:property name="r_ring_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_shoulder_lift_joint_lower"    value="${pi*-45.0/180.0}" /> 
+<xacro:property name="l_shoulder_lift_joint_upper"    value="${pi*135.0/180.0}" /> 
+<xacro:property name="l_shoulder_lift_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="eyes_tilt_joint_lower"    value="${pi*-30.0/180.0}" /> 
+<xacro:property name="eyes_tilt_joint_upper"    value="${pi*15.0/180.0}" /> 
+<xacro:property name="eyes_tilt_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_index_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="r_index_joint_upper"    value="${pi*85.0/180.0}" /> 
+<xacro:property name="r_index_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_pinky_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="l_pinky_joint_upper"    value="${pi*75.0/180.0}" /> 
+<xacro:property name="l_pinky_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="head_pan_joint_lower"    value="${pi*-100.0/180.0}" /> 
+<xacro:property name="head_pan_joint_upper"    value="${pi*90.0/180.0}" /> 
+<xacro:property name="head_pan_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_pinky_joint_lower"    value="${pi*0.0/180.0}" /> 
+<xacro:property name="r_pinky_joint_upper"    value="${pi*75.0/180.0}" /> 
+<xacro:property name="r_pinky_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_shoulder_out_joint_lower"    value="${pi*5.0/180.0}" /> 
+<xacro:property name="l_shoulder_out_joint_upper"    value="${pi*50.0/180.0}" /> 
+<xacro:property name="l_shoulder_out_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="waist_pan_joint_lower"    value="${pi*-90.0/180.0}" /> 
+<xacro:property name="waist_pan_joint_upper"    value="${pi*90.0/180.0}" /> 
+<xacro:property name="waist_pan_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_thumb_joint_lower"    value="${pi*-6.0/180.0}" /> 
+<xacro:property name="r_thumb_joint_upper"    value="${pi*63.0/180.0}" /> 
+<xacro:property name="r_thumb_joint_velocity" value="${pi*90.0/180.0}" /> 
+
+<xacro:property name="r_upper_arm_roll_joint_lower"    value="${pi*-90.0/180.0}" /> 
+<xacro:property name="r_upper_arm_roll_joint_upper"    value="${pi*90.0/180.0}" /> 
+<xacro:property name="r_upper_arm_roll_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="l_upper_arm_roll_joint_lower"    value="${pi*-90.0/180.0}" /> 
+<xacro:property name="l_upper_arm_roll_joint_upper"    value="${pi*90.0/180.0}" /> 
+<xacro:property name="l_upper_arm_roll_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="head_tilt_joint_lower"    value="${pi*-20.0/180.0}" /> 
+<xacro:property name="head_tilt_joint_upper"    value="${pi*20.0/180.0}" /> 
+<xacro:property name="head_tilt_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+<xacro:property name="r_shoulder_out_joint_lower"    value="${pi*5.0/180.0}" /> 
+<xacro:property name="r_shoulder_out_joint_upper"    value="${pi*50.0/180.0}" /> 
+<xacro:property name="r_shoulder_out_joint_velocity" value="${pi*0.0/180.0}" /> 
+
+</robot>
