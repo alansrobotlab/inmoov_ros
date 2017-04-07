@@ -4,6 +4,8 @@
 
 <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
 
+<xacro:include filename="$(find inmoov_description)/urdf/config.urdf.xacro" />
+
 <xacro:macro name="torso" params="covers">
 
   <link name="mid_stomach_link">
@@ -87,10 +89,10 @@
   </link>
 
 
-  <joint name="waist_rotate_joint" type="revolute">
+  <joint name="waist_pan_joint" type="revolute">
    <axis xyz="0 0 1"/>
-<limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
-      <origin rpy="0 0 0" xyz="0 0 1.152"/>
+   <limit effort="1000.0" lower="${waist_pan_joint_lower}" upper="${waist_pan_joint_upper}" velocity="${waist_pan_joint_velocity}" />
+   <origin rpy="0 0 0" xyz="0 0 1.152"/>
     <parent link="mid_stomach_link"/>
     <child link="top_stomach_link"/>
   </joint>
@@ -102,10 +104,10 @@
     <child link="disk_link"/>
   </joint>
 
-  <joint name="waist_lean_joint" type="revolute">
+  <joint name="waist_roll_joint" type="revolute">
    <axis xyz="1 0 0"/>
-<limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0 0.11"/>
+   <limit effort="1000.0" lower="${waist_roll_joint_lower}" upper="${waist_roll_joint_upper}" velocity="${waist_roll_joint_velocity}" />
+   <origin rpy="0 0 0" xyz="0 0 0.11"/>
     <parent link="top_stomach_link"/>
     <child link="torso_link"/>
   </joint>

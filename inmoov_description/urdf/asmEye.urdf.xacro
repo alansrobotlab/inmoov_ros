@@ -4,6 +4,8 @@
 
 <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
 
+<xacro:include filename="$(find inmoov_description)/urdf/config.urdf.xacro" />
+
 <xacro:macro name="asmEye" params="side">
 
   <link name="${side}_eyesupport_link">

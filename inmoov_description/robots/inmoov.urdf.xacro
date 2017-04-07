@@ -2,6 +2,9 @@
 
 <robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
 
+<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+<xacro:include filename="$(find inmoov_description)/urdf/config.urdf.xacro" />
+
   <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
   <xacro:include filename="$(find inmoov_description)/urdf/asmBase.urdf.xacro" />
   <xacro:include filename="$(find inmoov_description)/urdf/asmTorso.urdf.xacro" />
@@ -55,18 +58,18 @@
 
   <xacro:torso covers="yes" />
 
-  <joint name="head_roll_link" type="revolute">
+  <joint name="head_roll_joint" type="revolute">
    <axis xyz="1 0 0"/>
-   <limit effort="1000.0" lower="0.30" upper="-0.30" velocity="0.5"/>
+   <limit effort="1000.0" lower="${head_roll_joint_lower}" upper="${head_roll_joint_upper}" velocity="${head_roll_joint_velocity}" />
    <origin rpy="0 0 3.1415" xyz="-0.0315  -0.001 0.4551"/>
    <parent link="torso_link"/>
    <child link="head_tilt_link"/>
   </joint>
 
 
-  <joint name="head_tilt_link" type="revolute">
+  <joint name="head_tilt_joint" type="revolute">
    <axis xyz="0 1 0"/>
-   <limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
+   <limit effort="1000.0" lower="${head_tilt_joint_lower}" upper="${head_tilt_joint_upper}" velocity="${head_tilt_joint_velocity}" />
    <origin rpy="0 0 3.1415" xyz="0 0 0"/>
    <parent link="head_tilt_link"/>
    <child link="head_base_link"/>
@@ -86,7 +89,7 @@
 
   <joint name="r_shoulder_out_joint" type="revolute">
    <axis xyz="1 0 0"/>
-   <limit effort="1000.0" lower="0" upper="-0.75" velocity="0.5"/>
+   <limit effort="1000.0" lower="${r_shoulder_out_joint_lower}" upper="${r_shoulder_out_joint_upper}" velocity="${r_shoulder_out_joint_velocity}" />
    <origin rpy="0 0 0" xyz="0 -0.143 0.298"/>
    <parent link="torso_link"/>
    <child link="r_shoulder_base_link"/>
@@ -96,7 +99,7 @@
 
   <joint name="r_wrist_roll_joint" type="revolute">
    <axis xyz="0 0 1"/>
-   <limit effort="1000.0" lower="-3.14" upper="0" velocity="0.5"/>
+   <limit effort="1000.0" lower="${r_wrist_roll_joint_lower}" upper="${r_wrist_roll_joint_upper}" velocity="${r_wrist_roll_joint_velocity}" />
    <origin rpy="0 0 0" xyz="-0.0144 0.01  -0.2885"/>
    <parent link="r_forearm_link"/>
    <child link="r_hand_link"/>
@@ -106,7 +109,7 @@
 
   <joint name="l_shoulder_out_joint" type="revolute">
    <axis xyz="1 0 0"/>
-   <limit effort="1000.0" lower="0" upper="0.75" velocity="0.5"/>
+   <limit effort="1000.0" lower="${l_shoulder_out_joint_lower}" upper="${l_shoulder_out_joint_upper}" velocity="${l_shoulder_out_joint_velocity}" />
    <origin rpy="0 0 0" xyz="0 0.143 0.298"/>
    <parent link="torso_link"/>
    <child link="l_shoulder_base_link"/>
@@ -116,7 +119,7 @@
 
   <joint name="l_wrist_roll_joint" type="revolute">
    <axis xyz="0 0 1"/>
-   <limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
+   <limit effort="1000.0" lower="${l_wrist_roll_joint_lower}" upper="${l_wrist_roll_joint_upper}" velocity="${l_wrist_roll_joint_velocity}" />
    <origin rpy="0 0 0" xyz="-0.0144 -0.01  -0.2885"/>
    <parent link="l_forearm_link"/>
    <child link="l_hand_link"/>

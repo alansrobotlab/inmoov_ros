@@ -28,13 +28,13 @@
    <limit effort="1000.0" lower="-3.14" upper="0" velocity="0.5"/>
    <origin rpy="0 0 0" xyz="0 0 0"/>
    <parent link="base_link"/>
-   <child link="head_base"/>
+   <child link="head_base_link"/>
   </joint>
 
   <joint name="face" type="fixed">
     <origin rpy="0 0 0" xyz="0 0.0637 0.079"/>
-    <parent link="skull"/>
-    <child link="face"/>
+    <parent link="skull_link"/>
+    <child link="face_link"/>
   </joint>
 
 </robot>
