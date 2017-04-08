@@ -202,7 +202,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
             self.joints['eyes_pan_joint'] = clamp(EYERIGHT * x * 2, -EYERIGHT, EYERIGHT)
 
-            self.joints['eyes_tilt_joint'] = clamp(EYEUP * y * 2, -EYEUP, EYEUP)
+            self.joints['eyes_tilt_joint'] = clamp(-EYEUP * y * 2, -EYEUP, EYEUP)
 
             self.joints['head_tilt_joint'] = HEADUP * y
 
@@ -242,7 +242,7 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
             self.joints['eyes_pan_joint'] = clamp(EYERIGHT * x * 2, -EYERIGHT, EYERIGHT)
 
-            self.joints['eyes_tilt_joint'] = clamp(EYEUP * y * 2, -EYEUP, EYEUP)
+            self.joints['eyes_tilt_joint'] = clamp(-EYEUP * y * 2, -EYEUP, EYEUP)
 
             self.joints['head_tilt_joint'] = HEADUP * y
 
@@ -254,19 +254,20 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
             self.joints['waist_roll_joint'] = clamp(-WAISTTILT * (x * y * 2), -WAISTTILT,WAISTTILT)
 
-            for name,angle in CENTERARM.items():
+            for name,angle in CENTERARMLEFT.items():
                 if ( x >= 0 and y < 0):
-                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
-                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + ((OUTSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x * y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + (( INSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
                 if ( x >= 0 and y>= 0):
-                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
-                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + ((OUTSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + (( INSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x * y)))
                 if ( x < 0 and y >= 0):
-                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x* y)))
-                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + ((OUTSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x* y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + (( INSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
                 if ( x < 0 and y < 0):
-                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
-                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + ((OUTSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + (( INSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x * y)))
+
 
             #currently there's no guarantee that the joint key is still there when these are updated
             #self.label_8.setText( "{:10.2f}".format(self.joints['eyes_pan_joint']))
@@ -329,13 +330,13 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
         if self.radioArmOut.isChecked():
             #now for the arms...
 
-            for name,angle in CENTERARM.items():
+            for name,angle in CENTERARMLEFT.items():
                 if ( x >= 0):
-                    self.joints['l_' + name] = (angle + (( ARMOUT[name] - angle) * abs(x)))
-                    self.joints['r_' + name] = (angle)
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + (( ARMOUTLEFT[name] - CENTERARMLEFT[name]) * abs(x)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name])
                 if ( x < 0):
-                    self.joints['l_' + name] = (angle)
-                    self.joints['r_' + name] = (angle + (( ARMOUT[name] - angle) * abs(x)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name])
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + (( ARMOUTRIGHT[name] - CENTERARMRIGHT[name]) * abs(x)))
                
 
             #for servo in range (0, 12):
@@ -538,7 +539,7 @@ OUTSIDEARMRIGHT = {
     'index_joint':            10,    #index
     'thumb_joint':            10,    #thumb
     'wrist_roll_joint':       -90,    #hand
-    'elbow_flex_joint':       21,    #bicep
+    'elbow_flex_joint':       -21,    #bicep
     'upper_arm_roll_joint':   00,    #bicep_rotate
     'shoulder_out_joint':     -15,    #shoulder_side
     'shoulder_lift_joint':   15,    #shoulder_up
@@ -660,16 +661,29 @@ GRABNEUTRAL = [
              00     #arm-nc-11
         ]
 
-ARMOUT = {
+ARMOUTLEFT = {
     'pinky_joint':            10,    #pinky
     'ring_joint':             12,    #ring
     'middle_joint':           13,    #middle
-    'index_joint':            21,    #index
-    'thumb_joint':            12,    #thumb
+    'index_joint':            0,    #index
+    'thumb_joint':            0,    #thumb
     'wrist_roll_joint':      105,    #hand
-    'elbow_flex_joint':       29,    #bicep
+    'elbow_flex_joint':       -29,    #bicep
     'upper_arm_roll_joint':   54,    #bicep_rotate
-    'shoulder_out_joint':     50,    #shoulder_side
+    'shoulder_out_joint':     60,    #shoulder_side
+    'shoulder_lift_joint':    00,    #shoulder_up
+}
+
+ARMOUTRIGHT = {
+    'pinky_joint':            6,    #pinky
+    'ring_joint':             6,    #ring
+    'middle_joint':           5,    #middle
+    'index_joint':            7,    #index
+    'thumb_joint':            1,    #thumb
+    'wrist_roll_joint':      -105,    #hand
+    'elbow_flex_joint':       -29,    #bicep
+    'upper_arm_roll_joint':   -54,    #bicep_rotate
+    'shoulder_out_joint':     -60,    #shoulder_side
     'shoulder_lift_joint':    00,    #shoulder_up
 }
 
