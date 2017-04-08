@@ -525,7 +525,7 @@
     </joint>
 
     <joint name="${side}_cover_thumb_joint" type="fixed">
-      <origin rpy="0.05 0 0" xyz="0.01 ${flip * 0.02125} 0.0047"/>
+      <origin rpy="${flip * 0.05} 0 0" xyz="0.01 ${flip * 0.02125} 0.0047"/>
       <parent link="${side}_thumb1_link"/>
       <child link="${side}_cover_thumb_link"/>
     </joint>
