@@ -214,19 +214,19 @@ class ExampleApp(QtWidgets.QMainWindow, form_class):
 
             self.joints['waist_roll_joint'] = clamp(WAISTTILT * (x * y * 2), -WAISTTILT,WAISTTILT)
 
-            for name,angle in CENTERARM.items():
+            for name,angle in CENTERARMLEFT.items():
                 if ( x >= 0 and y < 0):
-                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
-                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + ((OUTSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x * y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + (( INSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
                 if ( x >= 0 and y>= 0):
-                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
-                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + ((OUTSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + (( INSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x * y)))
                 if ( x < 0 and y >= 0):
-                    self.joints['l_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x* y)))
-                    self.joints['r_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + ((OUTSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x* y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + (( INSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
                 if ( x < 0 and y < 0):
-                    self.joints['r_' + name] = (angle + ((OUTSIDEARM[name] - angle) * abs(x * y)))
-                    self.joints['l_' + name] = (angle + (( INSIDEARM[name] - angle) * abs(x * y)))
+                    self.joints['r_' + name] = (CENTERARMRIGHT[name] + ((OUTSIDEARMRIGHT[name] - CENTERARMRIGHT[name]) * abs(x * y)))
+                    self.joints['l_' + name] = (CENTERARMLEFT[name] + (( INSIDEARMLEFT[name] - CENTERARMLEFT[name]) * abs(x * y)))
 
             #currently there's no guarantee that the joint key is still there when these are updated
             #self.label_8.setText( "{:10.2f}".format(self.joints['eyes_pan_joint']))
@@ -492,89 +492,83 @@ WAISTTILT   =  15
 ARMOUT      =  15
 
 
-CENTERARM = {
+CENTERARMLEFT = {
     'pinky_joint':            60,    #pinky
     'ring_joint':             60,    #ring
     'middle_joint':           80,    #middle
     'index_joint':            60,    #index
     'thumb_joint':            45,    #thumb
     'wrist_roll_joint':       45,    #hand
-    'elbow_flex_joint':       40,    #bicep
+    'elbow_flex_joint':       -40,    #bicep
     'upper_arm_roll_joint':  -20,    #bicep_rotate
     'shoulder_out_joint':      5,    #shoulder_side
-    'shoulder_lift_joint':   -20,    #shoulder_up
+    'shoulder_lift_joint':   20,    #shoulder_up
 }
 
-CENTERARM_OLD = [
-             60,    #pinky
-             60,    #ring
-             80,    #middle
-             60,    #index
-             45,    #thumb
-             45,    #hand
-             40,    #bicep
-            -20,    #bicep_rotate
-              5,    #shoulder_side
-            -20,    #shoulder_up
-             00,    #arm-nc-10
-             00     #arm-nc-11
-]
+CENTERARMRIGHT = {
+    'pinky_joint':            60,    #pinky
+    'ring_joint':             60,    #ring
+    'middle_joint':           80,    #middle
+    'index_joint':            60,    #index
+    'thumb_joint':            45,    #thumb
+    'wrist_roll_joint':      -45,    #hand
+    'elbow_flex_joint':      -40,    #bicep
+    'upper_arm_roll_joint':   20,    #bicep_rotate
+    'shoulder_out_joint':     -5,    #shoulder_side
+    'shoulder_lift_joint':    20,    #shoulder_up
+}
 
-OUTSIDEARM = {
+OUTSIDEARMLEFT = {
     'pinky_joint':            24,    #pinky
     'ring_joint':             12,    #ring
     'middle_joint':           21,    #middle
     'index_joint':            10,    #index
     'thumb_joint':            10,    #thumb
     'wrist_roll_joint':       90,    #hand
-    'elbow_flex_joint':       21,    #bicep
+    'elbow_flex_joint':       -21,    #bicep
     'upper_arm_roll_joint':   00,    #bicep_rotate
     'shoulder_out_joint':     15,    #shoulder_side
-    'shoulder_lift_joint':   -15,    #shoulder_up
+    'shoulder_lift_joint':   15,    #shoulder_up
 }
 
-OUTSIDEARM_OLD = [
-             24,    #pinky
-             12,    #ring
-             21,    #middle
-             10,    #index
-             10,    #thumb
-             90,    #hand
-             21,    #bicep
-              0,    #bicep_rotate
-             15,    #shoulder_side
-            -15,    #shoulder_up
-             00,    #arm-nc-10
-             00     #arm-nc-11
-        ]
+OUTSIDEARMRIGHT = {
+    'pinky_joint':            24,    #pinky
+    'ring_joint':             12,    #ring
+    'middle_joint':           21,    #middle
+    'index_joint':            10,    #index
+    'thumb_joint':            10,    #thumb
+    'wrist_roll_joint':       -90,    #hand
+    'elbow_flex_joint':       21,    #bicep
+    'upper_arm_roll_joint':   00,    #bicep_rotate
+    'shoulder_out_joint':     -15,    #shoulder_side
+    'shoulder_lift_joint':   15,    #shoulder_up
+}
 
-INSIDEARM = {
+INSIDEARMLEFT = {
     'pinky_joint':            60,    #pinky
     'ring_joint':             60,    #ring
     'middle_joint':           80,    #middle
     'index_joint':            60,    #index
     'thumb_joint':            45,    #thumb
     'wrist_roll_joint':       45,    #hand
-    'elbow_flex_joint':       30,    #bicep
+    'elbow_flex_joint':       -30,    #bicep
     'upper_arm_roll_joint':  -37,    #bicep_rotate
     'shoulder_out_joint':     10,    #shoulder_side
-    'shoulder_lift_joint':   -15,    #shoulder_up
+    'shoulder_lift_joint':   15,    #shoulder_up
 }
 
-INSIDEARM_OLD = [
-             60,    #pinky
-             60,    #ring
-             80,    #middle
-             60,    #index
-             45,    #thumb
-             45,    #hand
-             30,    #bicep
-            -37,    #bicep_rotate
-             10,    #shoulder_side
-            -15,    #shoulder_up
-             00,    #arm-nc-10
-             00     #arm-nc-11
-        ]
+INSIDEARMRIGHT = {
+    'pinky_joint':            60,    #pinky
+    'ring_joint':             60,    #ring
+    'middle_joint':           80,    #middle
+    'index_joint':            60,    #index
+    'thumb_joint':            45,    #thumb
+    'wrist_roll_joint':       -45,    #hand
+    'elbow_flex_joint':       -30,    #bicep
+    'upper_arm_roll_joint':  37,    #bicep_rotate
+    'shoulder_out_joint':     -10,    #shoulder_side
+    'shoulder_lift_joint':   15,    #shoulder_up
+}
 
 PUNCHOUTSIDE = [
              55,    #pinky
