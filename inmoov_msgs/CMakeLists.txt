@@ -8,6 +8,7 @@ add_message_files(
   FILES
   MotorCommand.msg
   MotorStatus.msg
+  SmartServoStatus.msg
 )
 
 add_service_files(
