@@ -94,7 +94,7 @@ void getParameter(const inmoov_msgs::MotorParameter::Request & req, inmoov_msgs:
       break;
 
     case P_SENSORRAW:
-      value = readServoRegister(id, VALUE1);
+      value = readServoRegister(id, RAWPOSITION);
       //value = (float)tServo[id]->readPositionRaw();
       break;
 
@@ -208,7 +208,8 @@ void commandCb( const inmoov_msgs::MotorCommand& command_msg) {
 
   }
 
-
+  //generateMotorStatus();
+  
 }
 
 
@@ -303,28 +304,28 @@ void loop() {
 void generateMotorStatus() {
   for (int servo = 0; servo < NUMSERVOS; servo++) {
 
-    /*
-          status_msg.joint        = joint;
-          status_msg.bus          = bus;
-          status_msg.id           = readServoRegister(8, ID);
-          status_msg.goal         = readServoRegister(8, GOAL) / 100.0;
-          status_msg.position     = readServoRegister(8, POSITION) / 100.0;
-          status_msg.presentspeed = readServoRegister(8, SPEED) / 100.0;
-          status_msg.moving       = readServoRegister(8, MOVING);
-          status_msg.posraw       = readServoRegister(8, RAWPOSITION);
-          status_msg.enabled      = readServoRegister(8, ENABLED);
-          status_msg.power        = readServoRegister(8, POWER);
-          status_msg.temp         = readServoRegister(8, TEMP);
-          status_msg.error        = readServoRegister(8, ERRORFLAG);
-          status_msg.value1       = readServoRegister(8, VALUE1);
-          status_msg.value2       = readServoRegister(8, VALUE2);
-          status_msg.value3       = readServoRegister(8, VALUE3);
-          status_msg.value4       = readServoRegister(8, VALUE4);
-          status_msg.value5       = readServoRegister(8, VALUE5);
 
-          //writeServoRegister(8, PVAL ,128);
+    status_msg.joint        = joint;
+    status_msg.bus          = bus;
+    status_msg.id           = readServoRegister(8, ID);
+    status_msg.goal         = readServoRegister(8, GOAL) / 100.0;
+    status_msg.position     = readServoRegister(8, POSITION) / 100.0;
+    status_msg.presentspeed = readServoRegister(8, SPEED) / 100.0;
+    status_msg.moving       = readServoRegister(8, MOVING);
+    status_msg.posraw       = readServoRegister(8, RAWPOSITION);
+    status_msg.enabled      = readServoRegister(8, ENABLED);
+    status_msg.power        = readServoRegister(8, POWER);
+    status_msg.temp         = readServoRegister(8, TEMP);
+    status_msg.error        = readServoRegister(8, ERRORFLAG);
+    status_msg.value1       = readServoRegister(8, VALUE1);
+    status_msg.value2       = readServoRegister(8, VALUE2);
+    status_msg.value3       = readServoRegister(8, VALUE3);
+    status_msg.value4       = readServoRegister(8, VALUE4);
+    status_msg.value5       = readServoRegister(8, VALUE5);
 
-    */
+    //writeServoRegister(8, PVAL ,128);
+
+
 
     nh.spinOnce();
 
@@ -342,8 +343,8 @@ void generateMotorStatus() {
 short readServoRegister(byte servo, byte reg) {
   Wire.beginTransmission(servo); // transmit to device #8
   Wire.write(reg);        // sends five bytes
-  Wire.endTransmission();    // stop transmitting
-  Wire.requestFrom( servo, 2, true);
+  Wire.endTransmission(I2C_NOSTOP);    // stop transmitting
+  Wire.requestFrom( servo, 2, I2C_STOP);
   //while (Wire.available() < 4) {
   //  cfloat.fval = -1.0f;
   //}

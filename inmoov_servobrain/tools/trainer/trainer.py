@@ -269,18 +269,6 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.commandbus[s.bus].publish(motorcommand)
 
-            # send to joint_command
-            self.jointcommand.name = []
-            self.jointcommand.position = []
-
-            self.jointcommand.header = Header()
-            self.jointcommand.header.stamp = rospy.Time.now()
-            self.jointcommand.name.append(self.jointName)
-            self.jointcommand.position.append(value)
-            self.jointcommand.velocity = []
-            self.jointcommand.effort= []
-            self.jointPublisher.publish(self.jointcommand)
-
             # update param server and servo{}
             partial = '/joints/' + self.jointName + '/'
 

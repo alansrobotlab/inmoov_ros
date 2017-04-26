@@ -60,8 +60,8 @@ short Position = 0;
 
 #define EEPROM_SIZE 64
 
-short reg[EEPROM_SIZE];  // all confurable values for smartservo
-byte i2c_reg;   // which register is subject for r/w
+short reg[EEPROM_SIZE];  // all configurable values for smartservo
+byte i2c_reg;            // which register is subject for r/w
 
 byte excessbyte;
 
@@ -98,14 +98,16 @@ void receiveEvent(uint8_t howMany)
 {
   //set register for i2c r/w operation
   i2c_reg = TinyWireS.receive();
+  reg[VALUE1] = i2c_reg;
   howMany--;
 
+  // now, if there are two more bytes, then this is a write operation
   while (howMany > 0) {
     cshort.b[0] = TinyWireS.receive();
     cshort.b[1] = TinyWireS.receive();
 
     reg[i2c_reg] = cshort.val;
-    reg[VALUE1] = cshort.val;
+    reg[VALUE2] = cshort.val;
     //    if (i2c_reg < 32){
     //      EEPROM.put(0,reg);
     //    }
@@ -114,6 +116,7 @@ void receiveEvent(uint8_t howMany)
 
     if (howMany > 0) {
       excessbyte = TinyWireS.receive();
+      reg[VALUE5]++;
       howMany--;
     }
   }
@@ -139,6 +142,7 @@ void setup()
   reg[POWER]      = 1;
   reg[HEARTBEAT]  = B10100000;
   reg[MAXTEMP]    = 40;      // hardcode to 40c for now
+  reg[VALUE5]     = 0;
 
   TinyWireS.begin(8);
   TinyWireS.onReceive(receiveEvent);
@@ -221,7 +225,7 @@ SIGNAL(TIMER0_COMPA_vect) {
     counter = 0;
     if (reg[ENABLED]) {
       servo.writeMicroseconds(map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]));
-      reg[VALUE5] = map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]);
+      reg[VALUE4] = map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]);
       servo.refresh();
     }
 
