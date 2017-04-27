@@ -4,6 +4,7 @@
 */
 
 #define LED 1
+#define LEDLOW 16
 
 const bool heartbeats[] = {1, 0, 1, 0, 0, 0, 0, 0};
 
@@ -15,6 +16,7 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
+  //analogWrite(LED,LEDLOW + ((255-LEDLOW)*heartbeats[((millis() >> 7) & 7)]));
   digitalWrite(LED, heartbeats[((millis() >> 7) & 7)]);
   delay(10);                       // wait for a second
 } 

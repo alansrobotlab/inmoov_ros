@@ -247,13 +247,14 @@ void setup() {
   pinMode(LED, OUTPUT);
   digitalWrite(LED, 1);
 
-  Wire.begin(); // join i2c bus (address optional for master)
+  Wire.begin(I2C_MASTER, 0x00, I2C_PINS_18_19, I2C_PULLUP_EXT, 200000);
+  //Wire.begin(); // join i2c bus (address optional for master)
   // 511us per message at 100kbps
   // 287us per message at 200kbps
   // 215us per message at 300kbps
   // 181us per message at 400kbps
-  Wire.setRate(I2C_RATE_200);
-  //Wire.setDefaultTimeout(5000);
+  //Wire.setRate(I2C_RATE_200);
+  Wire.setDefaultTimeout(10000);
 
   nh.initNode();
   nh.advertise(smartservostatus);

@@ -26,6 +26,7 @@
 //#include <EEPROM.h>
 #include "SoftServo.h"
 #include "protocol.h"
+#include <avr/sleep.h>
 
 // The default buffer size, Can't recall the scope of defines right now
 #ifndef TWI_RX_BUFFER_SIZE
@@ -122,6 +123,63 @@ void receiveEvent(uint8_t howMany)
   }
 }
 
+void EEPROM_writeByte(unsigned char ucAddress, unsigned char ucData)
+{
+/* Wait for completion of previous write */
+while(EECR & (1<<EEPE))
+;
+
+cli();
+
+/* Set Programming mode */
+EECR = (0<<EEPM1)|(0<<EEPM0);
+/* Set up address and data registers */
+EEAR = ucAddress;
+EEDR = ucData;
+/* Write logical one to EEMPE */
+EECR |= (1<<EEMPE);
+/* Start eeprom write by setting EEPE */
+EECR |= (1<<EEPE);
+
+/* Wait for completion of previous write */
+while(EECR & (1<<EEPE))
+;
+sei();
+}
+
+unsigned char EEPROM_readByte(unsigned char ucAddress)
+{
+/* Wait for completion of previous write */
+while(EECR & (1<<EEPE))
+;
+
+cli();
+/* Set up address register */
+EEAR = ucAddress;
+/* Start eeprom read by writing EERE */
+EECR |= (1<<EERE);
+/* Return data from data register */
+
+/* Wait for completion of previous write */
+while(EECR & (1<<EEPE))
+;
+sei();
+
+return EEDR;
+}
+
+void EEPROM_writeRegister(byte reg, short value) {
+  cshort.val = value;
+  EEPROM_writeByte((reg*2), cshort.b[0]);
+  EEPROM_writeByte((reg*2), cshort.b[1]);
+}
+
+short EEPROM_readRegister(byte reg) {
+  cshort.b[0] = EEPROM_readByte((reg*2));
+  cshort.b[1] = EEPROM_readByte((reg*2) + 1);
+  return cshort.val;
+}
+
 void setup()
 {
   pinMode(SERVOPIN, OUTPUT);
@@ -131,13 +189,15 @@ void setup()
   //EEPROM.get(0,reg);
 
   reg[ID]         = 8;
+  //EEPROM_writeRegister(ID,8);
+  //reg[ID] = EEPROM_readRegister(ID);
   reg[GOAL]       = 0 * 100;       //goals are always * 100, short with two decimal places
-  reg[MINGOAL]    = -90 * 100;     //goals are always * 100, short with two decimal places
-  reg[MAXGOAL]    = 90 * 100;      //goals are always * 100, short with two decimal places
-  reg[MINPULSE]   = 660;
-  reg[MAXPULSE]   = 2325;
-  reg[MINSENSOR]  = 204;
-  reg[MAXSENSOR]  = 867;
+  reg[MINGOAL]    = 0 * 100;     //goals are always * 100, short with two decimal places
+  reg[MAXGOAL]    = 180 * 100;     //goals are always * 100, short with two decimal places
+  reg[MINPULSE]   = 597;
+  reg[MAXPULSE]   = 2200;
+  reg[MINSENSOR]  = 405;
+  reg[MAXSENSOR]  = 1676;
   reg[ENABLED]    = 1;
   reg[POWER]      = 1;
   reg[HEARTBEAT]  = B10100000;
@@ -161,8 +221,8 @@ void setup()
   timermillis = millis();
 }
 
-#define MAX_SAMPLES 20
-#define BATCH_SAMPLES 20
+#define MAX_SAMPLES 40
+#define BATCH_SAMPLES 10
 #define SHIFT 3
 
 unsigned short sampleCount = 0;
@@ -171,13 +231,14 @@ long int samplestart = 0;
 
 void updatePos() {
   for (int i = 0; i < BATCH_SAMPLES; i++) {
+    //sampleBucket += getQuietADC(SENSORPIN);
     sampleBucket += analogRead(SENSORPIN);
-    TinyWireS_stop_check();
+    //TinyWireS_stop_check();
   }
   sampleCount += BATCH_SAMPLES;
 
   if (sampleCount >= MAX_SAMPLES) {
-    sampleBucket /= MAX_SAMPLES;
+    sampleBucket /= (MAX_SAMPLES/2);
     reg[RAWPOSITION] = sampleBucket;
     reg[POSITION] = map(sampleBucket, reg[MINSENSOR], reg[MAXSENSOR], reg[MINGOAL], reg[MAXGOAL]);
     //reg[VALUE1] = millis() - samplestart;
@@ -190,11 +251,38 @@ void updatePos() {
 short get_temp() {
   analogReference(INTERNAL1V1);
   short raw = analogRead(A0 + 15);
+  // discard the first reading after a reference change
+  raw = analogRead(A0 + 15);
   /* Original code used a 13 deg adjustment. But based on my results, I didn't seem to need it. */
   //raw -= 13; // raw adjust = kelvin //this value is used to calibrate to your chip
   short in_c = raw - 273; // celcius
   analogReference(INTERNAL2V56_NO_CAP);
+  // disposable read after reference change
+  raw = analogRead(A0 + 15);
   return in_c;
+}
+
+// DOES NOT WORK, BOTH DURING ISR (LOCKS) AND IN LOOP (1 SECOND UPDATES)
+short getQuietADC(byte pin) {
+  ADMUX = bit (REFS0) | (pin & 0x07);
+
+  // start the conversion
+  ADCSRA |= bit (ADSC) | bit (ADIE);
+
+  set_sleep_mode (SLEEP_MODE_ADC);    // sleep during sample
+  sleep_mode ();
+
+  byte low, high;
+  
+  // we have to read ADCL first; doing so locks both ADCL
+  // and ADCH until ADCH is read.  reading ADCL second would
+  // cause the results of each conversion to be discarded,
+  // as ADCL and ADCH would be locked when it completed.
+  low = ADCL;
+  high = ADCH;
+
+  return (high << 8) | low;
+  
 }
 
 void loop()
@@ -204,6 +292,7 @@ void loop()
      it needs to be called in a very tight loop in order not to miss any (REMINDER: Do *not* use delay() anywhere, use tws_delay() instead).
      It will call the function registered via TinyWireS.onReceive(); if there is data in the buffer on stop.
   */
+  //updatePos();
   TinyWireS_stop_check();
 
 
@@ -224,10 +313,15 @@ SIGNAL(TIMER0_COMPA_vect) {
   if (counter >= INTERVAL) {
     counter = 0;
     if (reg[ENABLED]) {
+      //otherwise we can have goals outside the max and min
+      reg[GOAL] = constrain(reg[GOAL], reg[MINGOAL], reg[MAXGOAL]);
       servo.writeMicroseconds(map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]));
-      reg[VALUE4] = map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]);
+      //temporarily store to VALUE4 for troubleshooting purposes
       servo.refresh();
     }
+
+    //now get all of our housekeeping out of the way
+    reg[VALUE4] = map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]);
 
     updatePos();
 

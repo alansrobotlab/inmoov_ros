@@ -7,14 +7,14 @@ joints:
   smartservo:       
     bus:            0
     servoPin:       8
-    minPulse:       600
-    maxPulse:       2300
-    minGoal:        15.0
+    minPulse:       597
+    maxPulse:       2200
+    minGoal:        10.0
     maxGoal:        170.0
     rest:           0.0
     maxSpeed:       0.0
     smoothing:      0
-    sensorPin:      1
-    minSensor:      205
-    maxSensor:      879
+    sensorPin:      20
+    minSensor:      409
+    maxSensor:      1687
 

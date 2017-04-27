@@ -30,8 +30,19 @@ bus = {}
 
 state = {}
 
-sensorpos = 0.0
+samples = [0.0,0.0,0.0,0.0]
+sampleposition = 0
+moving = True
+
+feedback = 0.0
 position = 0.0
+
+MINGOAL = 10
+MAXGOAL = 170
+
+SETTLE = 2.0
+
+SAMPLES = 30
 
 smartservostatus = SmartServoStatus()
 
@@ -58,31 +69,59 @@ def init():
 
     x = 0
 
-    while x < (180 * 2 * 10):  # sample size is 3600 samples
-        # get random angle between 0 and 180, 0.5 degree increments
-        a = float(randint(0,360)) / 2.0
+    global moving
 
-        motorcommand = MotorCommand()
-        motorcommand.id = 8
-        motorcommand.parameter = PROTOCOL.GOAL
-        motorcommand.value = a
+    with open('output.csv', 'w') as export:
 
-        position = float(a)
+        while x < ((MAXGOAL-MINGOAL) * 2 * SAMPLES):  # sample size is 3600 samples
+            # get random angle between 0 and 180, 0.5 degree increments
+            a = float(randint(MINGOAL,MAXGOAL * 2)) / 2.0
 
-        commands.publish(motorcommand)
-        rospy.sleep(2)
-        print(str(a) + "," + str(sensorpos)) 
+            motorcommand = MotorCommand()
+            motorcommand.id = 8
+            motorcommand.parameter = PROTOCOL.GOAL
+            motorcommand.value = a
 
-        x += 1
+            position = float(a)
 
+            commands.publish(motorcommand)
+
+            while moving == True:
+                rospy.sleep(0.1)
+
+            output = str(a) + "," + str(feedback)
+            export.write(output + '\n')
+            print(output) 
+
+            x += 1
+            moving = True
+
+    export.close()
 
     #rospy.spin()
 
 def dispatcher(data):
 
-    global sensorpos
+    global feedback
+    global samples
+    global sampleposition
+    global moving
     
-    sensorpos = float(data.position)
+    feedback = float(data.position)
+    samples[sampleposition] = feedback
+    sampleposition = (sampleposition + 1) & 3
+
+    avg = (samples[0] + samples[1] + samples[2] + samples[3])/4
+
+    #print(abs(feedback - avg))
+
+    if abs(feedback - avg) > 0.1:
+        moving = True
+        #print(abs(feedback - avg))
+    else:
+        moving = False
+
+
     #print("SENSOR:" + str(sensorpos))
 
 if __name__ == '__main__':
