@@ -129,6 +129,11 @@ void getParameter(const inmoov_msgs::MotorParameter::Request & req, inmoov_msgs:
       value = readServoRegister(id, POWER);
       //value = (float)tServo[id]->getPower();
       break;
+
+    case P_MAXTEMP:
+      value = readServoRegister(id, MAXTEMP);
+      //value = (float)tServo[id]->getPower();
+      break;
   }
 
   res.data = value;
@@ -204,12 +209,17 @@ void commandCb( const inmoov_msgs::MotorCommand& command_msg) {
     case P_GOALSPEED:
       shortVal = short(value * 100.0);
       writeServoRegister(id, GOALSPEED, shortVal);
+    //tServo[id]->setMaxSpeed(value);
+
+    case P_MAXTEMP:
+      shortVal = short(value * 100.0);
+      writeServoRegister(id, MAXTEMP, shortVal);
       //tServo[id]->setMaxSpeed(value);
 
   }
 
   //generateMotorStatus();
-  
+
 }
 
 
@@ -247,14 +257,14 @@ void setup() {
   pinMode(LED, OUTPUT);
   digitalWrite(LED, 1);
 
-  Wire.begin(I2C_MASTER, 0x00, I2C_PINS_18_19, I2C_PULLUP_EXT, 400000);
+  Wire.begin(I2C_MASTER, 0x00, I2C_PINS_18_19, I2C_PULLUP_EXT, 200000);
   //Wire.begin(); // join i2c bus (address optional for master)
   // 511us per message at 100kbps
   // 287us per message at 200kbps
   // 215us per message at 300kbps
   // 181us per message at 400kbps
   //Wire.setRate(I2C_RATE_200);
-  Wire.setDefaultTimeout(20000);
+  Wire.setDefaultTimeout(10000);
 
   nh.initNode();
   nh.advertise(smartservostatus);
@@ -344,8 +354,8 @@ void generateMotorStatus() {
 short readServoRegister(byte servo, byte reg) {
   byte checksum = ~(reg );
   Wire.beginTransmission(servo); // transmit to device #8
-  Wire.write(reg);  
-  //Wire.write(READREGISTER);      
+  Wire.write(reg);
+  //Wire.write(READREGISTER);
   Wire.write(checksum);
   Wire.endTransmission(I2C_NOSTOP);    // stop transmitting
   Wire.requestFrom( servo, 4, I2C_STOP);
@@ -366,10 +376,11 @@ short readServoRegister(byte servo, byte reg) {
     return cshort.val;
   }
   else {
+    nh.loginfo("Invalid Checksum on Read");
     return -1;
   }
-  
-  
+
+
 }
 
 void writeServoRegister(byte servo, byte reg, short value) {

@@ -16,5 +16,5 @@ joints:
     smoothing:      0
     sensorPin:      20
     minSensor:      808
-    maxSensor:      3375
+    maxSensor:      3377
 

@@ -125,6 +125,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.txtMaxPulse.editingFinished.connect(lambda: self.valueChanged(self.txtMaxPulse, PROTOCOL.MAXPULSE))
         self.txtMinGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMinGoal, PROTOCOL.MINGOAL))
         self.txtMaxGoal.editingFinished.connect(lambda: self.valueChanged(self.txtMaxGoal, PROTOCOL.MAXGOAL))
+        self.txtMaxTemp.editingFinished.connect(lambda: self.valueChanged(self.txtMaxTemp, PROTOCOL.MAXTEMP))
         self.txtMaxSpeed.editingFinished.connect(lambda: self.valueChanged(self.txtMaxSpeed, PROTOCOL.MAXSPEED))
         self.txtMinSensor.editingFinished.connect(lambda: self.valueChanged(self.txtMinSensor, PROTOCOL.MINSENSOR))
         self.txtMaxSensor.editingFinished.connect(lambda: self.valueChanged(self.txtMaxSensor, PROTOCOL.MAXSENSOR))
@@ -143,6 +144,7 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.txtMaxPulse.editingFinished.disconnect()
         self.txtMinGoal.editingFinished.disconnect()
         self.txtMaxGoal.editingFinished.disconnect()
+        self.txtMaxTemp.editingFinished.disconnect()
         self.txtMaxSpeed.editingFinished.disconnect()
         self.txtMinSensor.editingFinished.disconnect()
         self.txtMaxSensor.editingFinished.disconnect()
@@ -191,6 +193,10 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         val = str(round(self.getParameter(PROTOCOL.MAXGOAL ),3))
         self.txtMaxGoal.setText(val)
         self.values[PROTOCOL.MAXGOAL] = val
+
+        val = str(round(self.getParameter(PROTOCOL.MAXTEMP ),3))
+        self.txtMaxTemp.setText(val)
+        self.values[PROTOCOL.MAXTEMP] = val
 
         val = str(round(self.getParameter(PROTOCOL.MAXSPEED ),3))
         self.txtMaxSpeed.setText(val)
@@ -251,6 +257,8 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 val = rospy.get_param(key + 'maxSpeed')
             elif parameter == PROTOCOL.SMOOTHING:
                 val = rospy.get_param(key + 'smooth')
+            elif parameter == PROTOCOL.MAXTEMP:
+                val = rospy.get_param(key + 'maxTemp')
             return val
         except:
             return -1.0
@@ -299,6 +307,8 @@ class TrainerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 rospy.set_param(partial + 'maxSpeed', value)
             elif parameter == PROTOCOL.SMOOTHING:
                 rospy.set_param(partial + 'smooth', value)
+            elif parameter == PROTOCOL.MAXTEMP:
+                rospy.set_param(partial + 'maxTemp', value)
 
             self.saved = False
         #except:

@@ -7,6 +7,9 @@
  * different events for read vs write
  */
 
+#define ERRORTEMP 0
+#define ERRORCHECKSUM 1
+
 #define READREGISTER  2
 #define WRITEREGISTER 3
 
@@ -65,7 +68,7 @@ SPEED,       //41
 TEMP,        //42
 POWER,       //43
 CALIBRATED,  //44
-ERRORFLAG,   //45
+ERRORFLAGS,  //45
 STATUSFRAME, //46, request value only, multi value return
 MOVING,      //47
 

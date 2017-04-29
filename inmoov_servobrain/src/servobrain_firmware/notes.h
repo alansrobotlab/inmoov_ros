@@ -1,11 +1,11 @@
 /*
  * TODO:
  *  
- *  - enhance i2c protocol, use checksum
+ *  - DONE enhance i2c protocol, use checksum
  * 
- *  - enable eeprom
+ *  - DONE enable eeprom
  * 
- *  - migrate away from arduino code
+ *  - DONE migrate away from arduino code
  *  
  *  - flatten error response
  *  
@@ -14,5 +14,7 @@
  *  - implement moving properly
  *  
  *  - remove class structure, go c single file
+ *  
+ *  - graceful recovery from bad read
  * 
  */

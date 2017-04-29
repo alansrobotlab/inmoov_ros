@@ -39,6 +39,7 @@
 #define P_CALIBRATED 0xA0
 #define P_LED 0x19
 #define P_SMOOTH 0xA6
+#define P_MAXTEMP 0x0E
 
 #define P_PRESENTPOSITION 0x24
 #define P_PRESENTSPEED 0x26

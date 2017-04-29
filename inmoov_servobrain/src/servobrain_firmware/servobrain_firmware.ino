@@ -119,6 +119,9 @@ void receiveEvent(uint8_t howMany) {
       i2c_reg = receivedRegister;
       reg[VALUE1] = i2c_reg;
     }
+    else {
+      reg[ERRORFLAGS] |= 1 << ERRORCHECKSUM;
+    }
 
     howMany -= 2;
   }
@@ -136,6 +139,12 @@ void receiveEvent(uint8_t howMany) {
       reg[i2c_reg] = cshort.val;
       reg[VALUE1] = i2c_reg;
       reg[VALUE2] = cshort.val;
+
+      if(i2c_reg < 32) {
+        cli();
+        EEPROM_writeRegister(i2c_reg, reg[i2c_reg]);
+        sei();
+      }
     }
 
     howMany -= 4;
@@ -155,8 +164,6 @@ void EEPROM_writeByte(unsigned char ucAddress, unsigned char ucData)
   while (EECR & (1 << EEPE))
     ;
 
-  cli();
-
   /* Set Programming mode */
   EECR = (0 << EEPM1) | (0 << EEPM0);
   /* Set up address and data registers */
@@ -170,7 +177,7 @@ void EEPROM_writeByte(unsigned char ucAddress, unsigned char ucData)
   /* Wait for completion of previous write */
   while (EECR & (1 << EEPE))
     ;
-  sei();
+
 }
 
 unsigned char EEPROM_readByte(unsigned char ucAddress)
@@ -179,7 +186,6 @@ unsigned char EEPROM_readByte(unsigned char ucAddress)
   while (EECR & (1 << EEPE))
     ;
 
-  cli();
   /* Set up address register */
   EEAR = ucAddress;
   /* Start eeprom read by writing EERE */
@@ -189,61 +195,66 @@ unsigned char EEPROM_readByte(unsigned char ucAddress)
   /* Wait for completion of previous write */
   while (EECR & (1 << EEPE))
     ;
-  sei();
+
 
   return EEDR;
 }
 
 void EEPROM_writeRegister(byte reg, short value) {
+  byte address = reg * 2;
   cshort.val = value;
-  EEPROM_writeByte((reg * 2), cshort.b[0]);
-  EEPROM_writeByte((reg * 2), cshort.b[1]);
+  cli();
+  EEPROM_writeByte((address),     cshort.b[0]);
+  EEPROM_writeByte((address + 1), cshort.b[1]);
+  sei();
 }
 
 short EEPROM_readRegister(byte reg) {
-  cshort.b[0] = EEPROM_readByte((reg * 2));
-  cshort.b[1] = EEPROM_readByte((reg * 2) + 1);
+  byte address = reg * 2;  // all reg contents are 16 bit shorts
+  cli();
+  cshort.b[0] = EEPROM_readByte(address);
+  cshort.b[1] = EEPROM_readByte(address + 1);
+  sei();
   return cshort.val;
 }
 
-void setup()
-{
-  pinMode(SERVOPIN, OUTPUT);
-  digitalWrite(SERVOPIN, LOW);
-  pinMode(SENSORPIN, INPUT);
+void loadRegisters2() {
 
-  //EEPROM.get(0,reg);
+  reg[ID]         = EEPROM_readRegister(ID);
+  reg[MINGOAL]    = EEPROM_readRegister(MINGOAL);
+  reg[MAXGOAL]    = EEPROM_readRegister(MAXGOAL);
+  reg[MAXSPEED]   = EEPROM_readRegister(MAXSPEED);
+  reg[MINPULSE]   = EEPROM_readRegister(MINPULSE);
+  reg[MAXPULSE]   = EEPROM_readRegister(MAXPULSE);
+  reg[MINSENSOR]  = EEPROM_readRegister(MINSENSOR);
+  reg[MAXSENSOR]  = EEPROM_readRegister(MAXSENSOR);
+  reg[HEARTBEAT]  = EEPROM_readRegister(HEARTBEAT);
+  reg[MAXTEMP]    = EEPROM_readRegister(MAXTEMP);
+
+  reg[ENABLED]    = 0;
+  //reg[GOAL]       = EEPROM_readRegister(ID);
+  reg[PULSE]      = 1500;        // initial value to center
+}
+
+void loadRegisters() {
 
   reg[ID]         = 8;
-  //EEPROM_writeRegister(ID,8);
-  //reg[ID] = EEPROM_readRegister(ID);
-  reg[GOAL]       = 90 * 100;     //goals are always * 100, short with two decimal places
-  reg[MINGOAL]    = 10 * 100;     //goals are always * 100, short with two decimal places
-  reg[MAXGOAL]    = 170 * 100;    //goals are always * 100, short with two decimal places
-  reg[MINPULSE]   = 587;
-  reg[MAXPULSE]   = 2200;
-  reg[MINSENSOR]  = 405;
-  reg[MAXSENSOR]  = 1676;
-  reg[ENABLED]    = 1;
-  reg[POWER]      = 1;
+  EEPROM_writeRegister(ID,reg[ID]);
+  reg[MINGOAL]    = 0 * 100;
+  reg[MAXGOAL]    = 180 * 100;
+  reg[MAXSPEED]   = 0;
+  reg[MINPULSE]   = 550;
+  reg[MAXPULSE]   = 2550;
+  reg[MINSENSOR]  = 808;
+  reg[MAXSENSOR]  = 4700;
   reg[HEARTBEAT]  = B10100000;
-  reg[MAXTEMP]    = 40;          // hardcode to 40c for now
-  reg[VALUE5]     = 0;
+  reg[MAXTEMP]    = 40;
+
+  reg[ENABLED]    = 0;
+  reg[GOAL]       = 90;
   reg[PULSE]      = 1500;        // initial value to center
-
-  TinyWireS.begin(8);
-  TinyWireS.onReceive(receiveEvent);
-  TinyWireS.onRequest(requestEvent);
-
-  //analogReference( INTERNAL2V56_NO_CAP );
-
-  // Set up the interrupt that will refresh the servo for us automagically
-  OCR0A = 0xAF;            // any number is OK
-  TIMSK |= _BV(OCIE0A);    // Turn on the compare interrupt (below!)
-
-  //initialize timermillis
-  timermillis = millis();
 }
+
 
 /*
     The ISR is called 500 times a second at 8mhz
@@ -256,7 +267,6 @@ void setup()
 byte sampleCount = 0;
 unsigned long int sampleBucket = 0;
 //long int samplestart = 0;
-
 
 void updatePos() {
   // based on code from
@@ -404,6 +414,31 @@ short getQuietADC(byte pin) {
 
 }
 
+
+void setup()
+{
+  pinMode(SERVOPIN, OUTPUT);
+  digitalWrite(SERVOPIN, LOW);
+  pinMode(SENSORPIN, INPUT);
+
+  loadRegisters2();
+
+  TinyWireS.begin(reg[ID]);
+  TinyWireS.onReceive(receiveEvent);
+  TinyWireS.onRequest(requestEvent);
+
+  //analogReference( INTERNAL2V56_NO_CAP );
+
+  // Set up the interrupt that will refresh the servo for us automagically
+  OCR0A = 0xAF;            // any number is OK
+  TIMSK |= _BV(OCIE0A);    // Turn on the compare interrupt (below!)
+
+  //initialize timermillis
+  timermillis = millis();
+}
+
+
+
 void loop()
 {
   /*
@@ -456,6 +491,7 @@ SIGNAL(TIMER0_COMPA_vect) {
 
     if (reg[TEMP] >= reg[MAXTEMP]) {
       reg[ENABLED] = 0;
+      reg[ERRORFLAGS] |= 1<<ERRORTEMP;
 
     }
 
