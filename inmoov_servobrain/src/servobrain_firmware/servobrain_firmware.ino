@@ -74,48 +74,78 @@ unsigned long timermillis = 0;
 /**
    This is called for each read request we receive, never put more than one byte of data (with TinyWireS.send) to the
    send-buffer when using this callback
+
+   Data request packet has following elements:
+   [REGISTERBYTE] [LOWBYTE] [HIGHBYTE] [CHECKSUMBYTE]
 */
 void requestEvent()
 {
   cshort.val = reg[i2c_reg];
+
+  byte checksum = ~(i2c_reg + cshort.b[0] + cshort.b[1]);
+
+  TinyWireS.send(i2c_reg);
   TinyWireS.send(cshort.b[0]);
   TinyWireS.send(cshort.b[1]);
+  TinyWireS.send(checksum);
 
 }
 
 
 
-/**
+/*
    The I2C data received -handler
 
    This needs to complete before the next incoming transaction (start, data, restart/stop) on the bus does
    so be quick, set flags for long running tasks to be called from the mainloop instead of running them directly,
+
+   Data Write packet has the following elements:
+   [REGISTERBYTE] [CHECKSUMBYTE]  set registers for read operation next
+   [REGISTERBYTE] [LOWBYTE] [HIGHBYTE] [CHECKSUMBYTE] write a register
 */
-void receiveEvent(uint8_t howMany)
-{
-  //set register for i2c r/w operation
-  i2c_reg = TinyWireS.receive();
-  reg[VALUE1] = i2c_reg;
-  howMany--;
+void receiveEvent(uint8_t howMany) {
+  byte receivedRegister;
+  byte receivedChecksum;
+  byte calculatedChecksum;
 
-  // now, if there are two more bytes, then this is a write operation
-  while (howMany > 0) {
-    cshort.b[0] = TinyWireS.receive();
-    cshort.b[1] = TinyWireS.receive();
+  if (howMany == 2) {
+    // this is a register address for a read op
+    //set register for i2c r/w operation
+    receivedRegister = TinyWireS.receive();
+    receivedChecksum = TinyWireS.receive();
+    calculatedChecksum = ~(receivedRegister);
 
-    reg[i2c_reg] = cshort.val;
-    reg[VALUE2] = cshort.val;
-    //    if (i2c_reg < 32){
-    //      EEPROM.put(0,reg);
-    //    }
+    if (receivedChecksum == calculatedChecksum) {
+      i2c_reg = receivedRegister;
+      reg[VALUE1] = i2c_reg;
+    }
 
     howMany -= 2;
+  }
 
-    if (howMany > 0) {
-      excessbyte = TinyWireS.receive();
-      reg[VALUE5]++;
-      howMany--;
+  if (howMany == 4) {
+    // this is a write register operation
+    receivedRegister = TinyWireS.receive();
+    cshort.b[0] = TinyWireS.receive();
+    cshort.b[1] = TinyWireS.receive();
+    receivedChecksum = TinyWireS.receive();
+    calculatedChecksum = ~(receivedRegister + cshort.b[0] + cshort.b[1]);
+
+    if (receivedChecksum == calculatedChecksum) {
+      i2c_reg = receivedRegister;
+      reg[i2c_reg] = cshort.val;
+      reg[VALUE1] = i2c_reg;
+      reg[VALUE2] = cshort.val;
     }
+
+    howMany -= 4;
+  }
+
+
+  if (howMany > 0) {
+    excessbyte = TinyWireS.receive();
+    reg[VALUE5]++;
+    howMany--;
   }
 }
 

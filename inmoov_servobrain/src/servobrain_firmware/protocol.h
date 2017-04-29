@@ -7,6 +7,8 @@
  * different events for read vs write
  */
 
+#define READREGISTER  2
+#define WRITEREGISTER 3
 
 enum protocolValues {
 // required to be set by programmer
