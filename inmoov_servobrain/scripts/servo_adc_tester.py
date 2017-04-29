@@ -30,17 +30,24 @@ bus = {}
 
 state = {}
 
-samples = [0.0,0.0,0.0,0.0]
+samples = [0.0, 0.0, 0.0, 0.0]
 sampleposition = 0
 moving = True
 
-feedback = 0.0
+feedback = -1.0
+temperature = 0
 position = 0.0
 
 MINGOAL = 10
 MAXGOAL = 170
 
-SETTLE = 2.0
+# this is a hand tuned value based on the test rig
+# 170-10 = 160 angle range, 1686-409 = 1277 feedback range
+# 160/1277 = ~0.125 degrees per gradation
+# so, with samples[4], if one sample is off by one gradation
+# that is ~ 0.031, so we'll round up to 0.035
+# as long as 3 of 4 match, and 1 is off by one, we'll accept
+SETTLE_ERROR = 0.035
 
 SAMPLES = 30
 
@@ -70,12 +77,15 @@ def init():
     x = 0
 
     global moving
+    global temperature
 
     with open('output.csv', 'w') as export:
 
+        export.write("count,temperature,command,error,feedback")
+
         while x < ((MAXGOAL-MINGOAL) * 2 * SAMPLES):  # sample size is 3600 samples
             # get random angle between 0 and 180, 0.5 degree increments
-            a = float(randint(MINGOAL,MAXGOAL * 2)) / 2.0
+            a = float(randint(MINGOAL * 2,MAXGOAL * 2)) / 2.0
 
             motorcommand = MotorCommand()
             motorcommand.id = 8
@@ -89,7 +99,7 @@ def init():
             while moving == True:
                 rospy.sleep(0.1)
 
-            output = str(a) + "," + str(feedback)
+            output = "{:6.0f}".format(x) + "," + "{:2.0f}".format(temperature) + ","  + "{:7.2f}".format(a) + "," + "{:7.2f}".format(feedback -a) + "," + "{:7.2f}".format(feedback)
             export.write(output + '\n')
             print(output) 
 
@@ -103,11 +113,13 @@ def init():
 def dispatcher(data):
 
     global feedback
+    global temperature
     global samples
     global sampleposition
     global moving
     
     feedback = float(data.position)
+    temperature = data.temp
     samples[sampleposition] = feedback
     sampleposition = (sampleposition + 1) & 3
 
@@ -115,7 +127,7 @@ def dispatcher(data):
 
     #print(abs(feedback - avg))
 
-    if abs(feedback - avg) > 0.1:
+    if abs(feedback - avg) > SETTLE_ERROR:  # hand tuned value
         moving = True
         #print(abs(feedback - avg))
     else:

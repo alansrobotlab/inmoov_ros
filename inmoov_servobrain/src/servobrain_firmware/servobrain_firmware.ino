@@ -23,8 +23,6 @@
 
 // Get this from https://github.com/rambo/TinyWire
 #include <TinyWireS.h>
-//#include <EEPROM.h>
-#include "SoftServo.h"
 #include "protocol.h"
 #include <avr/sleep.h>
 
@@ -42,15 +40,13 @@
 #define SERVOPIN  1
 #define SENSORPIN 0 //digital 5 is adc channel 0
 
-#define INTERNAL2V56_NO_CAP (6)
+//#define INTERNAL2V56_NO_CAP (6)
 
 /* Prototype Configuration
   #define LED       1  // no LED in POC
   #define SERVOPIN  3
   #define SENSORPIN 2 //digital 4 is adc channel 2
 */
-
-SoftServo servo;  //FIXME no need to make this a class
 
 
 short pos = 0;
@@ -125,58 +121,58 @@ void receiveEvent(uint8_t howMany)
 
 void EEPROM_writeByte(unsigned char ucAddress, unsigned char ucData)
 {
-/* Wait for completion of previous write */
-while(EECR & (1<<EEPE))
-;
+  /* Wait for completion of previous write */
+  while (EECR & (1 << EEPE))
+    ;
 
-cli();
+  cli();
 
-/* Set Programming mode */
-EECR = (0<<EEPM1)|(0<<EEPM0);
-/* Set up address and data registers */
-EEAR = ucAddress;
-EEDR = ucData;
-/* Write logical one to EEMPE */
-EECR |= (1<<EEMPE);
-/* Start eeprom write by setting EEPE */
-EECR |= (1<<EEPE);
+  /* Set Programming mode */
+  EECR = (0 << EEPM1) | (0 << EEPM0);
+  /* Set up address and data registers */
+  EEAR = ucAddress;
+  EEDR = ucData;
+  /* Write logical one to EEMPE */
+  EECR |= (1 << EEMPE);
+  /* Start eeprom write by setting EEPE */
+  EECR |= (1 << EEPE);
 
-/* Wait for completion of previous write */
-while(EECR & (1<<EEPE))
-;
-sei();
+  /* Wait for completion of previous write */
+  while (EECR & (1 << EEPE))
+    ;
+  sei();
 }
 
 unsigned char EEPROM_readByte(unsigned char ucAddress)
 {
-/* Wait for completion of previous write */
-while(EECR & (1<<EEPE))
-;
+  /* Wait for completion of previous write */
+  while (EECR & (1 << EEPE))
+    ;
 
-cli();
-/* Set up address register */
-EEAR = ucAddress;
-/* Start eeprom read by writing EERE */
-EECR |= (1<<EERE);
-/* Return data from data register */
+  cli();
+  /* Set up address register */
+  EEAR = ucAddress;
+  /* Start eeprom read by writing EERE */
+  EECR |= (1 << EERE);
+  /* Return data from data register */
 
-/* Wait for completion of previous write */
-while(EECR & (1<<EEPE))
-;
-sei();
+  /* Wait for completion of previous write */
+  while (EECR & (1 << EEPE))
+    ;
+  sei();
 
-return EEDR;
+  return EEDR;
 }
 
 void EEPROM_writeRegister(byte reg, short value) {
   cshort.val = value;
-  EEPROM_writeByte((reg*2), cshort.b[0]);
-  EEPROM_writeByte((reg*2), cshort.b[1]);
+  EEPROM_writeByte((reg * 2), cshort.b[0]);
+  EEPROM_writeByte((reg * 2), cshort.b[1]);
 }
 
 short EEPROM_readRegister(byte reg) {
-  cshort.b[0] = EEPROM_readByte((reg*2));
-  cshort.b[1] = EEPROM_readByte((reg*2) + 1);
+  cshort.b[0] = EEPROM_readByte((reg * 2));
+  cshort.b[1] = EEPROM_readByte((reg * 2) + 1);
   return cshort.val;
 }
 
@@ -191,75 +187,168 @@ void setup()
   reg[ID]         = 8;
   //EEPROM_writeRegister(ID,8);
   //reg[ID] = EEPROM_readRegister(ID);
-  reg[GOAL]       = 0 * 100;       //goals are always * 100, short with two decimal places
-  reg[MINGOAL]    = 0 * 100;     //goals are always * 100, short with two decimal places
-  reg[MAXGOAL]    = 180 * 100;     //goals are always * 100, short with two decimal places
-  reg[MINPULSE]   = 597;
+  reg[GOAL]       = 90 * 100;     //goals are always * 100, short with two decimal places
+  reg[MINGOAL]    = 10 * 100;     //goals are always * 100, short with two decimal places
+  reg[MAXGOAL]    = 170 * 100;    //goals are always * 100, short with two decimal places
+  reg[MINPULSE]   = 587;
   reg[MAXPULSE]   = 2200;
   reg[MINSENSOR]  = 405;
   reg[MAXSENSOR]  = 1676;
   reg[ENABLED]    = 1;
   reg[POWER]      = 1;
   reg[HEARTBEAT]  = B10100000;
-  reg[MAXTEMP]    = 40;      // hardcode to 40c for now
+  reg[MAXTEMP]    = 40;          // hardcode to 40c for now
   reg[VALUE5]     = 0;
+  reg[PULSE]      = 1500;        // initial value to center
 
   TinyWireS.begin(8);
   TinyWireS.onReceive(receiveEvent);
   TinyWireS.onRequest(requestEvent);
 
-  analogReference( INTERNAL2V56_NO_CAP );
+  //analogReference( INTERNAL2V56_NO_CAP );
 
   // Set up the interrupt that will refresh the servo for us automagically
   OCR0A = 0xAF;            // any number is OK
   TIMSK |= _BV(OCIE0A);    // Turn on the compare interrupt (below!)
 
-  servo.attach(SERVOPIN);   // Attach the servo to pin 0 on Trinket
-  servo.write(reg[GOAL]);           // Tell servo to go to position per quirk
-
   //initialize timermillis
   timermillis = millis();
 }
 
-#define MAX_SAMPLES 40
-#define BATCH_SAMPLES 10
-#define SHIFT 3
+/*
+    The ISR is called 500 times a second at 8mhz
+      So, 60 averaged samples 5 samples per iteration
+      results in ~40 updates per second
+*/
+#define MAX_SAMPLES 60
+#define BATCH_SAMPLES 5
 
-unsigned short sampleCount = 0;
+byte sampleCount = 0;
 unsigned long int sampleBucket = 0;
-long int samplestart = 0;
+//long int samplestart = 0;
+
 
 void updatePos() {
+  // based on code from
+  // http://21stdigitalhome.blogspot.com/2014/10/trinket-attiny85-internal-temperature.html
+
+  ADCSRA &= ~(_BV(ADATE) | _BV(ADIE)); // Clear auto trigger and interrupt enable
+  ADCSRA |= _BV(ADEN);                // Enable AD and start conversion
+  ADMUX = SENSORPIN | _BV( REFS2 ) | _BV( REFS1 );         // ADC0 (PB4) and Ref voltage = 2.56V without external bypass capacitor;
+  //delay(100);                         // Settling time min 1 ms, take 100 ms
+  getADC();                         //discard first measurement
+
   for (int i = 0; i < BATCH_SAMPLES; i++) {
-    //sampleBucket += getQuietADC(SENSORPIN);
-    sampleBucket += analogRead(SENSORPIN);
-    //TinyWireS_stop_check();
+    sampleBucket += getADC();
   }
+
+  ADCSRA &= ~(_BV(ADEN));        // disable ADC
+
   sampleCount += BATCH_SAMPLES;
 
   if (sampleCount >= MAX_SAMPLES) {
-    sampleBucket /= (MAX_SAMPLES/2);
+    sampleBucket /= (MAX_SAMPLES / 4);    // give an extra bit of subsampled resolution
     reg[RAWPOSITION] = sampleBucket;
     reg[POSITION] = map(sampleBucket, reg[MINSENSOR], reg[MAXSENSOR], reg[MINGOAL], reg[MAXGOAL]);
-    //reg[VALUE1] = millis() - samplestart;
-    samplestart = millis();
     sampleBucket = 0.0f;
     sampleCount = 0;
   }
+
 }
 
-short get_temp() {
-  analogReference(INTERNAL1V1);
-  short raw = analogRead(A0 + 15);
-  // discard the first reading after a reference change
-  raw = analogRead(A0 + 15);
-  /* Original code used a 13 deg adjustment. But based on my results, I didn't seem to need it. */
-  //raw -= 13; // raw adjust = kelvin //this value is used to calibrate to your chip
-  short in_c = raw - 273; // celcius
-  analogReference(INTERNAL2V56_NO_CAP);
-  // disposable read after reference change
-  raw = analogRead(A0 + 15);
-  return in_c;
+
+short readTemp() {
+  //http://21stdigitalhome.blogspot.com/2014/10/trinket-attiny85-internal-temperature.html
+
+  // Setup the Analog to Digital Converter -  one ADC conversion
+  //   is read and discarded
+  ADCSRA &= ~(_BV(ADATE) | _BV(ADIE)); // Clear auto trigger and interrupt enable
+  ADCSRA |= _BV(ADEN);                // Enable AD and start conversion
+  ADMUX = 0xF | _BV( REFS1 );         // ADC4 (Temp Sensor) and Ref voltage = 1.1V;
+  //delay(100);                         // Settling time min 1 ms, take 100 ms
+  getADC();                         //discard first measurement
+  // Measure temperature
+  ADCSRA |= _BV(ADEN);           // Enable AD and start conversion
+  ADMUX = 0xF | _BV( REFS1 );    // ADC4 (Temp Sensor) and Ref voltage = 1.1V;
+  //delay(100);                    // Settling time min 1 ms, wait 100 ms
+
+  short rawTemp = getADC();     // use next sample as initial average
+  //for (short i=2; i<2000; i++) {   // calculate running average for 2000 measurements
+  //  rawTemp += ((float)getADC() - rawTemp) / float(i);
+  //}
+  ADCSRA &= ~(_BV(ADEN));        // disable ADC
+
+  rawTemp -= 273;               // previous adjustment to celcius code
+
+  return rawTemp;
+
+}
+
+
+
+short readVcc_bad() {
+  // based on code from
+  // http://21stdigitalhome.blogspot.com/2014/10/trinket-attiny85-internal-temperature.html
+
+  // Measure chip voltage (Vcc)
+  ADCSRA |= _BV(ADEN);   // Enable ADC
+  ADMUX  = 0x0c | _BV(REFS2);    // Use Vcc as voltage reference,
+  //    bandgap reference as ADC input
+  //delay(100);                    // Settling time min 1 ms, there is
+  //    time so wait 100 ms
+  long int rawVcc = getADC();      // discard first read
+
+  ADCSRA |= _BV(ADEN);   // Enable ADC
+  ADMUX  = 0x0c | _BV(REFS2);    // Use Vcc as voltage reference,
+  //    bandgap reference as ADC input
+  //delay(100);                    // Settling time min 1 ms, there is
+  //    time so wait 100
+  rawVcc = 0;
+  for (byte i = 2; i < BATCH_SAMPLES; i++) { // calculate running average for 2000 measurements
+    rawVcc += getADC();
+  }
+  ADCSRA &= ~(_BV(ADEN));        // disable ADC
+
+  rawVcc /= BATCH_SAMPLES;
+
+  //rawVcc = (1024 * (110)) / rawVcc;  // 1.1v * 100 for integer math
+
+  return (short)rawVcc;
+
+
+}
+
+
+uint16_t readVcc(void) {
+  // http://www.avrfreaks.net/comment/947156#comment-947156
+
+  uint16_t result = 0;
+  // Read 1.1V reference against Vcc
+  ADMUX = (0 << REFS0) | (12 << MUX0);
+  //delay(2); // Wait for Vref to settle
+  //ADCSRA |= (1 << ADSC); // Convert
+  //while (bit_is_set(ADCSRA, ADSC));
+  //result = ADCW;
+  result = getADC();
+  result = 0;   //discard first read
+
+  for (byte i = 0; i < BATCH_SAMPLES; i++) {
+    result += getADC();
+    //ADCSRA |= (1 << ADSC); // Convert
+    //while (bit_is_set(ADCSRA, ADSC));
+    //result += ADCW;
+  }
+  result /= BATCH_SAMPLES;
+  //return 1125300L / result; // Back-calculate AVcc in mV
+  return 112530L / result; // Back-calculate AVcc in integer V * 100
+}
+
+
+short getADC() {
+  // Common code for all sources of an ADC conversion
+  ADCSRA  |= _BV(ADSC);          // Start conversion
+  while ((ADCSRA & _BV(ADSC)));   // Wait until conversion is finished
+  return ADC;
 }
 
 // DOES NOT WORK, BOTH DURING ISR (LOCKS) AND IN LOOP (1 SECOND UPDATES)
@@ -273,7 +362,7 @@ short getQuietADC(byte pin) {
   sleep_mode ();
 
   byte low, high;
-  
+
   // we have to read ADCL first; doing so locks both ADCL
   // and ADCH until ADCH is read.  reading ADCL second would
   // cause the results of each conversion to be discarded,
@@ -282,22 +371,24 @@ short getQuietADC(byte pin) {
   high = ADCH;
 
   return (high << 8) | low;
-  
+
 }
 
 void loop()
 {
-  /**
+  /*
      This is the only way we can detect stop condition (http://www.avrfreaks.net/index.php?name=PNphpBB2&file=viewtopic&p=984716&sid=82e9dc7299a8243b86cf7969dd41b5b5#984716)
      it needs to be called in a very tight loop in order not to miss any (REMINDER: Do *not* use delay() anywhere, use tws_delay() instead).
      It will call the function registered via TinyWireS.onReceive(); if there is data in the buffer on stop.
   */
-  //updatePos();
   TinyWireS_stop_check();
 
 
 
 }
+
+// Solution based heavily on Adafruit Trinket SoftServo
+// https://github.com/adafruit/Adafruit_SoftServo
 
 // We'll take advantage of the built in millis() timer that goes off
 // to keep track of time, and refresh the servo every 20 milliseconds
@@ -306,6 +397,7 @@ void loop()
 //#define INTERVAL 20  // for 16mhz clock?
 #define INTERVAL 10    // for 8mhz clock?
 volatile uint8_t counter = 0;
+
 SIGNAL(TIMER0_COMPA_vect) {
   // this gets called every 2 milliseconds
   counter += 1;
@@ -313,23 +405,36 @@ SIGNAL(TIMER0_COMPA_vect) {
   if (counter >= INTERVAL) {
     counter = 0;
     if (reg[ENABLED]) {
-      //otherwise we can have goals outside the max and min
-      reg[GOAL] = constrain(reg[GOAL], reg[MINGOAL], reg[MAXGOAL]);
-      servo.writeMicroseconds(map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]));
-      //temporarily store to VALUE4 for troubleshooting purposes
-      servo.refresh();
+      digitalWrite(SERVOPIN, HIGH);
+      delayMicroseconds(reg[PULSE]);
+      digitalWrite(SERVOPIN, LOW);
     }
 
-    //now get all of our housekeeping out of the way
-    reg[VALUE4] = map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]);
+    /*
+       Things you want to do after the servo pulse, 50 times a second
+    */
 
-    updatePos();
+    //otherwise we can have goals outside the max and min
+    reg[GOAL] = constrain(reg[GOAL], reg[MINGOAL], reg[MAXGOAL]);
+    reg[PULSE] = map(reg[GOAL], reg[MINGOAL], reg[MAXGOAL], reg[MINPULSE], reg[MAXPULSE]);
 
-    reg[TEMP] = get_temp();
+    reg[TEMP] = readTemp();
+
+    reg[POWER] = readVcc();
+
+    reg[VALUE4] = reg[PULSE];
 
     if (reg[TEMP] >= reg[MAXTEMP]) {
       reg[ENABLED] = 0;
+
     }
 
   }
+
+  /*
+     Things you want to do 500 times a second (@ 8mhz)
+  */
+
+  updatePos();
+
 }

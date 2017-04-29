@@ -64,7 +64,7 @@ TEMP,        //42
 POWER,       //43
 CALIBRATED,  //44
 ERRORFLAG,   //45
-STATUSFRAME, //46
+STATUSFRAME, //46, request value only, multi value return
 MOVING,      //47
 
 // extended generic values
@@ -72,7 +72,21 @@ VALUE1,      //48
 VALUE2,      //49
 VALUE3,      //50
 VALUE4,      //51
-VALUE5       //52
+VALUE5,      //52
+
+// internal values
+UNDEFINED53, //53
+UNDEFINED54, //54
+UNDEFINED55, //55
+UNDEFINED56, //56
+UNDEFINED57, //57
+UNDEFINED58, //58
+UNDEFINED59, //59
+UNDEFINED60, //60
+UNDEFINED61, //61
+UNDEFINED62, //62
+PULSE        //63
+
   
 };
 
