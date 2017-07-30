@@ -2,8 +2,6 @@
 
 <robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
-
 <xacro:macro name="arm" params="side flip covers">
 
   <link name="${side}_shoulder_base_link">
@@ -14,6 +12,12 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:if value="${side == 'l'}">
+      <xacro:l_shoulder_base_inertial/>
+    </xacro:if>
+    <xacro:if value="${side == 'r'}">
+      <xacro:r_shoulder_base_inertial/>
+    </xacro:if>
   </link>
 
   <link name="${side}_shoulder_link">
@@ -24,6 +28,12 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:if value="${side == 'l'}">
+      <xacro:l_shoulder_inertial/>
+    </xacro:if>
+    <xacro:if value="${side == 'r'}">
+      <xacro:r_shoulder_inertial/>
+    </xacro:if>
   </link>
 
   <link name="${side}_bicep_link">
@@ -34,6 +44,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:bicep_inertial/>
   </link>
 
   <link name="${side}_bicepcover_link">
@@ -44,6 +55,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
     </visual>
+    <xacro:bicepcover_inertial/>
   </link>
 
   <link name="${side}_forearm_link">
@@ -54,6 +66,12 @@
       <origin rpy="0 0 0" xyz="${flip * 0.001} 0 0"/>
       <xacro:cover_color/>
     </visual>
+    <xacro:if value="${side == 'l'}">
+      <xacro:l_forearm_inertial/>
+    </xacro:if>
+    <xacro:if value="${side == 'r'}">
+      <xacro:r_forearm_inertial/>
+    </xacro:if>
   </link>
 
   <joint name="${side}_shoulder_lift_joint" type="revolute">

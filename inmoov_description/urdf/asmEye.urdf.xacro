@@ -2,10 +2,6 @@
 
 <robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
-
-<xacro:include filename="$(find inmoov_description)/urdf/config.urdf.xacro" />
-
 <xacro:macro name="asmEye" params="side">
 
   <link name="${side}_eyesupport_link">
@@ -16,6 +12,12 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:if value="${side == 'l'}">
+      <xacro:l_eyesupport_inertial/>
+    </xacro:if>
+    <xacro:if value="${side == 'r'}">
+      <xacro:r_eyesupport_inertial/>
+    </xacro:if>
   </link>
 
   <link name="${side}_camera_link">
@@ -26,6 +28,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:camera_color/>
     </visual>
+    <xacro:camera_inertial/>
   </link>
 
   <link name="${side}_eye_link">
@@ -36,6 +39,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:eyeball_color/>
     </visual>
+    <xacro:eye_inertial/>
   </link>
 
   <link name="${side}_iris_link">
@@ -46,6 +50,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:iris_color/>
     </visual>
+    <xacro:iris_inertial/>
   </link>
 
   <joint name="${side}_camera_joint" type="fixed">

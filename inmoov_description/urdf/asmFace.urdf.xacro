@@ -2,10 +2,6 @@
 
 <robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
-
-<xacro:include filename="$(find inmoov_description)/urdf/config.urdf.xacro" />
-
 <xacro:include filename="$(find inmoov_description)/urdf/asmEye.urdf.xacro" />
 
 <xacro:macro name="face" params="covers">
@@ -18,6 +14,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
     </visual>
+    <xacro:face_inertial/>
   </link>
 
   <joint name="eyes_tilt_joint" type="revolute">
@@ -36,6 +33,7 @@
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:eyesupport_inertial/>
   </link>
 
 <xacro:asmEye side="r"/>

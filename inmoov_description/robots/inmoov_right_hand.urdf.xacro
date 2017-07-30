@@ -2,8 +2,10 @@
 
 <robot name="inmoov_hand" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find inmoov_description)/urdf/config.urdf.xacro" />
+<xacro:include filename="$(find inmoov_description)/urdf/config.joints.urdf.xacro" />
+<xacro:include filename="$(find inmoov_description)/urdf/config.inertial.urdf.xacro" />
 <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+
 <xacro:include filename="$(find inmoov_description)/urdf/asmHand.urdf.xacro" />
 
   <link name="base_link">
