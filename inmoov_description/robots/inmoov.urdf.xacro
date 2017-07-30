@@ -5,6 +5,7 @@
 <xacro:include filename="$(find inmoov_description)/urdf/config.joints.urdf.xacro" />
 <xacro:include filename="$(find inmoov_description)/urdf/config.inertial.urdf.xacro" />
 <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+<xacro:include filename="$(find inmoov_description)/urdf/inmoov.gazebo" />
 
   <xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
   <xacro:include filename="$(find inmoov_description)/urdf/asmBase.urdf.xacro" />
@@ -14,6 +15,13 @@
   <xacro:include filename="$(find inmoov_description)/urdf/asmFace.urdf.xacro" />
   <xacro:include filename="$(find inmoov_description)/urdf/asmArm.urdf.xacro" />
   <xacro:include filename="$(find inmoov_description)/urdf/asmHand.urdf.xacro" />
+
+  <link name="world"/>
+
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
 
   <link name="base_link">
     <visual>
