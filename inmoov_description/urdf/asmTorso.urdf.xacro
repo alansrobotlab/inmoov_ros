@@ -59,7 +59,7 @@
     <xacro:kinectone_inertial/>
   </link>
 
-  <link name="kinect2_ir_optical_frame_link">
+  <link name="kinect2_ir_optical_frame">
     <visual>
       <geometry>
         <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
@@ -70,7 +70,7 @@
     <xacro:kinectone_inertial/>
   </link>
 
-  <link name="kinect2_rgb_optical_frame_link">
+  <link name="kinect2_rgb_optical_frame">
     <visual>
       <geometry>
         <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
@@ -131,13 +131,13 @@
   <joint name="kinect2_ir_optical_frame_joint" type="fixed">
 <origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
     <parent link="torso_link"/>
-    <child link="kinect2_ir_optical_frame_link"/>
+    <child link="kinect2_ir_optical_frame"/>
   </joint>
 
   <joint name="kinect2_rgb_optical_joint" type="fixed">
 <origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
     <parent link="torso_link"/>
-    <child link="kinect2_rgb_optical_frame_link"/>
+    <child link="kinect2_rgb_optical_frame"/>
   </joint>
 
 </xacro:macro>
