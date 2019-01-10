@@ -1,0 +1,11 @@
+<launch>
+
+<node name="video_server" pkg="web_video_server" type="web_video_server" output="screen" >
+    <param name="port" value="8080" />
+    <param name="address" value="192.168.12.1" />
+    <param name="server_threads" value="1" />
+    <param name="ros_threads" value="1" />
+  </node>
+
+
+</launch>

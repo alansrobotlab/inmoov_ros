@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="asmEye" params="side">
+
+  <link name="${side}_eyesupport_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_meshes/meshes/${side}_eyesupport.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:frame_color/>
+    </visual>
+    <xacro:if value="${side == 'l'}">
+      <xacro:l_eyesupport_inertial/>
+    </xacro:if>
+    <xacro:if value="${side == 'r'}">
+      <xacro:r_eyesupport_inertial/>
+    </xacro:if>
+  </link>
+
+  <link name="${side}_camera_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_meshes/meshes/camera.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:camera_color/>
+    </visual>
+    <xacro:camera_inertial/>
+  </link>
+
+  <link name="${side}_eye_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_meshes/meshes/eye.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:eyeball_color/>
+    </visual>
+    <xacro:eye_inertial/>
+  </link>
+
+  <link name="${side}_iris_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_meshes/meshes/iris.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <xacro:iris_color/>
+    </visual>
+    <xacro:iris_inertial/>
+  </link>
+
+  <joint name="${side}_camera_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.001 0 0"/>
+    <parent link="${side}_eyesupport_link"/>
+    <child link="${side}_camera_link"/>
+  </joint>
+
+  <joint name="${side}_eye_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.003 0 0"/>
+    <parent link="${side}_eyesupport_link"/>
+    <child link="${side}_eye_link"/>
+  </joint>
+
+  <joint name="${side}_iris_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0061 0 0"/>
+    <parent link="${side}_eyesupport_link"/>
+    <child link="${side}_iris_link"/>
+  </joint>
+
+</xacro:macro>
+
+</robot>

@@ -2,21 +2,19 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:property name="pi" value="3.1415926535897931" />
-
 <xacro:macro name="decimalrgba" params="r g b a">
       <color rgba="${r/255} ${g/255} ${b/255} ${a/255}"/>
 </xacro:macro>
       
 <xacro:macro name="frame_color">
       <material name="cframe">
-      <color rgba="0.25 0.25 0.25 1"/>
+      <color rgba="0.40 0.40 0.40 1"/>
       </material>
 </xacro:macro>
 
 <xacro:macro name="cover_color">
       <material name="ccover">
-      <color rgba="0.6 0.6 0.6 1"/>
+      <color rgba="0.75 0.75 0.75 1.0"/>
       </material>
 </xacro:macro>
 

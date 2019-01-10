@@ -10,26 +10,47 @@ TeensyServo::TeensyServo(int pin, int sensor) {
   this->servoPin = pin;
   this->sensorPin = sensor;
 
+  pinMode(servoPin, OUTPUT);
+  pinMode(sensorPin, INPUT);
+
   readEeprom(servoPin);
 
-  setGoal(readPositionAngle());
+  //setGoal(readPositionAngle());
 
   moving = false;
   enabled = 0;
 
-  
+  sampleStartMillis = millis();
+
+
 }
 
 
 void TeensyServo::setGoal(float a) {
-  goalAngle = a;
-  if (a > e.maxAngle)
+  /*
+    goalAngle = a;
+    if (a > e.maxAngle)
     goalAngle = e.maxAngle;
-  if (a < e.minAngle)
+    if (a < e.minAngle)
     goalAngle = e.minAngle;
+  */
+
+  receivedCommand = true;   //mark that we've received a position command
+
+  // no guarantees the min max angles are mapped backwards
+  goalAngle = a;
+  if (e.minAngle < e.maxAngle) {
+    goalAngle = constrain(goalAngle, e.minAngle, e.maxAngle);
+  }
+  else {
+    goalAngle = constrain(goalAngle, e.maxAngle, e.minAngle);
+  }
+
 
   //this->moveToMicroseconds((map(goalAngle, (int)(e.minAngle * 1000), (int)(e.maxAngle * 1000.0), e.minPulse, e.maxPulse) / 1000.0));
+
   this->moveToMicroseconds((map(goalAngle * 1000, (int)(e.minAngle * 1000.0), (int)(e.maxAngle * 1000.0), e.minPulse, e.maxPulse)));
+
   //nh.loginfo("SetGoal!!!");
 }
 
@@ -44,12 +65,21 @@ void TeensyServo::moveToMicroseconds(int microseconds) {
   this->startPulse = this->readPositionPulse();
   //this->startPulse = commandPulse;
 
-  
+
+
+  if(e.minPulse < e.maxPulse) {
+    microseconds = constrain(microseconds,e.minPulse,e.maxPulse);
+  }
+  else {
+    microseconds = constrain(microseconds,e.maxPulse,e.minPulse);
+  }
+
+  /*
   if (microseconds > e.maxPulse)
     microseconds = e.maxPulse;
   if (microseconds < e.minPulse)
     microseconds = e.minPulse;
-  
+  */
   commandPulse = microseconds;
 
   deltaPulse = ((commandPulse - startPulse)); //*1000)/ticksPerSecond;
@@ -66,8 +96,40 @@ void TeensyServo::moveToMicroseconds(int microseconds) {
 }
 
 
-#define NUM_READS 16
+
 short TeensyServo::readPositionRaw() {
+  /*
+    long int retval =0;
+    for (int i = 0; i < NUM_SAMPLES; i++) {
+    retval += analogRead(this->sensorPin);
+    }
+    retval /= NUM_SAMPLES;
+
+    return retval;
+  */
+  return this->position;
+
+}
+
+
+#define NUM_SAMPLES 350
+void TeensyServo::updatePosition() {
+  for (int i = 0; i < 50; i++) {
+    sampleBucket += analogRead(this->sensorPin);
+  }
+  sampleCount += 50;
+
+  if (sampleCount == NUM_SAMPLES) {
+    sampleCount = 0;
+    this->position = sampleBucket /= NUM_SAMPLES;
+    this->sampleDuration = millis() - this->sampleStartMillis;
+    this->sampleStartMillis = millis();
+  }
+}
+
+/*
+  #define NUM_READS 16
+  short TeensyServo::readPositionRaw_old() {
   // http://www.elcojacobs.com/eleminating-noise-from-sensor-readings-on-arduino-with-digital-filtering/
   // return analogRead(this->sensorPin);
   // read multiple values and sort them to take the mode
@@ -102,7 +164,9 @@ short TeensyServo::readPositionRaw() {
   return returnval * 1100 / 1023;
 
 
-}
+  }
+*/
+
 
 float TeensyServo::readPositionAngle() {
   short p = readPositionRaw();
@@ -120,6 +184,9 @@ short TeensyServo::readPositionPulse() {
 void TeensyServo::update() {
 
   ////Serial.println("Servo Update!");
+
+  this->updatePosition();
+
 
   deltaMillis = millis() - startMillis;
 
@@ -318,6 +385,11 @@ int TeensyServo::getMaxSensor() {
 void TeensyServo::setEnabled(bool val) {
 
   if (val != 0) {
+    // if we haven't, just readposition and use that instead.
+    if (receivedCommand == false) {
+      setGoal(readPositionAngle());
+    }
+    
     servo.attach(this->servoPin, e.minPulse, e.maxPulse); //,readPositionPulse());
     enabled = 1;
   }

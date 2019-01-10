@@ -1,0 +1,20 @@
+bringup:
+  angles:           degrees
+  hz:               20
+
+joints:
+
+  smartservo:       
+    bus:            0
+    servoPin:       8
+    minPulse:       587
+    maxPulse:       2200
+    minGoal:        10.0
+    maxGoal:        170.0
+    rest:           0.0
+    maxSpeed:       0.0
+    smoothing:      0
+    sensorPin:      20
+    minSensor:      808
+    maxSensor:      3377
+

@@ -1,0 +1,2263 @@
+<?xml version="1.0"?>
+<robot 
+  xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <!-- meshlab steps taken from http://gazebosim.org/tutorials?tut=inertia -->
+  <!-- assume material density is 1.0g per 1.0cm^2 -->
+  <!-- ABS is 1.04g per 1.0cm^3 -->
+  <!-- PLA is 1.25g per 1.0cm^3 -->
+ 
+  <!-- mass divisor, ros is kilograms-->
+  <xacro:property name="md" value="1000"/>
+  
+  <!-- inertia divisor, ros is meters, -->
+  <!-- assume mass == volume for simplicity -->
+  <xacro:property name="id" value="${ md * md * md}"/>
+  
+<!-- 
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/bicep.stl in 6 msec
+All files opened in 2436 msec
+Mesh Bounding Box Size 108.018005 91.844795 231.879486
+Mesh Bounding Box Diag 271.793030 
+Mesh Volume is 281912.656250
+Mesh Surface is 104358.320312
+Thin shell barycenter -8.779952 0.060235 -83.067101
+Center of Mass is -10.079529 0.072064 -81.852776
+Inertia Tensor is :
+| 1283355392.000000 -200782.203125 -224559104.000000 |
+| -200782.203125 1399255168.000000 654523.687500 |
+| -224559104.000000 654523.687500 416621216.000000 |
+Principal axes are :
+| 0.971551 -0.005425 0.236770 |
+| 0.005722 0.999983 -0.000567 |
+| -0.236763 0.001906 0.971566 |
+axis momenta are :
+| 1338078336.000000 1399257472.000000 361895936.000000 |
+-->
+  <xacro:macro name="bicep_inertial">
+    <inertial>
+      <mass value="${281912.656250 / md}"/>
+      <inertia
+        ixx="${  1283355392.000000 / id }"
+        ixy="${     -200782.203125 / id }"
+        ixz="${  -224559104.000000 / id }"
+        iyy="${  1399255168.000000 / id }"
+        iyz="${      654523.687500 / id }"
+        izz="${   416621216.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/bicepcover.stl in 18 msec
+All files opened in 2233 msec
+Mesh Bounding Box Size 129.930206 91.769051 208.188858
+Mesh Bounding Box Diag 262.003845 
+Mesh Volume is 176269.609375
+Mesh Surface is 121159.289062
+Thin shell barycenter 6.606298 0.056933 -95.423935
+Center of Mass is 4.113691 0.023778 -98.293915
+Inertia Tensor is :
+| 536349632.000000 966533.437500 -69306768.000000 |
+| 966533.437500 625805568.000000 566635.812500 |
+| -69306768.000000 566635.812500 441916480.000000 |
+Principal axes are :
+| 0.883948 0.011886 0.467434 |
+| -0.011161 0.999928 -0.004320 |
+| -0.467452 -0.001398 0.884017 |
+axis momenta are :
+| 572988480.000000 625816256.000000 405266944.000000 |
+-->
+  <xacro:macro name="bicepcover_inertial">
+    <inertial>
+      <mass value="${176269.609375 / md}"/>
+      <inertia
+        ixx="${   536349632.000000 / id }"
+        ixy="${      966533.437500 / id }"
+        ixz="${   -69306768.000000 / id }"
+        iyy="${   625805568.000000 / id }"
+        iyz="${      566635.812500 / id }"
+        izz="${   441916480.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/camera.stl in 8 msec
+All files opened in 2697 msec
+Mesh Bounding Box Size 8.000001 33.499996 19.499996
+Mesh Bounding Box Diag 39.579029 
+Mesh Volume is 2466.067627
+Mesh Surface is 1775.035400
+Thin shell barycenter 2.255085 -0.343137 -2.586783
+Center of Mass is 2.337499 -0.368498 -2.255082
+Inertia Tensor is :
+| 240846.265625 -677.540710 -4657.491211 |
+| -677.540710 75434.351562 -3045.460449 |
+| -4657.491211 -3045.460449 181402.265625 |
+Principal axes are :
+| 0.996988 0.004906 0.077395 |
+| -0.002651 0.999570 -0.029211 |
+| -0.077505 0.028918 0.996572 |
+axis momenta are :
+| 241210.140625 75342.921875 181129.828125 |
+-->
+  <xacro:macro name="camera_inertial">
+    <inertial>
+      <mass value="${2466.067627 / md}"/>
+      <inertia
+        ixx="${    240846.265625 / id }"
+        ixy="${      -677.540710 / id }"
+        ixz="${     -4657.491211 / id }"
+        iyy="${     75434.351562 / id }"
+        iyz="${     -3045.460449 / id }"
+        izz="${    181402.265625 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/chest.stl in 50 msec
+All files opened in 1996 msec
+Mesh Bounding Box Size 80.510498 307.491943 275.934937
+Mesh Bounding Box Diag 420.919617 
+Mesh Volume is 755680.687500
+Mesh Surface is 223564.500000
+Thin shell barycenter 17.029747 -1.286327 151.246750
+Center of Mass is 16.772718 -1.230909 125.540794
+Inertia Tensor is :
+| 7996578816.000000 -475382.812500 -51810308.000000 |
+| -475382.812500 3795706624.000000 11253427.000000 |
+| -51810308.000000 11253427.000000 4511691776.000000 |
+Principal axes are :
+| 0.999890 -0.000081 0.014863 |
+| -0.000153 0.999876 0.015717 |
+| -0.014863 -0.015717 0.999766 |
+axis momenta are :
+| 7997348864.000000 3795529728.000000 4511098368.000000 |
+-->
+  <xacro:macro name="chest_inertial">
+    <inertial>
+      <mass value="${755680.687500 / md}"/>
+      <inertia
+        ixx="${  7996578816.000000 / id }"
+        ixy="${     -475382.812500 / id }"
+        ixz="${   -51810308.000000 / id }"
+        iyy="${  3795706624.000000 / id }"
+        iyz="${    11253427.000000 / id }"
+        izz="${  4511691776.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/disk.stl in 17 msec
+All files opened in 2305 msec
+Mesh Bounding Box Size 32.199123 141.520432 141.527847
+Mesh Bounding Box Diag 202.718887 
+Mesh Volume is 178967.343750
+Mesh Surface is 64245.589844
+Thin shell barycenter 19.303682 -0.052753 8.734632
+Center of Mass is 20.559896 -0.052606 8.121016
+Inertia Tensor is :
+| 518276192.000000 -394.440735 12957092.000000 |
+| -394.440735 264527408.000000 15683.143555 |
+| 12957092.000000 15683.143555 268095952.000000 |
+Principal axes are :
+| 0.998669 0.000277 -0.051583 |
+| 0.000002 0.999985 0.005409 |
+| 0.051584 -0.005402 0.998654 |
+axis momenta are :
+| 518945472.000000 264527328.000000 267426768.000000 |
+-->
+  <xacro:macro name="disk_inertial">
+    <inertial>
+      <mass value="${178967.343750 / md}"/>
+      <inertia
+        ixx="${   518276192.000000 / id }"
+        ixy="${        -394.440735 / id }"
+        ixz="${    12957092.000000 / id }"
+        iyy="${   264527408.000000 / id }"
+        iyz="${       15683.143555 / id }"
+        izz="${   268095952.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/earleftv1.stl in 22 msec
+All files opened in 2362 msec
+Mesh Bounding Box Size 91.007996 25.182009 91.007942
+Mesh Bounding Box Diag 131.145096 
+Mesh Volume is 85197.960938
+Mesh Surface is 21549.654297
+Thin shell barycenter 1.966835 7.869811 1.372619
+Center of Mass is 3.795357 7.653911 2.931803
+Inertia Tensor is :
+| 44230340.000000 -1262894.000000 5220882.000000 |
+| -1262894.000000 80467120.000000 -484128.468750 |
+| 5220882.000000 -484128.468750 40751060.000000 |
+Principal axes are :
+| 0.809813 -0.037221 -0.585506 |
+| 0.040155 0.999162 -0.007980 |
+| 0.585312 -0.017049 0.810629 |
+axis momenta are :
+| 47941240.000000 80522424.000000 36984856.000000 |
+-->
+  <xacro:macro name="earleftv1_inertial">
+    <inertial>
+      <mass value="${ 85197.960938 / md}"/>
+      <inertia
+        ixx="${    44230340.000000 / id }"
+        ixy="${    -1262894.000000 / id }"
+        ixz="${     5220882.000000 / id }"
+        iyy="${    80467120.000000 / id }"
+        iyz="${     -484128.468750 / id }"
+        izz="${    40751060.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/earrightv1.stl in 185 msec
+All files opened in 2114 msec
+Mesh Bounding Box Size 91.014008 25.182001 91.013977
+Mesh Bounding Box Diag 131.153442 
+Mesh Volume is 85175.406250
+Mesh Surface is 21548.291016
+Thin shell barycenter 1.912267 -7.867679 0.817450
+Center of Mass is 3.741870 -7.651948 2.376738
+Inertia Tensor is :
+| 44218692.000000 1262414.250000 5219223.500000 |
+| 1262414.250000 80448136.000000 483531.968750 |
+| 5219223.500000 483531.968750 40740816.000000 |
+Principal axes are :
+| 0.809806 0.037213 -0.585517 |
+| -0.040140 0.999162 0.007987 |
+| 0.585324 0.017035 0.810621 |
+axis momenta are :
+| 47928548.000000 80503400.000000 36975700.000000 |
+-->
+  <xacro:macro name="earrightv1_inertial">
+    <inertial>
+      <mass value="${ 85175.406250 / md}"/>
+      <inertia
+        ixx="${    44218692.000000 / id }"
+        ixy="${     1262414.250000 / id }"
+        ixz="${    5219223.500000  / id }"
+        iyy="${    80448136.000000 / id }"
+        iyz="${      483531.968750 / id }"
+        izz="${    40740816.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/eye.stl in 3 msec
+All files opened in 1580 msec
+Mesh Bounding Box Size 8.000001 36.000000 35.969540
+Mesh Bounding Box Diag 51.515121 
+Mesh Volume is 4659.753906
+Mesh Surface is 2759.665039
+Thin shell barycenter 3.104678 0.000001 0.000225
+Center of Mass is 3.185493 0.000001 0.000025
+Inertia Tensor is :
+| 913717.187500 0.002418 0.211749 |
+| 0.002418 479575.687500 -0.003262 |
+| 0.211749 -0.003262 475530.500000 |
+Principal axes are :
+| 1.000000 -0.000000 -0.000000 |
+| 0.000000 1.000000 0.000001 |
+| 0.000000 -0.000001 1.000000 |
+axis momenta are :
+| 913717.187500 479575.687500 475530.500000 |
+-->
+  <xacro:macro name="eye_inertial">
+    <inertial>
+      <mass value="${ 4659.753906 / md}"/>
+      <inertia
+        ixx="${     913717.187500 / id }"
+        ixy="${          0.002418 / id }"
+        ixz="${          0.211749 / id }"
+        iyy="${     479575.687500 / id }"
+        iyz="${         -0.003262 / id }"
+        izz="${     475530.500000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/eyesupport.stl in 2 msec
+All files opened in 1536 msec
+Mesh Bounding Box Size 33.271500 76.999481 75.081680
+Mesh Bounding Box Diag 112.575180 
+Mesh Volume is 27550.294922
+Mesh Surface is 12719.288086
+Thin shell barycenter -4.059350 0.376939 -1.762510
+Center of Mass is -3.586834 -0.028465 1.197724
+Inertia Tensor is :
+| 20632590.000000 285302.437500 -1400304.000000 |
+| 285302.437500 16763521.000000 1839664.250000 |
+| -1400304.000000 1839664.250000 6981697.000000 |
+Principal axes are :
+| 0.994894 -0.008086 0.100603 |
+| 0.026023 0.983634 -0.178290 |
+| -0.097515 0.179998 0.978822 |
+axis momenta are :
+| 20777304.000000 17097820.000000 6502683.500000 |
+-->
+  <xacro:macro name="eyesupport_inertial">
+    <inertial>
+      <mass value="${ 27550.294922 / md}"/>
+      <inertia
+        ixx="${    20632590.000000 / id }"
+        ixy="${      285302.437500 / id }"
+        ixz="${    -1400304.000000 / id }"
+        iyy="${    16763521.000000 / id }"
+        iyz="${     1839664.250000 / id }"
+        izz="${     6981697.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/face.stl in 4 msec
+All files opened in 1547 msec
+Mesh Bounding Box Size 58.885715 130.552460 65.225174
+Mesh Bounding Box Diag 157.371521 
+Mesh Volume is 46559.031250
+Mesh Surface is 27271.681641
+Thin shell barycenter 18.589180 -0.156830 -10.132577
+Center of Mass is 19.483259 -0.081941 -9.738870
+Inertia Tensor is :
+| 60878272.000000 69925.132812 1269511.250000 |
+| 69925.132812 19785440.000000 1371.249390 |
+| 1269511.250000 1371.249390 51128208.000000 |
+Principal axes are :
+| 0.991897 -0.001702 -0.127031 |
+| 0.001685 0.999999 -0.000241 |
+| 0.127031 0.000025 0.991899 |
+axis momenta are :
+| 61040976.000000 19785320.000000 50965624.000000 |
+-->
+  <xacro:macro name="face_inertial">
+    <inertial>
+      <mass value="${ 46559.031250 / md}"/>
+      <inertia
+        ixx="${    60878272.000000 / id }"
+        ixy="${       69925.132812 / id }"
+        ixz="${     1269511.250000 / id }"
+        iyy="${    19785440.000000 / id }"
+        iyz="${        1371.249390 / id }"
+        izz="${    51128208.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/head.stl in 3 msec
+All files opened in 1403 msec
+Mesh Bounding Box Size 148.349350 130.531616 66.729294
+Mesh Bounding Box Diag 208.563721 
+Mesh Volume is 120499.460938
+Mesh Surface is 52769.628906
+Thin shell barycenter 36.866142 -0.017403 19.961363
+Center of Mass is 33.712868 -0.019775 19.798304
+Inertia Tensor is :
+| 92508680.000000 -123085.367188 -7862710.500000 |
+| -123085.367188 150815008.000000 285030.562500 |
+| -7862710.500000 285030.562500 201933552.000000 |
+Principal axes are :
+| 0.997453 -0.001332 -0.071310 |
+| 0.001740 0.999982 0.005671 |
+| 0.071301 -0.005780 0.997438 |
+axis momenta are :
+| 91946416.000000 150813520.000000 202497296.000000 |
+-->
+  <xacro:macro name="head_inertial">
+    <inertial>
+      <mass value="${ 120499.460938 / md}"/>
+      <inertia
+        ixx="${     92508680.000000 / id }"
+        ixy="${      -123085.367188 / id }"
+        ixz="${     -7862710.500000 / id }"
+        iyy="${    150815008.000000 / id }"
+        iyz="${       285030.562500 / id }"
+        izz="${    201933552.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/head_base.stl in 6 msec
+All files opened in 1357 msec
+Mesh Bounding Box Size 69.337830 92.601379 32.000000
+Mesh Bounding Box Diag 120.028122 
+Mesh Volume is 43502.281250
+Mesh Surface is 20571.138672
+Thin shell barycenter 6.559660 0.011771 13.424242
+Center of Mass is 7.293888 0.021165 14.839767
+Inertia Tensor is :
+| 25681996.000000 18290.968750 -790662.750000 |
+| 18290.968750 17327208.000000 9602.263672 |
+| -790662.750000 9602.263672 35355280.000000 |
+Principal axes are :
+| 0.996717 -0.002249 -0.080931 |
+| 0.002293 0.999997 0.000447 |
+| 0.080929 -0.000631 0.996720 |
+axis momenta are :
+| 25617840.000000 17327160.000000 35419484.000000 |
+-->
+  <xacro:macro name="head_base_inertial">
+    <inertial>
+      <mass value="${ 43502.281250 / md}"/>
+      <inertia
+        ixx="${    25681996.000000 / id }"
+        ixy="${       18290.968750 / id }"
+        ixz="${     -790662.750000 / id }"
+        iyy="${    17327208.000000 / id }"
+        iyz="${        9602.263672 / id }"
+        izz="${    35355280.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/index3_1.stl in 2 msec
+All files opened in 1522 msec
+Mesh Bounding Box Size 17.238571 17.350281 48.785606
+Mesh Bounding Box Diag 54.573215 
+Mesh Volume is 4854.550781
+Mesh Surface is 3963.533691
+Thin shell barycenter 0.624920 -0.045537 -17.498087
+Center of Mass is 0.327900 -0.041642 -17.815184
+Inertia Tensor is :
+| 785518.812500 -113.786087 12465.399414 |
+| -113.786087 736795.062500 1496.518921 |
+| 12465.399414 1496.518921 226730.125000 |
+Principal axes are :
+| 0.999750 0.001575 -0.022292 |
+| -0.001641 0.999994 -0.002937 |
+| 0.022287 0.002972 0.999747 |
+axis momenta are :
+| 785796.875000 736799.312500 226447.781250 |
+-->
+  <xacro:macro name="index3_1_inertial">
+    <inertial>
+      <mass value="${ 4854.550781 / md}"/>
+      <inertia
+        ixx="${     785518.812500 / id }"
+        ixy="${       -113.786087 / id }"
+        ixz="${      12465.399414 / id }"
+        iyy="${     736795.062500 / id }"
+        iyz="${       1496.518921 / id }"
+        izz="${     226730.125000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/index3_2.stl in 7 msec
+All files opened in 1581 msec
+Mesh Bounding Box Size 16.419373 15.360427 34.058228
+Mesh Bounding Box Diag 40.810555 
+Mesh Volume is 2911.548828
+Mesh Surface is 2659.397705
+Thin shell barycenter 0.856283 0.017799 -11.069555
+Center of Mass is 0.920736 -0.011680 -10.908571
+Inertia Tensor is :
+| 247697.562500 5.310544 -13615.135742 |
+| 5.310544 244508.312500 701.601379 |
+| -13615.135742 701.601379 91051.476562 |
+Principal axes are :
+| 0.996215 0.012954 0.085948 |
+| -0.012612 0.999910 -0.004523 |
+| -0.085999 0.003422 0.996289 |
+axis momenta are :
+| 248872.828125 244510.781250 89873.742188 |
+-->
+  <xacro:macro name="index3_2_inertial">
+    <inertial>
+      <mass value="${ 2911.548828 / md}"/>
+      <inertia
+        ixx="${     247697.562500 / id }"
+        ixy="${          5.310544 / id }"
+        ixz="${     -13615.135742 / id }"
+        iyy="${     244508.312500 / id }"
+        iyz="${        701.601379 / id }"
+        izz="${      91051.476562 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/index3_3.stl in 3 msec
+All files opened in 1481 msec
+Mesh Bounding Box Size 15.530320 14.615662 35.068295
+Mesh Bounding Box Diag 41.043804 
+Mesh Volume is 2754.759033
+Mesh Surface is 2558.569580
+Thin shell barycenter -0.114936 -0.037786 -12.354142
+Center of Mass is -0.195631 -0.042939 -12.565110
+Inertia Tensor is :
+| 240287.703125 26.071491 -13973.435547 |
+| 26.071491 244506.625000 84.088615 |
+| -13973.435547 84.088615 72536.453125 |
+Principal axes are :
+| 0.996576 0.006239 0.082447 |
+| -0.006219 0.999981 -0.000496 |
+| -0.082448 -0.000018 0.996595 |
+axis momenta are :
+| 241443.578125 244506.781250 71380.406250 |
+-->
+  <xacro:macro name="index3_3_inertial">
+    <inertial>
+      <mass value="${ 2754.759033 / md}"/>
+      <inertia
+        ixx="${     240287.703125 / id }"
+        ixy="${         26.071491 / id }"
+        ixz="${     -13973.435547 / id }"
+        iyy="${     244506.625000 / id }"
+        iyz="${         84.088615 / id }"
+        izz="${      72536.453125 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/iris.stl in 7 msec
+All files opened in 1708 msec
+Mesh Bounding Box Size 4.850000 21.782320 21.764652
+Mesh Bounding Box Diag 31.171974 
+Mesh Volume is 1026.836548
+Mesh Surface is 1069.724976
+Thin shell barycenter 2.604385 -0.000058 -0.100151
+Center of Mass is 2.386165 0.000047 -0.099872
+Inertia Tensor is :
+| 85819.992188 -0.107131 -0.294199 |
+| -0.107131 44821.710938 0.419771 |
+| -0.294199 0.419771 44822.714844 |
+Principal axes are :
+| 1.000000 0.000000 0.000008 |
+| -0.000003 0.939976 0.341240 |
+| -0.000007 -0.341240 0.939976 |
+axis momenta are :
+| 85819.992188 44821.558594 44822.867188 |
+-->
+  <xacro:macro name="iris_inertial">
+    <inertial>
+      <mass value="${ 1026.836548 / md}"/>
+      <inertia
+        ixx="${      85819.992188 / id }"
+        ixy="${         -0.107131 / id }"
+        ixz="${         -0.294199 / id }"
+        iyy="${      44821.710938 / id }"
+        iyz="${          0.419771 / id }"
+        izz="${      44822.714844 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/jaw.stl in 3 msec
+All files opened in 1932 msec
+Mesh Bounding Box Size 151.468292 113.023956 114.478699
+Mesh Bounding Box Diag 220.957977 
+Mesh Volume is 58767.261719
+Mesh Surface is 33077.742188
+Thin shell barycenter 60.733185 0.051789 -47.454861
+Center of Mass is 63.222282 0.037192 -49.244869
+Inertia Tensor is :
+| 147272256.000000 75532.781250 55060208.000000 |
+| 75532.781250 134112088.000000 -12159.836914 |
+| 55060208.000000 -12159.836914 156998304.000000 |
+Principal axes are :
+| 0.737556 0.000878 0.675285 |
+| -0.001716 0.999998 0.000574 |
+| -0.675284 -0.001582 0.737556 |
+axis momenta are :
+| 96860624.000000 134112176.000000 207409856.000000 |
+-->
+  <xacro:macro name="jaw_inertial">
+    <inertial>
+      <mass value="${ 58767.261719 / md}"/>
+      <inertia
+        ixx="${   147272256.000000 / id }"
+        ixy="${       75532.781250 / id }"
+        ixz="${    55060208.000000 / id }"
+        iyy="${   134112088.000000 / id }"
+        iyz="${      -12159.836914 / id }"
+        izz="${   156998304.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/kinectone.stl in 6 msec
+All files opened in 1236 msec
+Mesh Bounding Box Size 250.000031 82.000008 64.499985
+Mesh Bounding Box Diag 270.895294 
+Mesh Volume is 790831.937500
+Mesh Surface is 142856.156250
+Thin shell barycenter 0.800756 55.273056 33.450218
+Center of Mass is 1.100458 48.963375 38.179012
+Inertia Tensor is :
+| 539265728.000000 -8770675.000000 -2344317.500000 |
+| -8770675.000000 3865038592.000000 25915652.000000 |
+| -2344317.500000 25915652.000000 3969101824.000000 |
+Principal axes are :
+| 0.999996 -0.002410 -0.001249 |
+| 0.002632 0.973403 0.229086 |
+| 0.000664 -0.229089 0.973405 |
+axis momenta are :
+| 539241088.000000 3858961152.000000 3975203840.000000 |
+-->
+  <xacro:macro name="kinectone_inertial">
+    <inertial>
+      <mass value="${ 790831.937500 / md}"/>
+      <inertia
+        ixx="${    539265728.000000 / id }"
+        ixy="${     -8770675.000000 / id }"
+        ixz="${     -2344317.500000 / id }"
+        iyy="${   3865038592.000000 / id }"
+        iyz="${     25915652.000000 / id }"
+        izz="${   3969101824.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_hand.stl in 32 msec
+All files opened in 1460 msec
+Mesh Bounding Box Size 13.736001 84.862000 108.330002
+Mesh Bounding Box Diag 138.295441 
+Mesh Volume is 39850.039062
+Mesh Surface is 15339.135742
+Thin shell barycenter 3.745567 13.082279 41.522751
+Center of Mass is 3.708912 13.324540 43.250717
+Inertia Tensor is :
+| 43945356.000000 -150298.984375 -668434.562500 |
+| -150298.984375 31625718.000000 -7874518.000000 |
+| -668434.562500 -7874518.000000 12808058.000000 |
+Principal axes are :
+| 0.999758 -0.009173 0.019977 |
+| 0.001804 0.939958 0.341286 |
+| -0.021908 -0.341168 0.939747 |
+axis momenta are :
+| 43959732.000000 34485324.000000 9934075.000000 |
+-->
+  <xacro:macro name="l_cover_hand_inertial">
+    <inertial>
+      <mass value="${ 39850.039062 / md}"/>
+      <inertia
+        ixx="${    43945356.000000 / id }"
+        ixy="${     -150298.984375 / id }"
+        ixz="${     -668434.562500 / id }"
+        iyy="${    31625718.000000 / id }"
+        iyz="${    -7874518.000000 / id }"
+        izz="${    12808058.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_handpinky.stl in 6 msec
+All files opened in 1500 msec
+Mesh Bounding Box Size 5.456001 32.141998 56.658005
+Mesh Bounding Box Diag 65.368233 
+Mesh Volume is 3887.731445
+Mesh Surface is 2330.852783
+Thin shell barycenter 2.210827 -0.112941 2.008882
+Center of Mass is 2.283108 -0.345010 1.597708
+Inertia Tensor is :
+| 732629.187500 2534.065674 2594.330322 |
+| 2534.065674 578011.750000 67645.304688 |
+| 2594.330322 67645.304688 168406.562500 |
+Principal axes are :
+| 0.999788 -0.020259 -0.003754 |
+| 0.019406 0.987119 -0.158805 |
+| 0.006923 0.158699 0.987303 |
+axis momenta are :
+| 732696.312500 588835.062500 157516.125000 |
+-->
+  <xacro:macro name="l_cover_handpinky_inertial">
+    <inertial>
+      <mass value="${ 3887.731445 / md}"/>
+      <inertia
+        ixx="${     732629.187500 / id }"
+        ixy="${       2534.065674 / id }"
+        ixz="${       2594.330322 / id }"
+        iyy="${     578011.750000 / id }"
+        iyz="${      67645.304688 / id }"
+        izz="${     168406.562500 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_handring.stl in 17 msec
+All files opened in 2914 msec
+Mesh Bounding Box Size 6.642000 33.834000 43.076000
+Mesh Bounding Box Diag 55.176060 
+Mesh Volume is 3507.538086
+Mesh Surface is 2007.870728
+Thin shell barycenter 2.526940 0.495237 -1.871013
+Center of Mass is 2.592369 0.223609 -1.677225
+Inertia Tensor is :
+| 430486.968750 5051.603516 -2255.701904 |
+| 5051.603516 288646.281250 594.736511 |
+| -2255.701904 594.736511 159170.093750 |
+Principal axes are :
+| 0.999336 -0.035465 0.008404 |
+| 0.035507 0.999357 -0.004920 |
+| -0.008225 0.005215 0.999953 |
+axis momenta are :
+| 430685.031250 288470.125000 159148.203125 |
+-->
+  <xacro:macro name="l_cover_handring_inertial">
+    <inertial>
+      <mass value="${ 3507.538086 / md}"/>
+      <inertia
+        ixx="${     430486.968750 / id }"
+        ixy="${       5051.603516 / id }"
+        ixz="${      -2255.701904 / id }"
+        iyy="${     288646.281250 / id }"
+        iyz="${        594.736511 / id }"
+        izz="${     159170.093750 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_index.stl in 8 msec
+All files opened in 1384 msec
+Mesh Bounding Box Size 8.594393 17.415220 35.119446
+Mesh Bounding Box Diag 40.131397 
+Mesh Volume is 1635.368652
+Mesh Surface is 1318.177612
+Thin shell barycenter 4.245106 -0.273686 0.921812
+Center of Mass is 4.354176 -0.273627 0.371592
+Inertia Tensor is :
+| 167985.140625 0.937079 -15635.599609 |
+| 0.937079 140411.187500 699.011658 |
+| -15635.599609 699.011658 36513.273438 |
+Principal axes are :
+| 0.993186 0.003484 0.116486 |
+| -0.002738 0.999975 -0.006567 |
+| -0.116506 0.006203 0.993171 |
+axis momenta are :
+| 169819.281250 140415.531250 34674.792969 |
+-->
+  <xacro:macro name="l_cover_index_inertial">
+    <inertial>
+      <mass value="${ 1635.368652 / md}"/>
+      <inertia
+        ixx="${     167985.140625 / id }"
+        ixy="${          0.937079 / id }"
+        ixz="${     -15635.599609 / id }"
+        iyy="${     140411.187500 / id }"
+        iyz="${        699.011658 / id }"
+        izz="${      36513.273438 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_middle.stl in 6 msec
+All files opened in 1439 msec
+Mesh Bounding Box Size 8.813518 18.337889 38.744076
+Mesh Bounding Box Diag 43.761395 
+Mesh Volume is 1904.471313
+Mesh Surface is 1507.517334
+Thin shell barycenter 4.313908 -0.082064 0.871612
+Center of Mass is 4.406314 -0.082271 0.264647
+Inertia Tensor is :
+| 234427.671875 11.994666 -22417.498047 |
+| 11.994666 198775.875000 945.323792 |
+| -22417.498047 945.323792 47098.675781 |
+Principal axes are :
+| 0.993105 0.003278 0.117184 |
+| -0.002582 0.999978 -0.006092 |
+| -0.117202 0.005748 0.993091 |
+axis momenta are :
+| 237073.250000 198781.343750 44447.621094 |
+-->
+  <xacro:macro name="l_cover_middle_inertial">
+    <inertial>
+      <mass value="${ 1904.471313 / md}"/>
+      <inertia
+        ixx="${     234427.671875 / id }"
+        ixy="${         11.994666 / id }"
+        ixz="${     -22417.498047 / id }"
+        iyy="${     198775.875000 / id }"
+        iyz="${        945.323792 / id }"
+        izz="${      47098.675781 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_pinky.stl in 7 msec
+All files opened in 1484 msec
+Mesh Bounding Box Size 7.799893 16.734661 33.440189
+Mesh Bounding Box Diag 38.198605 
+Mesh Volume is 1285.607300
+Mesh Surface is 1097.118896
+Thin shell barycenter 3.740966 -0.503986 1.926065
+Center of Mass is 3.877148 -0.506894 1.602272
+Inertia Tensor is :
+| 109421.882812 904.252441 -9149.000000 |
+| 904.252441 90519.320312 2714.453125 |
+| -9149.000000 2714.453125 24557.162109 |
+Principal axes are :
+| 0.993999 -0.026285 0.106181 |
+| 0.030858 0.998656 -0.041649 |
+| -0.104944 0.044676 0.993474 |
+axis momenta are :
+| 110415.882812 90616.953125 23465.529297 |
+-->
+  <xacro:macro name="l_cover_pinky_inertial">
+    <inertial>
+      <mass value="${ 1285.607300 / md}"/>
+      <inertia
+        ixx="${     109421.882812 / id }"
+        ixy="${        904.252441 / id }"
+        ixz="${      -9149.000000 / id }"
+        iyy="${      90519.320312 / id }"
+        iyz="${       2714.453125 / id }"
+        izz="${      24557.162109 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_ring.stl in 5 msec
+All files opened in 1463 msec
+Mesh Bounding Box Size 8.088491 17.430080 36.716965
+Mesh Bounding Box Diag 41.441128 
+Mesh Volume is 1466.901733
+Mesh Surface is 1233.944702
+Thin shell barycenter 3.885468 0.187724 1.591275
+Center of Mass is 4.013374 0.186770 1.242054
+Inertia Tensor is :
+| 147694.687500 1216.691528 -12881.797852 |
+| 1216.691528 124547.375000 4381.839844 |
+| -12881.797852 4381.839844 30177.607422 |
+Principal axes are :
+| 0.993850 -0.025037 0.107867 |
+| 0.030222 0.998451 -0.046707 |
+| -0.106530 0.049680 0.993068 |
+axis momenta are :
+| 149112.484375 124734.890625 28572.300781 |
+-->
+  <xacro:macro name="l_cover_ring_inertial">
+    <inertial>
+      <mass value="${ 1466.901733 / md}"/>
+      <inertia
+        ixx="${     147694.687500 / id }"
+        ixy="${       1216.691528 / id }"
+        ixz="${     -12881.797852 / id }"
+        iyy="${     124547.375000 / id }"
+        iyz="${       4381.839844 / id }"
+        izz="${      30177.607422 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_cover_thumb.stl in 4 msec
+All files opened in 1596 msec
+Mesh Bounding Box Size 6.319447 26.349285 49.800488
+Mesh Bounding Box Diag 56.694874 
+Mesh Volume is 3250.209717
+Mesh Surface is 2121.767578
+Thin shell barycenter 2.446937 2.227035 0.836310
+Center of Mass is 2.521784 2.407381 -0.141687
+Inertia Tensor is :
+| 543531.937500 4525.454590 8495.841797 |
+| 4525.454590 442602.156250 -49077.457031 |
+| 8495.841797 -49077.457031 112376.609375 |
+Principal axes are :
+| 0.999189 -0.034558 -0.020657 |
+| 0.037180 0.988862 0.144120 |
+| 0.015446 -0.144771 0.989345 |
+axis momenta are :
+| 543831.687500 449629.031250 105050.007812 |
+-->
+  <xacro:macro name="l_cover_thumb_inertial">
+    <inertial>
+      <mass value="${ 3250.209717 / md}"/>
+      <inertia
+        ixx="${     543531.937500 / id }"
+        ixy="${       4525.454590 / id }"
+        ixz="${       8495.841797 / id }"
+        iyy="${     442602.156250 / id }"
+        iyz="${     -49077.457031 / id }"
+        izz="${     112376.609375 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_eyesupport.stl in 2 msec
+All files opened in 1191 msec
+Mesh Bounding Box Size 14.000004 35.808380 45.097652
+Mesh Bounding Box Diag 59.262455 
+Mesh Volume is 11370.105469
+Mesh Surface is 4366.827637
+Thin shell barycenter -3.525270 -0.060002 2.126532
+Center of Mass is -4.087140 -0.392808 2.943427
+Inertia Tensor is :
+| 2432392.250000 -6936.314941 -15166.963867 |
+| -6936.314941 1752612.750000 -160871.437500 |
+| -15166.963867 -160871.437500 896652.687500 |
+Principal axes are :
+| 0.999927 0.006319 0.010326 |
+| -0.008064 0.983845 0.178843 |
+| -0.009029 -0.178913 0.983823 |
+axis momenta are :
+| 2432585.250000 1781822.750000 867249.750000 |
+-->
+  <xacro:macro name="l_eyesupport_inertial">
+    <inertial>
+      <mass value="${ 11370.105469 / md}"/>
+      <inertia
+        ixx="${     2432392.250000 / id }"
+        ixy="${       -6936.314941 / id }"
+        ixz="${      -15166.963867 / id }"
+        iyy="${     1752612.750000 / id }"
+        iyz="${     -160871.437500 / id }"
+        izz="${      896652.687500 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_forearm.stl in 16 msec
+All files opened in 1710 msec
+Mesh Bounding Box Size 108.761078 103.942200 315.046661
+Mesh Bounding Box Diag 349.123688 
+Mesh Volume is 401766.593750
+Mesh Surface is 207576.031250
+Thin shell barycenter -6.371800 -4.041090 -127.882858
+Center of Mass is -6.129842 -3.489157 -118.607628
+Inertia Tensor is :
+| 3242308096.000000 -50011216.000000 -143185152.000000 |
+| -50011216.000000 3242510848.000000 -86288992.000000 |
+| -143185152.000000 -86288992.000000 584587840.000000 |
+Principal axes are :
+| 0.686905 -0.724725 0.054175 |
+| 0.724146 0.688843 0.033285 |
+| -0.061441 0.016367 0.997977 |
+axis momenta are :
+| 3202392832.000000 3293076992.000000 573937024.000000 |
+-->
+  <xacro:macro name="l_forearm_inertial">
+    <inertial>
+      <mass value="${ 401766.593750 / md}"/>
+      <inertia
+        ixx="${   3242308096.000000 / id }"
+        ixy="${    -50011216.000000 / id }"
+        ixz="${   -143185152.000000 / id }"
+        iyy="${   3242510848.000000 / id }"
+        iyz="${    -86288992.000000 / id }"
+        izz="${    584587840.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_hand.stl in 12 msec
+All files opened in 2042 msec
+Mesh Bounding Box Size 44.331417 93.143219 128.509338
+Mesh Bounding Box Diag 164.789520 
+Mesh Volume is 83605.007812
+Mesh Surface is 43796.097656
+Thin shell barycenter -0.156066 -5.322559 -53.723415
+Center of Mass is -0.270632 -5.146427 -53.579273
+Inertia Tensor is :
+| 126485224.000000 -6832.961426 -139859.234375 |
+| -6832.961426 94925688.000000 -23795198.000000 |
+| -139859.234375 -23795198.000000 37456156.000000 |
+Principal axes are :
+| 0.999997 -0.001783 0.001372 |
+| 0.001212 0.940797 0.338967 |
+| -0.001895 -0.338965 0.940797 |
+axis momenta are :
+| 126485480.000000 103499000.000000 28882586.000000 |
+-->
+  <xacro:macro name="l_hand_inertial">
+    <inertial>
+      <mass value="${ 83605.007812 / md}"/>
+      <inertia
+        ixx="${   126485224.000000 / id }"
+        ixy="${       -6832.961426 / id }"
+        ixz="${     -139859.234375 / id }"
+        iyy="${    94925688.000000 / id }"
+        iyz="${   -23795198.000000 / id }"
+        izz="${    37456156.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_pinky3_1.stl in 12 msec
+All files opened in 1582 msec
+Mesh Bounding Box Size 17.696007 58.876789 43.411186
+Mesh Bounding Box Diag 75.260590 
+Mesh Volume is 14892.949219
+Mesh Surface is 7395.223145
+Thin shell barycenter 0.061504 19.576210 -6.779984
+Center of Mass is -0.456468 18.407099 -5.171003
+Inertia Tensor is :
+| 4361011.000000 -36622.921875 29569.964844 |
+| -36622.921875 2153599.750000 1214404.125000 |
+| 29569.964844 1214404.125000 3112752.000000 |
+Principal axes are :
+| 0.999839 0.015459 -0.009102 |
+| -0.007661 0.826721 0.562560 |
+| 0.016222 -0.562400 0.826706 |
+axis momenta are :
+| 4361771.500000 1326781.875000 3938809.500000 |
+
+-->
+  <xacro:macro name="l_pinky3_1_inertial">
+    <inertial>
+      <mass value="${ 14892.949219 / md}"/>
+      <inertia
+        ixx="${     4361011.000000 / id }"
+        ixy="${      -36622.921875 / id }"
+        ixz="${       29569.964844 / id }"
+        iyy="${     2153599.750000 / id }"
+        iyz="${     1214404.125000 / id }"
+        izz="${     3112752.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_ring3_1.stl in 2 msec
+All files opened in 1673 msec
+Mesh Bounding Box Size 17.686001 48.905632 38.091835
+Mesh Bounding Box Diag 64.463509 
+Mesh Volume is 10810.309570
+Mesh Surface is 6415.432617
+Thin shell barycenter 0.379389 15.710208 -3.349990
+Center of Mass is -0.064880 15.507306 -2.144598
+Inertia Tensor is :
+| 2392349.000000 -25959.347656 18166.251953 |
+| -25959.347656 1249956.375000 426506.718750 |
+| 18166.251953 426506.718750 1810718.500000 |
+Principal axes are :
+| 0.999683 0.022914 -0.010397 |
+| -0.015228 0.879878 0.474955 |
+| 0.020031 -0.474647 0.879948 |
+axis momenta are :
+| 2393108.500000 1019203.062500 2040712.375000 |
+-->
+  <xacro:macro name="l_ring3_1_inertial">
+    <inertial>
+      <mass value="${ 10810.309570 / md}"/>
+      <inertia
+        ixx="${     2392349.000000 / id }"
+        ixy="${      -25959.347656 / id }"
+        ixz="${       18166.251953 / id }"
+        iyy="${     1249956.375000 / id }"
+        iyz="${      426506.718750 / id }"
+        izz="${     1810718.500000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_shoulder.stl in 5 msec
+All files opened in 1242 msec
+Mesh Bounding Box Size 102.575752 111.850540 126.307632
+Mesh Bounding Box Diag 197.448593 
+Mesh Volume is 322443.343750
+Mesh Surface is 110009.562500
+Thin shell barycenter -2.171375 46.918030 -24.815781
+Center of Mass is -1.760977 46.793152 -26.001684
+Inertia Tensor is :
+| 601346048.000000 -3437744.000000 -11761914.000000 |
+| -3437744.000000 473865952.000000 114277040.000000 |
+| -11761914.000000 114277040.000000 500951520.000000 |
+Principal axes are :
+| 0.690490 -0.022926 0.722979 |
+| -0.469097 0.746628 0.471693 |
+| -0.550610 -0.664846 0.504785 |
+axis momenta are :
+| 613060736.000000 372211808.000000 590891008.000000 |
+-->
+  <xacro:macro name="l_shoulder_inertial">
+    <inertial>
+      <mass value="${ 322443.343750 / md}"/>
+      <inertia
+        ixx="${    601346048.000000 / id }"
+        ixy="${     -3437744.000000 / id }"
+        ixz="${    -11761914.000000 / id }"
+        iyy="${    473865952.000000 / id }"
+        iyz="${    114277040.000000 / id }"
+        izz="${    500951520.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_shoulder_base.stl in 7 msec
+All files opened in 2182 msec
+Mesh Bounding Box Size 102.761749 110.730751 118.874138
+Mesh Bounding Box Diag 192.229904 
+Mesh Volume is 266526.968750
+Mesh Surface is 87024.109375
+Thin shell barycenter -3.847125 -13.766655 -49.144997
+Center of Mass is -3.377304 -11.160115 -46.922394
+Inertia Tensor is :
+| 350410240.000000 5735161.500000 -11193821.000000 |
+| 5735161.500000 390885728.000000 -45447508.000000 |
+| -11193821.000000 -45447508.000000 271458720.000000 |
+Principal axes are :
+| 0.983285 0.156888 0.092394 |
+| -0.178254 0.932884 0.312975 |
+| -0.037091 -0.324213 0.945257 |
+axis momenta are :
+| 349792800.000000 407645024.000000 255316880.000000 |
+
+-->
+  <xacro:macro name="l_shoulder_base_inertial">
+    <inertial>
+      <mass value="${ 266526.968750 / md}"/>
+      <inertia
+        ixx="${    350410240.000000 / id }"
+        ixy="${      5735161.500000 / id }"
+        ixz="${    -11193821.000000 / id }"
+        iyy="${    390885728.000000 / id }"
+        iyz="${    -45447508.000000 / id }"
+        izz="${    271458720.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/l_thumb5_1.stl in 5 msec
+All files opened in 1492 msec
+Mesh Bounding Box Size 22.555820 43.031254 35.923035
+Mesh Bounding Box Diag 60.422832 
+Mesh Volume is 10044.437500
+Mesh Surface is 6250.192871
+Thin shell barycenter 1.237436 -14.046616 -3.203827
+Center of Mass is 1.007494 -13.727526 -2.808447
+Inertia Tensor is :
+| 1744373.625000 40159.183594 41015.949219 |
+| 40159.183594 1225092.125000 -243175.015625 |
+| 41015.949219 -243175.015625 1185567.625000 |
+Principal axes are :
+| 0.997338 -0.005703 -0.072695 |
+| 0.053493 0.734721 0.676258 |
+| 0.049554 -0.678346 0.733070 |
+axis momenta are :
+| 1748565.500000 1449296.750000 957171.125000 |
+-->
+  <xacro:macro name="l_thumb5_1_inertial">
+    <inertial>
+      <mass value="${ 10044.437500 / md}"/>
+      <inertia
+        ixx="${     1744373.625000 / id }"
+        ixy="${       40159.183594 / id }"
+        ixz="${       41015.949219 / id }"
+        iyy="${     1225092.125000 / id }"
+        iyz="${     -243175.015625 / id }"
+        izz="${     1185567.625000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/middle3_1.stl in 2 msec
+All files opened in 1320 msec
+Mesh Bounding Box Size 18.482727 18.602509 52.306591
+Mesh Bounding Box Diag 58.511913 
+Mesh Volume is 5988.140625
+Mesh Surface is 4556.298340
+Thin shell barycenter 0.580627 -0.004272 -18.619308
+Center of Mass is 0.259172 0.005322 -18.944950
+Inertia Tensor is :
+| 1114858.750000 -26.224279 17385.302734 |
+| -26.224279 1045557.750000 1371.758545 |
+| 17385.302734 1371.758545 321609.062500 |
+Principal axes are :
+| 0.999760 -0.000096 -0.021901 |
+| 0.000055 0.999998 -0.001894 |
+| 0.021901 0.001893 0.999758 |
+axis momenta are :
+| 1115239.625000 1045560.375000 321225.625000 |
+-->
+  <xacro:macro name="middle3_1_inertial">
+    <inertial>
+      <mass value="${ 5988.140625 / md}"/>
+      <inertia
+        ixx="${    1114858.750000 / id }"
+        ixy="${        -26.224279 / id }"
+        ixz="${      17385.302734 / id }"
+        iyy="${    1045557.750000 / id }"
+        iyz="${       1371.758545 / id }"
+        izz="${     321609.062500 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/middle3_2.stl in 4 msec
+All files opened in 1454 msec
+Mesh Bounding Box Size 17.604366 16.469009 36.516296
+Mesh Bounding Box Diag 43.755936 
+Mesh Volume is 3588.543701
+Mesh Surface is 3057.116943
+Thin shell barycenter 0.927861 -0.027238 -11.826812
+Center of Mass is 0.997151 -0.059130 -11.654193
+Inertia Tensor is :
+| 350951.468750 19.666632 -19434.296875 |
+| 19.666632 346446.375000 1214.759033 |
+| -19434.296875 1214.759033 129022.828125 |
+Principal axes are :
+| 0.996143 0.014255 0.086579 |
+| -0.013828 0.999889 -0.005531 |
+| -0.086648 0.004312 0.996230 |
+axis momenta are :
+| 352641.656250 346451.906250 127327.117188 |
+-->
+  <xacro:macro name="middle3_2_inertial">
+    <inertial>
+      <mass value="${ 3588.543701 / md}"/>
+      <inertia
+        ixx="${     350951.468750 / id }"
+        ixy="${         19.666632 / id }"
+        ixz="${     -19434.296875 / id }"
+        iyy="${     346446.375000 / id }"
+        iyz="${       1214.759033 / id }"
+        izz="${     129022.828125 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/middle3_3.stl in 3 msec
+All files opened in 1329 msec
+Mesh Bounding Box Size 16.651167 15.670519 37.599258
+Mesh Bounding Box Diag 44.006031 
+Mesh Volume is 3395.293457
+Mesh Surface is 2941.218994
+Thin shell barycenter -0.214218 -0.025429 -13.305432
+Center of Mass is -0.301118 -0.030560 -13.531679
+Inertia Tensor is :
+| 340450.843750 32.171150 -19707.763672 |
+| 32.171150 346419.093750 26.280695 |
+| -19707.763672 26.280695 102763.750000 |
+Principal axes are :
+| 0.996603 0.006868 0.082075 |
+| -0.006882 0.999976 -0.000118 |
+| -0.082073 -0.000448 0.996626 |
+axis momenta are :
+| 342073.625000 346419.312500 101140.765625 |
+-->
+  <xacro:macro name="middle3_3_inertial">
+    <inertial>
+      <mass value="${ 3395.293457 / md}"/>
+      <inertia
+        ixx="${     340450.843750 / id }"
+        ixy="${         32.171150 / id }"
+        ixz="${     -19707.763672 / id }"
+        iyy="${     346419.093750 / id }"
+        iyz="${         26.280695 / id }"
+        izz="${     102763.750000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/mid_stomach.stl in 12 msec
+All files opened in 1561 msec
+Mesh Bounding Box Size 171.763184 295.432159 172.122498
+Mesh Bounding Box Diag 382.634155 
+Mesh Volume is 1710217.625000
+Mesh Surface is 352918.562500
+Thin shell barycenter -2.701985 -0.245404 -48.399776
+Center of Mass is -4.659371 -0.067826 -41.636871
+Inertia Tensor is :
+| 10129861632.000000 1797694.125000 205381024.000000 |
+| 1797694.125000 4401466880.000000 -721074.000000 |
+| 205381024.000000 -721074.000000 10623296512.000000 |
+Principal axes are :
+| 0.940360 -0.000318 0.340181 |
+| 0.000342 1.000000 -0.000011 |
+| -0.340181 0.000126 0.940360 |
+axis momenta are :
+| 10055564288.000000 4401466368.000000 10697594880.000000 |
+-->
+  <xacro:macro name="mid_stomach_inertial">
+    <inertial>
+      <mass value="${ 1710217.625000 / md}"/>
+      <inertia
+        ixx="${   10129861632.000000 / id }"
+        ixy="${       1797694.125000 / id }"
+        ixz="${     205381024.000000 / id }"
+        iyy="${    4401466880.000000 / id }"
+        iyz="${       -721074.000000 / id }"
+        izz="${   10623296512.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/pinky3_2.stl in 4 msec
+All files opened in 2164 msec
+Mesh Bounding Box Size 14.813997 14.910004 41.924004
+Mesh Bounding Box Diag 46.897598 
+Mesh Volume is 3053.924072
+Mesh Surface is 2922.947266
+Thin shell barycenter 0.552156 0.055925 -15.018837
+Center of Mass is 0.292973 0.060040 -15.377484
+Inertia Tensor is :
+| 362563.156250 -30.389627 5979.022461 |
+| -30.389627 339872.031250 657.904663 |
+| 5979.022461 657.904663 105694.281250 |
+Principal axes are :
+| 0.999729 0.000595 -0.023258 |
+| -0.000661 0.999996 -0.002810 |
+| 0.023256 0.002825 0.999726 |
+axis momenta are :
+| 362702.250000 339873.875000 105553.335938 |
+-->
+  <xacro:macro name="pinky3_2_inertial">
+    <inertial>
+      <mass value="${ 3053.924072 / md}"/>
+      <inertia
+        ixx="${     362563.156250 / id }"
+        ixy="${        -30.389627 / id }"
+        ixz="${       5979.022461 / id }"
+        iyy="${     339872.031250 / id }"
+        iyz="${        657.904663 / id }"
+        izz="${     105694.281250 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/pinky3_3.stl in 4 msec
+All files opened in 2273 msec
+Mesh Bounding Box Size 14.109985 13.200013 29.268002
+Mesh Bounding Box Diag 35.070614 
+Mesh Volume is 1848.707520
+Mesh Surface is 1964.640503
+Thin shell barycenter 0.776586 -0.051115 -9.552998
+Center of Mass is 0.831476 -0.076120 -9.414209
+Inertia Tensor is :
+| 116124.148438 16.077593 -6393.164551 |
+| 16.077593 114666.492188 392.228394 |
+| -6393.164551 392.228394 42715.207031 |
+Principal axes are :
+| 0.996242 0.009276 0.086115 |
+| -0.008843 0.999946 -0.005409 |
+| -0.086161 0.004627 0.996270 |
+axis momenta are :
+| 116676.921875 114668.453125 42160.468750 |
+-->
+  <xacro:macro name="pinky3_3_inertial">
+    <inertial>
+      <mass value="${ 1848.707520 / md}"/>
+      <inertia
+        ixx="${     116124.148438 / id }"
+        ixy="${         16.077593 / id }"
+        ixz="${      -6393.164551 / id }"
+        iyy="${     114666.492188 / id }"
+        iyz="${        392.228394 / id }"
+        izz="${      42715.207031 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/pinky3_4.stl in 9 msec
+All files opened in 1721 msec
+Mesh Bounding Box Size 13.346009 12.559998 30.136002
+Mesh Bounding Box Diag 35.271065 
+Mesh Volume is 1748.221436
+Mesh Surface is 1889.468384
+Thin shell barycenter -0.145025 -0.030462 -10.665401
+Center of Mass is -0.214676 -0.034577 -10.846709
+Inertia Tensor is :
+| 112612.445312 10.655196 -6518.796875 |
+| 10.655196 114586.593750 8.845160 |
+| -6518.796875 8.845160 33991.617188 |
+Principal axes are :
+| 0.996603 0.006869 0.082074 |
+| -0.006883 0.999976 -0.000119 |
+| -0.082073 -0.000446 0.996626 |
+axis momenta are :
+| 113149.210938 114586.664062 33454.781250 |
+-->
+  <xacro:macro name="pinky3_4_inertial">
+    <inertial>
+      <mass value="${ 1748.221436 / md}"/>
+      <inertia
+        ixx="${     112612.445312 / id }"
+        ixy="${         10.655196 / id }"
+        ixz="${      -6518.796875 / id }"
+        iyy="${     114586.593750 / id }"
+        iyz="${          8.845160 / id }"
+        izz="${      33991.617188 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_hand.stl in 31 msec
+All files opened in 1286 msec
+Mesh Bounding Box Size 13.736000 84.862000 108.330017
+Mesh Bounding Box Diag 138.295441 
+Mesh Volume is 39850.042969
+Mesh Surface is 15339.137695
+Thin shell barycenter 3.745567 -13.082277 41.522755
+Center of Mass is 3.708912 -13.324539 43.250721
+Inertia Tensor is :
+| 43945364.000000 150298.718750 -668434.312500 |
+| 150298.718750 31625730.000000 7874519.500000 |
+| -668434.312500 7874519.500000 12808060.000000 |
+Principal axes are :
+| 0.999758 0.009173 0.019977 |
+| -0.001804 0.939958 -0.341286 |
+| -0.021908 0.341168 0.939747 |
+axis momenta are :
+| 43959740.000000 34485336.000000 9934077.000000 |
+-->
+  <xacro:macro name="r_cover_hand_inertial">
+    <inertial>
+      <mass value="${ 39850.042969 / md}"/>
+      <inertia
+        ixx="${    43945364.000000 / id }"
+        ixy="${      150298.718750 / id }"
+        ixz="${     -668434.312500 / id }"
+        iyy="${    31625730.000000 / id }"
+        iyz="${     7874519.500000 / id }"
+        izz="${    12808060.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_handpinky.stl in 8 msec
+All files opened in 1616 msec
+Mesh Bounding Box Size 5.456001 32.141998 56.658005
+Mesh Bounding Box Diag 65.368233 
+Mesh Volume is 3887.731445
+Mesh Surface is 2330.852783
+Thin shell barycenter 2.210828 0.112941 2.008882
+Center of Mass is 2.283108 0.345010 1.597708
+Inertia Tensor is :
+| 732629.187500 -2534.063232 2594.331299 |
+| -2534.063232 578011.750000 -67645.304688 |
+| 2594.331299 -67645.304688 168406.562500 |
+Principal axes are :
+| 0.999788 0.020259 -0.003754 |
+| -0.019406 0.987119 0.158805 |
+| 0.006923 -0.158699 0.987303 |
+axis momenta are :
+| 732696.312500 588835.062500 157516.125000 |
+-->
+  <xacro:macro name="r_cover_handpinky_inertial">
+    <inertial>
+      <mass value="${ 3887.731445 / md}"/>
+      <inertia
+        ixx="${     732629.187500 / id }"
+        ixy="${      -2534.063232 / id }"
+        ixz="${       2594.331299 / id }"
+        iyy="${     578011.750000 / id }"
+        iyz="${     -67645.304688 / id }"
+        izz="${     168406.562500 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_handring.stl in 9 msec
+All files opened in 1687 msec
+Mesh Bounding Box Size 6.641999 33.834000 43.076000
+Mesh Bounding Box Diag 55.176060 
+Mesh Volume is 3507.538330
+Mesh Surface is 2007.870728
+Thin shell barycenter 2.526940 -0.495237 -1.871014
+Center of Mass is 2.592369 -0.223609 -1.677225
+Inertia Tensor is :
+| 430487.000000 -5051.600586 -2255.701172 |
+| -5051.600586 288646.281250 -594.737610 |
+| -2255.701172 -594.737610 159170.093750 |
+Principal axes are :
+| 0.999336 0.035465 0.008404 |
+| -0.035507 0.999357 0.004920 |
+| -0.008225 -0.005215 0.999953 |
+axis momenta are :
+| 430685.062500 288470.125000 159148.203125 |
+-->
+  <xacro:macro name="r_cover_handring_inertial">
+    <inertial>
+      <mass value="${ 3507.538330 / md}"/>
+      <inertia
+        ixx="${     430487.000000 / id }"
+        ixy="${      -5051.600586 / id }"
+        ixz="${      -2255.701172 / id }"
+        iyy="${     288646.281250 / id }"
+        iyz="${       -594.737610 / id }"
+        izz="${     159170.093750 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_index.stl in 7 msec
+All files opened in 1714 msec
+Mesh Bounding Box Size 8.594393 17.415220 35.119446
+Mesh Bounding Box Diag 40.131397 
+Mesh Volume is 1635.368652
+Mesh Surface is 1318.177612
+Thin shell barycenter 4.245107 0.273686 0.921812
+Center of Mass is 4.354176 0.273627 0.371592
+Inertia Tensor is :
+| 167985.140625 -0.936647 -15635.599609 |
+| -0.936647 140411.187500 -699.011047 |
+| -15635.599609 -699.011047 36513.273438 |
+Principal axes are :
+| 0.993186 -0.003484 0.116486 |
+| 0.002738 0.999975 0.006567 |
+| -0.116506 -0.006203 0.993171 |
+axis momenta are :
+| 169819.281250 140415.531250 34674.792969 |
+-->
+  <xacro:macro name="r_cover_index_inertial">
+    <inertial>
+      <mass value="${ 1635.368652 / md}"/>
+      <inertia
+        ixx="${     167985.140625 / id }"
+        ixy="${         -0.936647 / id }"
+        ixz="${     -15635.599609 / id }"
+        iyy="${     140411.187500 / id }"
+        iyz="${       -699.011047 / id }"
+        izz="${      36513.273438 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_middle.stl in 22 msec
+All files opened in 1370 msec
+Mesh Bounding Box Size 8.813518 18.337889 38.744076
+Mesh Bounding Box Diag 43.761395 
+Mesh Volume is 1904.471313
+Mesh Surface is 1507.517334
+Thin shell barycenter 4.313908 0.082064 0.871611
+Center of Mass is 4.406314 0.082271 0.264647
+Inertia Tensor is :
+| 234427.671875 -11.994104 -22417.498047 |
+| -11.994104 198775.875000 -945.323303 |
+| -22417.498047 -945.323303 47098.675781 |
+Principal axes are :
+| 0.993105 -0.003278 0.117184 |
+| 0.002582 0.999978 0.006092 |
+| -0.117202 -0.005748 0.993091 |
+axis momenta are :
+| 237073.250000 198781.343750 44447.621094 |
+-->
+  <xacro:macro name="r_cover_middle_inertial">
+    <inertial>
+      <mass value="${ 1904.471313 / md}"/>
+      <inertia
+        ixx="${     234427.671875 / id }"
+        ixy="${        -11.994104 / id }"
+        ixz="${     -22417.498047 / id }"
+        iyy="${     198775.875000 / id }"
+        iyz="${       -945.323303 / id }"
+        izz="${      47098.675781 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_pinky.stl in 25 msec
+All files opened in 1370 msec
+Mesh Bounding Box Size 7.799893 16.734661 33.440189
+Mesh Bounding Box Diag 38.198605 
+Mesh Volume is 1285.607300
+Mesh Surface is 1097.118896
+Thin shell barycenter 3.740967 0.503986 1.926065
+Center of Mass is 3.877148 0.506894 1.602272
+Inertia Tensor is :
+| 109421.882812 -904.252136 -9149.000000 |
+| -904.252136 90519.320312 -2714.452637 |
+| -9149.000000 -2714.452637 24557.162109 |
+Principal axes are :
+| 0.993999 0.026285 0.106181 |
+| -0.030858 0.998656 0.041649 |
+| -0.104944 -0.044676 0.993474 |
+axis momenta are :
+| 110415.882812 90616.953125 23465.529297 |
+-->
+  <xacro:macro name="r_cover_pinky_inertial">
+    <inertial>
+      <mass value="${ 1285.607300 / md}"/>
+      <inertia
+        ixx="${     109421.882812 / id }"
+        ixy="${       -904.252136 / id }"
+        ixz="${      -9149.000000 / id }"
+        iyy="${      90519.320312 / id }"
+        iyz="${      -2714.452637 / id }"
+        izz="${      24557.162109 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_ring.stl in 24 msec
+All files opened in 1487 msec
+Mesh Bounding Box Size 8.088491 17.430080 36.716965
+Mesh Bounding Box Diag 41.441128 
+Mesh Volume is 1466.901733
+Mesh Surface is 1233.944824
+Thin shell barycenter 3.885468 -0.187724 1.591275
+Center of Mass is 4.013374 -0.186770 1.242054
+Inertia Tensor is :
+| 147694.687500 -1216.691284 -12881.797852 |
+| -1216.691284 124547.375000 -4381.839844 |
+| -12881.797852 -4381.839844 30177.607422 |
+Principal axes are :
+| 0.993850 0.025037 0.107867 |
+| -0.030222 0.998451 0.046707 |
+| -0.106530 -0.049680 0.993068 |
+axis momenta are :
+| 149112.484375 124734.890625 28572.300781 |
+-->
+  <xacro:macro name="r_cover_ring_inertial">
+    <inertial>
+      <mass value="${ 1466.901733 / md}"/>
+      <inertia
+        ixx="${     147694.687500 / id }"
+        ixy="${      -1216.691284 / id }"
+        ixz="${     -12881.797852 / id }"
+        iyy="${     124547.375000 / id }"
+        iyz="${      -4381.839844 / id }"
+        izz="${      30177.607422 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_cover_thumb.stl in 21 msec
+All files opened in 1387 msec
+Mesh Bounding Box Size 6.319447 26.349291 49.800488
+Mesh Bounding Box Diag 56.694878 
+Mesh Volume is 3250.209961
+Mesh Surface is 2121.767578
+Thin shell barycenter 2.446937 -2.227035 0.836309
+Center of Mass is 2.521784 -2.407381 -0.141687
+Inertia Tensor is :
+| 543531.937500 -4525.456055 8495.842773 |
+| -4525.456055 442602.156250 49077.523438 |
+| 8495.842773 49077.523438 112376.625000 |
+Principal axes are :
+| 0.999189 0.034558 -0.020657 |
+| -0.037180 0.988862 -0.144120 |
+| 0.015446 0.144771 0.989345 |
+axis momenta are :
+| 543831.687500 449629.062500 105050.000000 |
+-->
+  <xacro:macro name="r_cover_thumb_inertial">
+    <inertial>
+      <mass value="${ 3250.209961 / md}"/>
+      <inertia
+        ixx="${     543531.937500 / id }"
+        ixy="${      -4525.456055 / id }"
+        ixz="${       8495.842773 / id }"
+        iyy="${     442602.156250 / id }"
+        iyz="${      49077.523438 / id }"
+        izz="${     112376.625000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_eyesupport.stl in 2 msec
+All files opened in 1164 msec
+Mesh Bounding Box Size 14.000004 35.808380 45.097652
+Mesh Bounding Box Diag 59.262455 
+Mesh Volume is 11370.105469
+Mesh Surface is 4366.827637
+Thin shell barycenter -3.525271 0.060002 2.126531
+Center of Mass is -4.087140 0.392808 2.943427
+Inertia Tensor is :
+| 2432392.250000 6936.413574 -15166.977539 |
+| 6936.413574 1752612.875000 160871.437500 |
+| -15166.977539 160871.437500 896652.812500 |
+Principal axes are :
+| 0.999927 -0.006319 0.010326 |
+| 0.008064 0.983845 -0.178843 |
+| -0.009029 0.178913 0.983823 |
+axis momenta are :
+| 2432585.250000 1781822.875000 867249.875000 |
+-->
+  <xacro:macro name="r_eyesupport_inertial">
+    <inertial>
+      <mass value="${ 11370.105469 / md}"/>
+      <inertia
+        ixx="${     2432392.250000 / id }"
+        ixy="${        6936.413574 / id }"
+        ixz="${      -15166.977539 / id }"
+        iyy="${     1752612.875000 / id }"
+        iyz="${      160871.437500 / id }"
+        izz="${      896652.812500 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_forearm.stl in 9 msec
+All files opened in 1247 msec
+Mesh Bounding Box Size 108.761078 103.942200 315.046661
+Mesh Bounding Box Diag 349.123688 
+Mesh Volume is 401766.593750
+Mesh Surface is 207576.015625
+Thin shell barycenter -6.371801 4.041089 -127.882866
+Center of Mass is -6.129843 3.489157 -118.607635
+Inertia Tensor is :
+| 3242307584.000000 50011216.000000 -143185120.000000 |
+| 50011216.000000 3242510080.000000 86288976.000000 |
+| -143185120.000000 86288976.000000 584587840.000000 |
+Principal axes are :
+| 0.686904 0.724726 0.054175 |
+| -0.724147 0.688842 -0.033285 |
+| -0.061441 -0.016367 0.997977 |
+axis momenta are :
+| 3202392320.000000 3293076224.000000 573937024.000000 |
+-->
+  <xacro:macro name="r_forearm_inertial">
+    <inertial>
+      <mass value="${ 401766.593750 / md}"/>
+      <inertia
+        ixx="${   3242307584.000000 / id }"
+        ixy="${     50011216.000000 / id }"
+        ixz="${   -143185120.000000 / id }"
+        iyy="${   3242510080.000000 / id }"
+        iyz="${     86288976.000000 / id }"
+        izz="${    584587840.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_hand.stl in 14 msec
+All files opened in 1521 msec
+Mesh Bounding Box Size 44.331417 93.143219 128.509323
+Mesh Bounding Box Diag 164.789505 
+Mesh Volume is 83605.000000
+Mesh Surface is 43796.097656
+Thin shell barycenter -0.156067 5.322558 -53.723412
+Center of Mass is -0.270633 5.146428 -53.579273
+Inertia Tensor is :
+| 126485184.000000 6837.660156 -139862.265625 |
+| 6837.660156 94925672.000000 23795198.000000 |
+| -139862.265625 23795198.000000 37456164.000000 |
+Principal axes are :
+| 0.999997 0.001783 0.001372 |
+| -0.001212 0.940797 -0.338968 |
+| -0.001895 0.338965 0.940797 |
+axis momenta are :
+| 126485440.000000 103498984.000000 28882592.000000 |
+-->
+  <xacro:macro name="r_hand_inertial">
+    <inertial>
+      <mass value="${ 83605.000000 / md}"/>
+      <inertia
+        ixx="${   126485184.000000 / id }"
+        ixy="${        6837.660156 / id }"
+        ixz="${     -139862.265625 / id }"
+        iyy="${    94925672.000000 / id }"
+        iyz="${    23795198.000000 / id }"
+        izz="${    37456164.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/ring3_2.stl in 5 msec
+All files opened in 1503 msec
+Mesh Bounding Box Size 16.450043 16.556625 46.554031
+Mesh Bounding Box Diag 52.076900 
+Mesh Volume is 4222.559082
+Mesh Surface is 3609.460205
+Thin shell barycenter 0.516065 -0.049856 -16.579317
+Center of Mass is 0.230179 -0.040497 -16.867937
+Inertia Tensor is :
+| 622774.062500 5.753471 10004.874023 |
+| 5.753471 584045.562500 729.796631 |
+| 10004.874023 729.796631 179666.234375 |
+Principal axes are :
+| 0.999745 -0.000611 -0.022561 |
+| 0.000570 0.999998 -0.001803 |
+| 0.022563 0.001790 0.999744 |
+axis momenta are :
+| 622999.875000 584046.875000 179439.140625 |
+-->
+  <xacro:macro name="ring3_2_inertial">
+    <inertial>
+      <mass value="${ 4222.559082 / md}"/>
+      <inertia
+        ixx="${     622774.062500 / id }"
+        ixy="${          5.753471 / id }"
+        ixz="${      10004.874023 / id }"
+        iyy="${     584045.562500 / id }"
+        iyz="${        729.796631 / id }"
+        izz="${     179666.234375 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/ring3_3.stl in 2 msec
+All files opened in 1562 msec
+Mesh Bounding Box Size 15.668304 14.657790 32.500313
+Mesh Bounding Box Diag 38.943768 
+Mesh Volume is 2530.003662
+Mesh Surface is 2421.664551
+Thin shell barycenter 0.858779 0.006120 -10.491523
+Center of Mass is 0.920449 -0.022269 -10.337892
+Inertia Tensor is :
+| 195998.000000 10.986977 -10853.751953 |
+| 10.986977 193482.031250 678.437927 |
+| -10853.751953 678.437927 72056.179688 |
+Principal axes are :
+| 0.996143 0.014254 0.086580 |
+| -0.013827 0.999889 -0.005531 |
+| -0.086649 0.004312 0.996230 |
+axis momenta are :
+| 196941.953125 193485.109375 71109.140625 |
+-->
+  <xacro:macro name="ring3_3_inertial">
+    <inertial>
+      <mass value="${ 2530.003662 / md}"/>
+      <inertia
+        ixx="${     195998.000000 / id }"
+        ixy="${         10.986977 / id }"
+        ixz="${     -10853.751953 / id }"
+        iyy="${     193482.031250 / id }"
+        iyz="${        678.437927 / id }"
+        izz="${      72056.179688 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/ring3_4.stl in 2 msec
+All files opened in 1837 msec
+Mesh Bounding Box Size 14.819916 13.947111 33.464180
+Mesh Bounding Box Diag 39.166351 
+Mesh Volume is 2393.758301
+Mesh Surface is 2329.854736
+Thin shell barycenter -0.171584 0.055840 -11.861223
+Center of Mass is -0.248927 0.051272 -12.062567
+Inertia Tensor is :
+| 190133.796875 17.969458 -11006.313477 |
+| 17.969458 193466.937500 14.700538 |
+| -11006.313477 14.700538 57391.125000 |
+Principal axes are :
+| 0.996603 0.006869 0.082075 |
+| -0.006882 0.999976 -0.000118 |
+| -0.082073 -0.000448 0.996626 |
+axis momenta are :
+| 191040.078125 193467.046875 56484.726562 |
+-->
+  <xacro:macro name="ring3_4_inertial">
+    <inertial>
+      <mass value="${ 2393.758301 / md}"/>
+      <inertia
+        ixx="${     190133.796875 / id }"
+        ixy="${         17.969458 / id }"
+        ixz="${     -11006.313477 / id }"
+        iyy="${     193466.937500 / id }"
+        iyz="${         14.700538 / id }"
+        izz="${      57391.125000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_pinky3_1.stl in 9 msec
+All files opened in 2265 msec
+Mesh Bounding Box Size 17.696005 58.876789 43.411186
+Mesh Bounding Box Diag 75.260590 
+Mesh Volume is 14892.949219
+Mesh Surface is 7395.222656
+Thin shell barycenter 0.061504 -19.576208 -6.779984
+Center of Mass is -0.456468 -18.407099 -5.171003
+Inertia Tensor is :
+| 4361011.500000 36622.980469 29569.984375 |
+| 36622.980469 2153599.750000 -1214404.375000 |
+| 29569.984375 -1214404.375000 3112752.000000 |
+Principal axes are :
+| 0.999839 -0.015459 -0.009102 |
+| 0.007661 0.826721 -0.562561 |
+| 0.016222 0.562400 0.826706 |
+axis momenta are :
+| 4361772.000000 1326781.625000 3938809.750000 |
+-->
+  <xacro:macro name="r_pinky3_1_inertial">
+    <inertial>
+      <mass value="${ 14892.949219 / md}"/>
+      <inertia
+        ixx="${     4361011.500000 / id }"
+        ixy="${       36622.980469 / id }"
+        ixz="${       29569.984375 / id }"
+        iyy="${     2153599.750000 / id }"
+        iyz="${    -1214404.375000 / id }"
+        izz="${     3112752.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_ring3_1.stl in 6 msec
+All files opened in 1388 msec
+Mesh Bounding Box Size 17.686001 48.905632 38.091835
+Mesh Bounding Box Diag 64.463509 
+Mesh Volume is 10810.309570
+Mesh Surface is 6415.433105
+Thin shell barycenter 0.379389 -15.710207 -3.349989
+Center of Mass is -0.064880 -15.507305 -2.144598
+Inertia Tensor is :
+| 2392349.500000 25959.337891 18166.240234 |
+| 25959.337891 1249956.375000 -426506.625000 |
+| 18166.240234 -426506.625000 1810718.375000 |
+Principal axes are :
+| 0.999683 -0.022914 -0.010397 |
+| 0.015228 0.879878 -0.474955 |
+| 0.020031 0.474647 0.879948 |
+axis momenta are :
+| 2393109.000000 1019203.062500 2040712.250000 |
+-->
+  <xacro:macro name="r_ring3_1_inertial">
+    <inertial>
+      <mass value="${ 10810.309570 / md}"/>
+      <inertia
+        ixx="${     2392349.500000 / id }"
+        ixy="${       25959.337891 / id }"
+        ixz="${       18166.240234 / id }"
+        iyy="${     1249956.375000 / id }"
+        iyz="${     -426506.625000 / id }"
+        izz="${     1810718.375000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_shoulder.stl in 5 msec
+All files opened in 1679 msec
+Mesh Bounding Box Size 102.575745 111.850540 126.307617
+Mesh Bounding Box Diag 197.448578 
+Mesh Volume is 322443.343750
+Mesh Surface is 110009.562500
+Thin shell barycenter -2.171377 -46.918030 -24.815779
+Center of Mass is -1.760979 -46.793152 -26.001682
+Inertia Tensor is :
+| 601345920.000000 3437729.750000 -11761917.000000 |
+| 3437729.750000 473865856.000000 -114277000.000000 |
+| -11761917.000000 -114277000.000000 500951584.000000 |
+Principal axes are :
+| 0.690488 0.022926 0.722980 |
+| 0.469098 0.746629 -0.471692 |
+| -0.550612 0.664846 0.504784 |
+axis momenta are :
+| 613060672.000000 372211808.000000 590890880.000000 |
+-->
+  <xacro:macro name="r_shoulder_inertial">
+    <inertial>
+      <mass value="${ 322443.343750 / md}"/>
+      <inertia
+        ixx="${    601345920.000000 / id }"
+        ixy="${      3437729.750000 / id }"
+        ixz="${    -11761917.000000 / id }"
+        iyy="${    473865856.000000 / id }"
+        iyz="${   -114277000.000000 / id }"
+        izz="${    500951584.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_shoulder_base.stl in 5 msec
+All files opened in 1413 msec
+Mesh Bounding Box Size 102.761749 110.730751 118.874130
+Mesh Bounding Box Diag 192.229904 
+Mesh Volume is 266526.968750
+Mesh Surface is 87024.101562
+Thin shell barycenter -3.847125 13.766653 -49.144993
+Center of Mass is -3.377304 11.160116 -46.922394
+Inertia Tensor is :
+| 350410112.000000 -5735162.500000 -11193818.000000 |
+| -5735162.500000 390885600.000000 45447476.000000 |
+| -11193818.000000 45447476.000000 271458688.000000 |
+Principal axes are :
+| 0.983285 -0.156888 0.092394 |
+| 0.178254 0.932884 -0.312975 |
+| -0.037091 0.324213 0.945257 |
+axis momenta are :
+| 349792672.000000 407644864.000000 255316864.000000 |
+-->
+  <xacro:macro name="r_shoulder_base_inertial">
+    <inertial>
+      <mass value="${ 266526.968750 / md}"/>
+      <inertia
+        ixx="${    350410112.000000 / id }"
+        ixy="${     -5735162.500000 / id }"
+        ixz="${    -11193818.000000 / id }"
+        iyy="${    390885600.000000 / id }"
+        iyz="${     45447476.000000 / id }"
+        izz="${    271458688.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/r_thumb5_1.stl in 11 msec
+All files opened in 2727 msec
+Mesh Bounding Box Size 22.555820 43.031254 35.923031
+Mesh Bounding Box Diag 60.422825 
+Mesh Volume is 10044.436523
+Mesh Surface is 6250.192871
+Thin shell barycenter 1.237437 14.046614 -3.203827
+Center of Mass is 1.007495 13.727525 -2.808447
+Inertia Tensor is :
+| 1744373.375000 -40159.230469 41015.968750 |
+| -40159.230469 1225091.875000 243174.906250 |
+| 41015.968750 243174.906250 1185567.500000 |
+Principal axes are :
+| 0.997338 0.005703 -0.072695 |
+| -0.053493 0.734720 -0.676258 |
+| 0.049554 0.678346 0.733070 |
+axis momenta are :
+| 1748565.250000 1449296.500000 957171.000000 |
+-->
+  <xacro:macro name="r_thumb5_1_inertial">
+    <inertial>
+      <mass value="${ 10044.436523 / md}"/>
+      <inertia
+        ixx="${     1744373.375000 / id }"
+        ixy="${      -40159.230469 / id }"
+        ixz="${       41015.968750 / id }"
+        iyy="${     1225091.875000 / id }"
+        iyz="${      243174.906250 / id }"
+        izz="${     1185567.500000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/skull.stl in 6 msec
+All files opened in 1454 msec
+Mesh Bounding Box Size 220.049591 145.440552 175.706451
+Mesh Bounding Box Diag 316.934601 
+Mesh Volume is 422313.062500
+Mesh Surface is 200301.781250
+Thin shell barycenter -1.802315 1.008288 98.940559
+Center of Mass is -3.423218 1.018229 101.525459
+Inertia Tensor is :
+| 1823237120.000000 6736614.000000 115768256.000000 |
+| 6736614.000000 2488021760.000000 -418613.687500 |
+| 115768256.000000 -418613.687500 2440409856.000000 |
+Principal axes are :
+| 0.983896 0.014894 0.178118 |
+| -0.009773 0.999514 -0.029593 |
+| -0.178472 0.027375 0.983564 |
+axis momenta are :
+| 1802170624.000000 2488110592.000000 2461387520.000000 |
+-->
+  <xacro:macro name="skull_inertial">
+    <inertial>
+      <mass value="${ 422313.062500 / md}"/>
+      <inertia
+        ixx="${   1823237120.000000 / id }"
+        ixy="${      6736614.000000 / id }"
+        ixz="${    115768256.000000 / id }"
+        iyy="${   2488021760.000000 / id }"
+        iyz="${      -418613.687500 / id }"
+        izz="${   2440409856.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/thumb5_2.stl in 6 msec
+All files opened in 1613 msec
+Mesh Bounding Box Size 22.805998 22.800003 47.880001
+Mesh Bounding Box Diag 57.727360 
+Mesh Volume is 7511.052246
+Mesh Surface is 5037.354004
+Thin shell barycenter 0.192869 -0.063899 -16.588631
+Center of Mass is -0.025869 -0.050593 -16.259710
+Inertia Tensor is :
+| 1304244.500000 249.766266 4229.196289 |
+| 249.766266 1169623.125000 906.593506 |
+| 4229.196289 906.593506 555691.125000 |
+Principal axes are :
+| 0.999982 -0.001901 -0.005649 |
+| 0.001893 0.999997 -0.001474 |
+| 0.005652 0.001464 0.999983 |
+axis momenta are :
+| 1304268.875000 1169624.000000 555665.875000 |
+-->
+  <xacro:macro name="thumb5_2_inertial">
+    <inertial>
+      <mass value="${ 7511.052246 / md}"/>
+      <inertia
+        ixx="${    1304244.500000 / id }"
+        ixy="${        249.766266 / id }"
+        ixz="${       4229.196289 / id }"
+        iyy="${    1169623.125000 / id }"
+        iyz="${        906.593506 / id }"
+        izz="${     555691.125000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/thumb5_3.stl in 10 msec
+All files opened in 1487 msec
+Mesh Bounding Box Size 21.108002 19.858002 39.591999
+Mesh Bounding Box Diag 49.065407 
+Mesh Volume is 5812.545410
+Mesh Surface is 3974.588867
+Thin shell barycenter 0.225602 -0.007193 -11.757344
+Center of Mass is 0.392466 -0.002426 -13.323187
+Inertia Tensor is :
+| 714990.187500 -441.941650 -55290.855469 |
+| -441.941650 735456.750000 497.618683 |
+| -55290.855469 497.618683 260507.593750 |
+Principal axes are :
+| 0.992251 -0.035559 0.119054 |
+| 0.035923 0.999354 -0.000917 |
+| -0.118944 0.005186 0.992887 |
+axis momenta are :
+| 721602.062500 735475.062500 253877.390625 |
+-->
+  <xacro:macro name="thumb5_3_inertial">
+    <inertial>
+      <mass value="${ 5812.545410 / md}"/>
+      <inertia
+        ixx="${     714990.187500 / id }"
+        ixy="${       -441.941650 / id }"
+        ixz="${     -55290.855469 / id }"
+        iyy="${     735456.750000 / id }"
+        iyz="${        497.618683 / id }"
+        izz="${     260507.593750 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/top_stomach.stl in 9 msec
+All files opened in 1594 msec
+Mesh Bounding Box Size 173.016800 236.902161 152.281570
+Mesh Bounding Box Diag 330.525543 
+Mesh Volume is 1144889.750000
+Mesh Surface is 276717.906250
+Thin shell barycenter -3.013796 -0.041180 45.638683
+Center of Mass is -3.812517 -0.053483 44.282845
+Inertia Tensor is :
+| 5824147968.000000 4529860.000000 -222818176.000000 |
+| 4529860.000000 4174386432.000000 4107830.000000 |
+| -222818176.000000 4107830.000000 5962789376.000000 |
+Principal axes are :
+| 0.805312 -0.003108 -0.592844 |
+| 0.004094 0.999992 0.000319 |
+| 0.592838 -0.002684 0.805317 |
+axis momenta are :
+| 5660141056.000000 4174361344.000000 6126821376.000000 |
+-->
+  <xacro:macro name="top_stomach_inertial">
+    <inertial>
+      <mass value="${ 1144889.750000 / md}"/>
+      <inertia
+        ixx="${    5824147968.000000 / id }"
+        ixy="${       4529860.000000 / id }"
+        ixz="${    -222818176.000000 / id }"
+        iyy="${    4174386432.000000 / id }"
+        iyz="${       4107830.000000 / id }"
+        izz="${    5962789376.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/torso.stl in 37 msec
+All files opened in 1623 msec
+Mesh Bounding Box Size 102.926048 310.999420 518.973633
+Mesh Bounding Box Diag 613.716553 
+Mesh Volume is 1923293.750000
+Mesh Surface is 641673.125000
+Thin shell barycenter -4.309503 -0.223433 177.628616
+Center of Mass is -3.839768 -0.257000 172.243729
+Inertia Tensor is :
+| 35267092480.000000 6958086.500000 730539008.000000 |
+| 6958086.500000 25724428288.000000 -15226770.000000 |
+| 730539008.000000 -15226770.000000 13365055488.000000 |
+Principal axes are :
+| 0.999445 -0.000632 -0.033300 |
+| 0.000674 0.999999 0.001248 |
+| 0.033299 -0.001269 0.999445 |
+axis momenta are :
+| 35291435008.000000 25724442624.000000 13340696576.000000 |
+-->
+  <xacro:macro name="torso_inertial">
+    <inertial>
+      <mass value="${ 1923293.750000 / md}"/>
+      <inertia
+        ixx="${   35267092480.000000 / id }"
+        ixy="${       6958086.500000 / id }"
+        ixz="${     730539008.000000 / id }"
+        iyy="${   25724428288.000000 / id }"
+        iyz="${     -15226770.000000 / id }"
+        izz="${   13365055488.000000 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+  
+<!--
+Opened mesh /home/grey/inmoov_ros/src/inmoov_ros/inmoov_meshes/meshes/virtual.stl in 8 msec
+All files opened in 2185 msec
+Mesh Bounding Box Size 1.000000 1.000000 1.000000
+Mesh Bounding Box Diag 1.732051 
+Mesh Volume is 1.000000
+Mesh Surface is 6.000000
+Thin shell barycenter 0.500000 0.500000 0.500000
+Center of Mass is 0.500000 0.500000 0.500000
+Inertia Tensor is :
+| 0.166667 0.000000 0.000000 |
+| 0.000000 0.166667 0.000000 |
+| 0.000000 0.000000 0.166667 |
+Principal axes are :
+| 1.000000 0.000000 0.000000 |
+| 0.000000 1.000000 0.000000 |
+| 0.000000 0.000000 1.000000 |
+axis momenta are :
+| 0.166667 0.166667 0.166667 |
+-->
+  <xacro:macro name="virtual_inertial">
+    <inertial>
+      <mass value="${ 1.000000 / md}"/>
+      <inertia
+        ixx="${ 0.166667 / id }"
+        ixy="${ 0.000000 / id }"
+        ixz="${ 0.000000 / id }"
+        iyy="${ 0.166667 / id }"
+        iyz="${ 0.000000 / id }"
+        izz="${ 0.166667 / id }"
+      />
+    </inertial>
+  </xacro:macro>
+
+</robot>

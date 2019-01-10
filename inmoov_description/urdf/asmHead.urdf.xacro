@@ -2,103 +2,107 @@
 
 <robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
-
 <xacro:macro name="head" params="covers">
 
-  <link name="head_base">
+  <link name="head_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/head_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/head_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:head_base_inertial/>
   </link>
 
-  <link name="head">
+  <link name="head_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/head.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/head.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:head_inertial/>
   </link>
 
-  <link name="jaw">
+  <link name="jaw_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/jaw.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/jaw.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 3.1415" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
     </visual>
+    <xacro:jaw_inertial/>
   </link>
 
-  <link name="skull">
+  <link name="skull_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/skull.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/skull.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0.001 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
     </visual>
+    <xacro:skull_inertial/>
   </link>
 
-  <link name="left_ear">
+  <link name="left_ear_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/earleftv1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/earleftv1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:earleftv1_inertial/>
   </link>
 
-  <link name="right_ear">
+  <link name="right_ear_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/earrightv1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/earrightv1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:earrightv1_inertial/>
   </link>
 
 
-  <joint name="head_leftright" type="revolute">
+  <joint name="head_pan_joint" type="revolute">
    <axis xyz="0 0 1"/>
-   <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
+   <limit effort="1000.0" lower="${head_pan_joint_lower}" upper="${head_pan_joint_upper}" velocity="${head_pan_joint_velocity}" />
    <origin rpy="0 0 0" xyz="0 0 0.0245"/>
-   <parent link="head_base"/>
-   <child link="head"/>
+   <parent link="head_base_link"/>
+   <child link="head_link"/>
   </joint>
 
-  <joint name="jaw" type="revolute">
-   <axis xyz="1 0 0"/>
-   <limit effort="1000.0" lower="0" upper="0.15" velocity="0.5"/>
-   <origin rpy="0.085 0 3.1415" xyz="-0.001 0.0375 0.0437"/>
-   <parent link="head"/>
-   <child link="jaw"/>
+  <joint name="jaw_joint" type="revolute">
+   <axis xyz="0 1 0"/>
+   <limit effort="1000.0" lower="${jaw_joint_lower}" upper="${jaw_joint_upper}" velocity="${jaw_joint_velocity}" />
+   <origin rpy="0 0.09 0" xyz="0.0375 0.0005 0.0437"/>
+   <parent link="head_link"/>
+   <child link="jaw_link"/>
   </joint>
 
-  <joint name="skull" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.001 0.044 -0.0245"/>
-    <parent link="head"/>
-    <child link="skull"/>
+  <joint name="skull_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.044 0 -0.0245"/>
+    <parent link="head_link"/>
+    <child link="skull_link"/>
   </joint>
 
-  <joint name="left_ear" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.056 0.035 0.0437"/>
-    <parent link="head"/>
-    <child link="left_ear"/>
+  <joint name="left_ear_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.035 0.056 0.0437"/>
+    <parent link="head_link"/>
+    <child link="left_ear_link"/>
   </joint>
 
-  <joint name="right_ear" type="fixed">
-    <origin rpy="0 0 0" xyz="0.056 0.035 0.0437"/>
-    <parent link="head"/>
-    <child link="right_ear"/>
+  <joint name="right_ear_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.035 -0.056 0.0437"/>
+    <parent link="head_link"/>
+    <child link="right_ear_link"/>
   </joint>
 
 

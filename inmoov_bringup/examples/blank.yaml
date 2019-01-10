@@ -1,0 +1,448 @@
+joints:
+
+##############################################################################
+#   JOINT KEY
+##############################################################################
+#   REQUIRED
+#     port:           the com port number that the servo is attached to
+#     servo:          the servo number for the joints
+#     flip:           use value of [1] if your robot joint orientation is the same as the urdf model,
+#                     or use value of [-1] if your robot joint orientation is the opposite of the urdf model
+#                     each joint will tell you the urdf orientation of that joint
+#   OPTIONAL
+#     servopin:       the arduino pin the servo object is connected to
+#     sensorpin:      (if available) the a/d input pin used for sensing position
+#     minpulse:       the minimum pulse value allowed
+#     maxpulse:       the maximum pulse value allowed
+#     minangle:       the command angle associated with the minpulse value
+#     maxangle:       the command angle associated with the maxpulse value
+#     minsensor:      the sensorpin input when at the minpulse position
+#     maxsensor:      the sensorpin input when at the maxpulse position
+#     smoothing:      which smoothing strategy to use for motion?
+#                       0 - direct drive, no smoothing, no maxspeed
+#                       1 - direct drive, honor maxspeed value
+#                       2 - trapezoidal accel/decel ramp, honor maxspeed value
+#                       3 - cos accel/decel ramp, honor maxspeed value
+#                       4 - cos^2 accel/decl ramp, honor maxspeed value
+#     maxspeed:       the maxspeed allowed for motion?
+
+  right_shoulder_pitch:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1  
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+    
+  right_shoulder_roll:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_bicep_yaw:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_bicep_pitch:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_wrist_roll:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_thumb:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_index:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_middle:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_ring:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  right_pinky:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_shoulder_pitch:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    minangle:       -1
+    flip:            1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+    
+  left_shoulder_roll:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_bicep_yaw:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_bicep_pitch:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_wrist_roll:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_thumb:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_index:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_middle:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_ring:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  left_pinky:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+    
+  waist_roll:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  waist_tilt:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  head_roll:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  head_pitch:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  head_yaw:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  jaw:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  eyes_pitch:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+
+  eyes_yaw:
+    port:           -1
+    servo:          -1
+    servopin:       -1
+    sensorpin:      -1
+    flip:            1
+    minangle:       -1
+    maxangle:       -1
+    minpulse:       -1
+    maxpulse:       -1
+    minsensor:      -1
+    maxsensor:      -1
+    smoothing:      -1
+    maxspeed:       -1
+

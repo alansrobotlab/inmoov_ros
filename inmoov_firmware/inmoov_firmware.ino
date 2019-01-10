@@ -3,9 +3,9 @@
 #include "TeensyServo.h"
 #include "configuration.h"
 #include <ros.h>
-#include <inmoov_messages/MotorCommand.h>
-#include <inmoov_messages/MotorParameter.h>
-#include <inmoov_messages/MotorStatus.h>
+#include <inmoov_msgs/MotorCommand.h>
+#include <inmoov_msgs/MotorParameter.h>
+#include <inmoov_msgs/MotorStatus.h>
 #include <std_srvs/Empty.h>
 
 #define LED 13
@@ -21,13 +21,13 @@ int startMillis;
 
 ros::NodeHandle  nh;
 
-inmoov_messages::MotorCommand command_msg;
-inmoov_messages::MotorParameter parameter_msg;
-inmoov_messages::MotorStatus status_msg;
+inmoov_msgs::MotorCommand command_msg;
+inmoov_msgs::MotorParameter parameter_msg;
+inmoov_msgs::MotorStatus status_msg;
 
 const bool heartbeats[] = {1, 0, 1, 0, 0, 0, 0, 0};
 
-void setparameter(const inmoov_messages::MotorParameter::Request & req, inmoov_messages::MotorParameter::Response & res) {
+void getParameter(const inmoov_msgs::MotorParameter::Request & req, inmoov_msgs::MotorParameter::Response & res) {
   byte id = req.id;
   byte parameter = req.parameter;
   float value = 0.0;
@@ -103,7 +103,7 @@ void setparameter(const inmoov_messages::MotorParameter::Request & req, inmoov_m
 
 }
 
-void commandCb( const inmoov_messages::MotorCommand& command_msg) {
+void commandCb( const inmoov_msgs::MotorCommand& command_msg) {
 
   byte id = command_msg.id;
   byte parameter = command_msg.parameter;
@@ -164,9 +164,9 @@ void commandCb( const inmoov_messages::MotorCommand& command_msg) {
 
 ros::Publisher motorstatus("motorstatus", &status_msg);
 
-ros::Subscriber<inmoov_messages::MotorCommand> motorcommand("motorcommand", &commandCb);
+ros::Subscriber<inmoov_msgs::MotorCommand> motorcommand("motorcommand", &commandCb);
 
-ros::ServiceServer<inmoov_messages::MotorParameter::Request, inmoov_messages::MotorParameter::Response> server("motorparameter", &setparameter);
+ros::ServiceServer<inmoov_msgs::MotorParameter::Request, inmoov_msgs::MotorParameter::Response> server("motorparameter", &getParameter);
 
 
 void setupADC() {
@@ -202,15 +202,15 @@ byte generateChecksum() {
 }
 
 void setup() {
-
+  pinMode(LED, OUTPUT);
   digitalWrite(LED, 1);
-  
+
   nh.initNode();
   nh.advertise(motorstatus);
   nh.subscribe(motorcommand);
   nh.advertiseService(server);
 
-  while (!nh.connected() ){
+  while (!nh.connected() ) {
     nh.spinOnce();
   }
 
@@ -225,40 +225,80 @@ void setup() {
   updateMillis = millis();
   commands = 0;
 
-  pinMode(13, OUTPUT);
+
 
   nh.loginfo("Setup Complete!!!");
 
 }
+
+int pushmotorstatus = 0;  // which motorstatus to update
+
+char joint[2] = " ";
+byte bus = 0;
 
 void loop() {
 
   updateServos();
 
   digitalWrite(LED, heartbeats[((millis() >> 7) & 7)]);
+  /*
+    if ((millis() - updateMillis) >= (UPDATEPERIOD / NUMSERVOS)) {
+        status_msg.id           = pushmotorstatus;
+        status_msg.goal         = tServo[pushmotorstatus]->getGoal();
+        status_msg.position     = tServo[pushmotorstatus]->readPositionAngle();
+        status_msg.presentspeed = tServo[pushmotorstatus]->readPresentSpeed();
+        status_msg.moving       = tServo[pushmotorstatus]->getMoving();
+        //status_msg.posraw       = tServo[servo]->sampleDuration;
+        status_msg.posraw       = tServo[pushmotorstatus]->readPositionRaw();
+        status_msg.enabled      = tServo[pushmotorstatus]->getEnabled();
+        status_msg.power        = tServo[pushmotorstatus]->getPower();
+
+        motorstatus.publish( &status_msg);
+
+        pushmotorstatus++;
+        if(pushmotorstatus == NUMSERVOS) {
+          pushmotorstatus = 0;
+        }
+
+        updateMillis = millis();
+        nh.spinOnce();
 
 
-  if ((millis() - updateMillis) > UPDATEPERIOD) {
-    for (int servo = 0; servo < 12; servo++) {
+      }
+  */
+
+
+  if ((millis() - updateMillis) >= UPDATEPERIOD) {
+    for (int servo = 0; servo < NUMSERVOS; servo++) {
+
+      status_msg.joint        = joint;
+      status_msg.bus          = bus;
       status_msg.id           = servo;
       status_msg.goal         = tServo[servo]->getGoal();
       status_msg.position     = tServo[servo]->readPositionAngle();
       status_msg.presentspeed = tServo[servo]->readPresentSpeed();
       status_msg.moving       = tServo[servo]->getMoving();
+      //status_msg.posraw       = tServo[servo]->sampleDuration;
       status_msg.posraw       = tServo[servo]->readPositionRaw();
       status_msg.enabled      = tServo[servo]->getEnabled();
       status_msg.power        = tServo[servo]->getPower();
+
+      nh.spinOnce();
 
       motorstatus.publish( &status_msg);
 
       nh.spinOnce();
     }
+
     updateMillis = millis();
+    nh.spinOnce();
 
     commands = 0;
+
   }
 
   nh.spinOnce();
+
 }
 
 

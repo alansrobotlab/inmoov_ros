@@ -6,8 +6,14 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-      Splitter Ratio: 0.5
-    Tree Height: 565
+        - /TF1/Frames1
+        - /TF1/Tree1
+        - /DepthCloud1
+        - /DepthCloud1/Status1
+        - /DepthCloud1/Auto Size1
+        - /DepthCloud1/Occlusion Compensation1
+      Splitter Ratio: 0.658333361
+    Tree Height: 745
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -16,7 +22,7 @@ Panels:
       - /2D Nav Goal1
       - /Publish Point1
     Name: Tool Properties
-    Splitter Ratio: 0.588679
+    Splitter Ratio: 0.588679016
   - Class: rviz/Views
     Expanded:
       - /Current View1
@@ -36,7 +42,7 @@ Visualization Manager:
       Color: 160; 160; 164
       Enabled: true
       Line Style:
-        Line Width: 0.03
+        Line Width: 0.0299999993
         Value: Lines
       Name: Grid
       Normal Cell Count: 0
@@ -53,7 +59,460 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
-        {}
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        chestplate_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        disk_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        eyesupport_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        face_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        head_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        head_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        head_tilt_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        jaw_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        kinect2_ir_optical_frame_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        kinect2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        kinect2_rgb_optical_frame_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_bicep_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_bicepcover_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_cover_handpinky_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_cover_handring_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_cover_index_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_cover_middle_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_cover_pinky_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_cover_ring_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_cover_thumb_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_eye_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_eyesupport_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_hand_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_handcover_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_index1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_index2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_index3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_iris_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_middle1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_middle2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_middle3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_pinky1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_pinky2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_pinky3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_pinky4_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_ring1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_ring2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_ring3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_ring4_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_shoulder_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_thumb1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_thumb2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        l_thumb3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_ear_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        mid_stomach_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        pedestal_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_bicep_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_bicepcover_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_cover_handpinky_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_cover_handring_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_cover_index_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_cover_middle_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_cover_pinky_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_cover_ring_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_cover_thumb_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_eye_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_eyesupport_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_forearm_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_hand_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_handcover_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_index1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_index2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_index3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_iris_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_middle1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_middle2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_middle3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_pinky1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_pinky2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_pinky3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_pinky4_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_ring1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_ring2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_ring3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_ring4_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_shoulder_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_shoulder_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_thumb1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_thumb2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        r_thumb3_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_ear_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        skull_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        top_stomach_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        torso_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -64,20 +523,370 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
-      Marker Scale: 1
+        All Enabled: false
+        base_link:
+          Value: false
+        chestplate_link:
+          Value: false
+        disk_link:
+          Value: false
+        eyesupport_link:
+          Value: false
+        face_link:
+          Value: false
+        head_base_link:
+          Value: false
+        head_link:
+          Value: false
+        head_tilt_link:
+          Value: false
+        jaw_link:
+          Value: false
+        kinect2_ir_optical_frame_link:
+          Value: false
+        kinect2_link:
+          Value: false
+        kinect2_rgb_optical_frame_link:
+          Value: false
+        l_bicep_link:
+          Value: false
+        l_bicepcover_link:
+          Value: false
+        l_camera_link:
+          Value: false
+        l_cover_handpinky_link:
+          Value: false
+        l_cover_handring_link:
+          Value: false
+        l_cover_index_link:
+          Value: false
+        l_cover_middle_link:
+          Value: false
+        l_cover_pinky_link:
+          Value: false
+        l_cover_ring_link:
+          Value: false
+        l_cover_thumb_link:
+          Value: false
+        l_eye_link:
+          Value: false
+        l_eyesupport_link:
+          Value: false
+        l_forearm_link:
+          Value: false
+        l_hand_link:
+          Value: false
+        l_handcover_link:
+          Value: false
+        l_index1_link:
+          Value: false
+        l_index2_link:
+          Value: false
+        l_index3_link:
+          Value: false
+        l_iris_link:
+          Value: false
+        l_middle1_link:
+          Value: false
+        l_middle2_link:
+          Value: false
+        l_middle3_link:
+          Value: false
+        l_pinky1_link:
+          Value: false
+        l_pinky2_link:
+          Value: false
+        l_pinky3_link:
+          Value: false
+        l_pinky4_link:
+          Value: false
+        l_ring1_link:
+          Value: false
+        l_ring2_link:
+          Value: false
+        l_ring3_link:
+          Value: false
+        l_ring4_link:
+          Value: false
+        l_shoulder_base_link:
+          Value: false
+        l_shoulder_link:
+          Value: false
+        l_thumb1_link:
+          Value: false
+        l_thumb2_link:
+          Value: false
+        l_thumb3_link:
+          Value: false
+        left_ear_link:
+          Value: false
+        mid_stomach_link:
+          Value: false
+        pedestal_link:
+          Value: false
+        r_bicep_link:
+          Value: false
+        r_bicepcover_link:
+          Value: false
+        r_camera_link:
+          Value: false
+        r_cover_handpinky_link:
+          Value: false
+        r_cover_handring_link:
+          Value: false
+        r_cover_index_link:
+          Value: false
+        r_cover_middle_link:
+          Value: false
+        r_cover_pinky_link:
+          Value: false
+        r_cover_ring_link:
+          Value: false
+        r_cover_thumb_link:
+          Value: false
+        r_eye_link:
+          Value: false
+        r_eyesupport_link:
+          Value: false
+        r_forearm_link:
+          Value: false
+        r_hand_link:
+          Value: false
+        r_handcover_link:
+          Value: false
+        r_index1_link:
+          Value: false
+        r_index2_link:
+          Value: false
+        r_index3_link:
+          Value: false
+        r_iris_link:
+          Value: false
+        r_middle1_link:
+          Value: false
+        r_middle2_link:
+          Value: false
+        r_middle3_link:
+          Value: false
+        r_pinky1_link:
+          Value: false
+        r_pinky2_link:
+          Value: false
+        r_pinky3_link:
+          Value: false
+        r_pinky4_link:
+          Value: false
+        r_ring1_link:
+          Value: false
+        r_ring2_link:
+          Value: false
+        r_ring3_link:
+          Value: false
+        r_ring4_link:
+          Value: false
+        r_shoulder_base_link:
+          Value: false
+        r_shoulder_link:
+          Value: false
+        r_thumb1_link:
+          Value: false
+        r_thumb2_link:
+          Value: false
+        r_thumb3_link:
+          Value: false
+        right_ear_link:
+          Value: false
+        skull_link:
+          Value: false
+        top_stomach_link:
+          Value: false
+        torso_link:
+          Value: false
+        world:
+          Value: true
+      Marker Scale: 0.25
       Name: TF
       Show Arrows: true
       Show Axes: true
-      Show Names: true
+      Show Names: false
       Tree:
-        {}
+        world:
+          base_link:
+            pedestal_link:
+              mid_stomach_link:
+                top_stomach_link:
+                  disk_link:
+                    {}
+                  torso_link:
+                    chestplate_link:
+                      {}
+                    head_tilt_link:
+                      head_base_link:
+                        head_link:
+                          jaw_link:
+                            {}
+                          left_ear_link:
+                            {}
+                          right_ear_link:
+                            {}
+                          skull_link:
+                            face_link:
+                              eyesupport_link:
+                                l_eyesupport_link:
+                                  l_camera_link:
+                                    {}
+                                  l_eye_link:
+                                    {}
+                                  l_iris_link:
+                                    {}
+                                r_eyesupport_link:
+                                  r_camera_link:
+                                    {}
+                                  r_eye_link:
+                                    {}
+                                  r_iris_link:
+                                    {}
+                    kinect2_ir_optical_frame_link:
+                      {}
+                    kinect2_link:
+                      {}
+                    kinect2_rgb_optical_frame_link:
+                      {}
+                    l_shoulder_base_link:
+                      l_shoulder_link:
+                        l_bicep_link:
+                          l_bicepcover_link:
+                            {}
+                          l_forearm_link:
+                            l_hand_link:
+                              l_handcover_link:
+                                {}
+                              l_index1_link:
+                                l_cover_index_link:
+                                  {}
+                                l_index2_link:
+                                  l_index3_link:
+                                    {}
+                              l_middle1_link:
+                                l_cover_middle_link:
+                                  {}
+                                l_middle2_link:
+                                  l_middle3_link:
+                                    {}
+                              l_pinky1_link:
+                                l_cover_handpinky_link:
+                                  {}
+                                l_pinky2_link:
+                                  l_cover_pinky_link:
+                                    {}
+                                  l_pinky3_link:
+                                    l_pinky4_link:
+                                      {}
+                              l_ring1_link:
+                                l_cover_handring_link:
+                                  {}
+                                l_ring2_link:
+                                  l_cover_ring_link:
+                                    {}
+                                  l_ring3_link:
+                                    l_ring4_link:
+                                      {}
+                              l_thumb1_link:
+                                l_cover_thumb_link:
+                                  {}
+                                l_thumb2_link:
+                                  l_thumb3_link:
+                                    {}
+                    r_shoulder_base_link:
+                      r_shoulder_link:
+                        r_bicep_link:
+                          r_bicepcover_link:
+                            {}
+                          r_forearm_link:
+                            r_hand_link:
+                              r_handcover_link:
+                                {}
+                              r_index1_link:
+                                r_cover_index_link:
+                                  {}
+                                r_index2_link:
+                                  r_index3_link:
+                                    {}
+                              r_middle1_link:
+                                r_cover_middle_link:
+                                  {}
+                                r_middle2_link:
+                                  r_middle3_link:
+                                    {}
+                              r_pinky1_link:
+                                r_cover_handpinky_link:
+                                  {}
+                                r_pinky2_link:
+                                  r_cover_pinky_link:
+                                    {}
+                                  r_pinky3_link:
+                                    r_pinky4_link:
+                                      {}
+                              r_ring1_link:
+                                r_cover_handring_link:
+                                  {}
+                                r_ring2_link:
+                                  r_cover_ring_link:
+                                    {}
+                                  r_ring3_link:
+                                    r_ring4_link:
+                                      {}
+                              r_thumb1_link:
+                                r_cover_thumb_link:
+                                  {}
+                                r_thumb2_link:
+                                  r_thumb3_link:
+                                    {}
       Update Interval: 0
+      Value: true
+    - Alpha: 1
+      Auto Size:
+        Auto Size Factor: 1
+        Value: true
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/DepthCloud
+      Color: 255; 255; 255
+      Color Image Topic: /kinect2/qhd/image_color
+      Color Transformer: RGB8
+      Color Transport Hint: raw
+      Decay Time: 0
+      Depth Map Topic: /kinect2/qhd/image_depth_rect
+      Depth Map Transport Hint: raw
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: DepthCloud
+      Occlusion Compensation:
+        Occlusion Time-Out: 30
+        Value: false
+      Position Transformer: ""
+      Queue Size: 5
+      Selectable: true
+      Size (Pixels): 3
+      Style: Flat Squares
+      Topic Filter: false
+      Use Fixed Frame: true
+      Use rainbow: true
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: /base_link
+    Fixed Frame: base_link
+    Frame Rate: 30
   Name: root
   Tools:
     - Class: rviz/Interact
@@ -97,25 +906,32 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10
+      Distance: 8.5798645
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.0599999987
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.655160844
+        Y: 0.128855467
+        Z: 0.624024332
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.0500000007
       Name: Current View
-      Near Clip Distance: 0.01
-      Pitch: 0.465398
+      Near Clip Distance: 0.00999999978
+      Pitch: 0.249796689
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.885398
+      Yaw: 6.17386055
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 882
+  Height: 1024
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000013c000002c4fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000028000002c4000000dd00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f000002c4fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730100000028000002c4000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004b00000003efc0100000002fb0000000800540069006d00650100000000000004b0000002f600fffffffb0000000800540069006d0065010000000000000450000000000000000000000259000002c400000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000021600000378fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006100fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000002800000378000000d700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000378fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000002800000378000000ad00fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000005dc0000003efc0100000002fb0000000800540069006d00650100000000000005dc0000030700fffffffb0000000800540069006d00650100000000000004500000000000000000000002ab0000037800000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -124,6 +940,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1216
-  X: 53
-  Y: 60
+  Width: 1500
+  X: 598
+  Y: 448

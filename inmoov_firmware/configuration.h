@@ -21,7 +21,7 @@
 
 #define EEPROM_START 0
 
-#define UPDATEPERIOD 100
+#define UPDATEPERIOD 250
 
 //Protocol Constants
 #define P_WRITE  0x03

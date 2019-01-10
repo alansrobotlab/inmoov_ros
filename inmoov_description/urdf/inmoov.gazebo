@@ -1,0 +1,403 @@
+<?xml version="1.0"?>
+<robot  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- based on https://github.com/ros-simulation/gazebo_ros_demos/blob/kinetic-devel/rrbot_description/urdf/rrbot.gazebo -->
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/inmoov</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+  <!-- color definitions for gazebo links -->
+  <xacro:macro name="g_frame_color">
+    <material>Gazebo/Grey</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_cover_color">
+    <material>Gazebo/White</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_eyeball_color">
+    <material>Gazebo/White</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_iris_color">
+    <material>Gazebo/SkyBlue</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_base_color">
+    <material>Gazebo/DarkGrey</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_kinect_color">
+    <material>Gazebo/DarkGrey</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_camera_color">
+    <material>Gazebo/DarkGrey</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_accent_color">
+    <material>Gazebo/SkyBlue</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_servo_color">
+    <material>Gazebo/DarkGrey</material>
+  </xacro:macro>
+
+  <xacro:macro name="g_horn_color">
+    <material>Gazebo/Grey</material>
+  </xacro:macro>
+
+
+  <!-- colors for torso links -->
+  <gazebo reference="mid_stomach_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="disk_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="top_stomach_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="torso_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="kinect2_link">
+    <xacro:g_kinect_color/>
+  </gazebo>
+
+  <gazebo reference="kinect2_ir_optical_frame_link">
+    <xacro:g_kinect_color/>
+  </gazebo>
+
+  <gazebo reference="kinect2_rgb_optical_frame_link">
+    <xacro:g_kinect_color/>
+  </gazebo>
+
+  <gazebo reference="chestplate_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <!-- colors for head links -->
+  <gazebo reference="head_base_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="head_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="jaw_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="skull_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="left_ear_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="right_ear_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+    <!-- colors for head links -->
+  <gazebo reference="face_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+    <!-- colors for eye links -->
+  <gazebo reference="l_eyesupport_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_eyesupport_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_camera_link">
+    <xacro:g_camera_color/>
+  </gazebo>
+
+  <gazebo reference="r_camera_link">
+    <xacro:g_camera_color/>
+  </gazebo>
+
+  <gazebo reference="l_eye_link">
+    <xacro:g_eyeball_color/>
+  </gazebo>
+
+  <gazebo reference="r_eye_link">
+    <xacro:g_eyeball_color/>
+  </gazebo>
+
+  <gazebo reference="l_iris_link">
+    <xacro:g_iris_color/>
+  </gazebo>
+
+  <gazebo reference="r_iris_link">
+    <xacro:g_iris_color/>
+  </gazebo>
+
+  <!-- colors for arm links -->
+  <gazebo reference="l_shoulder_base_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_shoulder_base_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_shoulder_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_shoulder_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_bicep_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_bicep_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_bicepcover_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_bicepcover_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_forearm_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_corearm_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <!-- colors for hand links -->
+  <gazebo reference="l_hand_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+  <gazebo reference="r_hand_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_thumb1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_thumb1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_thumb2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_thumb2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_thumb3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_thumb3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_index1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_index1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_index2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_index2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_index3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_index3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_middle1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_middle1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_middle2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_middle2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_middle3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_middle3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_ring1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_ring1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_ring2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_ring2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_ring3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_ring3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_ring4_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_ring4_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_pinky1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_pinky1_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_pinky2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_pinky2_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_pinky3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_pinky3_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_pinky4_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="r_pinky4_link">
+    <xacro:g_frame_color/>
+  </gazebo>
+
+  <gazebo reference="l_handcover_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_handcover_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_cover_handring_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_cover_handring_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_cover_handpinky_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_cover_handpinky_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_cover_thumb_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_cover_thumb_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_cover_index_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_cover_index_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_cover_middle_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_cover_middle_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_cover_ring_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_cover_ring_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="l_cover_pinky_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+  <gazebo reference="r_cover_pinky_link">
+    <xacro:g_cover_color/>
+  </gazebo>
+
+
+
+</robot>

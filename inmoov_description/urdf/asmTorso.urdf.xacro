@@ -2,104 +2,142 @@
 
 <robot name="inmoov" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<xacro:include filename="$(find inmoov_description)/urdf/materials.urdf.xacro" />
+<xacro:macro name="torso" params="covers">
 
-<xacro:macro name="torso" params="side covers">
-
-  <link name="mid_stomach">
+  <link name="mid_stomach_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/mid_stomach.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/mid_stomach.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 1.152"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:mid_stomach_inertial/>
   </link>
 
-  <link name="disk">
+  <link name="disk_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/disk.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/disk.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0.046 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
     </visual>
+    <xacro:disk_inertial/>
   </link>
 
-  <link name="top_stomach">
+  <link name="top_stomach_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/top_stomach.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/top_stomach.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:top_stomach_inertial/>
   </link>
 
-  <link name="torso">
+  <link name="torso_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/torso.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/torso.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:frame_color/>
     </visual>
+    <xacro:torso_inertial/>
   </link>
 
-  <link name="kinect">
+  <link name="kinect2_link">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
       <xacro:kinect_color/>
     </visual>
+    <xacro:kinectone_inertial/>
   </link>
 
-  <link name="chestplate">
+  <link name="kinect2_ir_optical_frame">
     <visual>
       <geometry>
-        <mesh filename="package://inmoov_description/meshes/chest.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <xacro:kinect_color/>
+    </visual>
+    <xacro:kinectone_inertial/>
+  </link>
+
+  <link name="kinect2_rgb_optical_frame">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_meshes/meshes/kinectone.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <xacro:kinect_color/>
+    </visual>
+    <xacro:kinectone_inertial/>
+  </link>
+
+  <link name="chestplate_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://inmoov_meshes/meshes/chest.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <xacro:cover_color/>
     </visual>
+    <xacro:chest_inertial/>
   </link>
 
 
-  <joint name="waist_rotate" type="revolute">
+  <joint name="waist_pan_joint" type="revolute">
    <axis xyz="0 0 1"/>
-<limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
-      <origin rpy="0 0 0" xyz="0 0 1.152"/>
-    <parent link="mid_stomach"/>
-    <child link="top_stomach"/>
+   <limit effort="1000.0" lower="${waist_pan_joint_lower}" upper="${waist_pan_joint_upper}" velocity="${waist_pan_joint_velocity}" />
+   <origin rpy="0 0 0" xyz="0 0 1.152"/>
+    <parent link="mid_stomach_link"/>
+    <child link="top_stomach_link"/>
   </joint>
 
-  <joint name="disk" type="fixed">
+  <joint name="disk_joint" type="fixed">
 
-      <origin rpy="0 0 0" xyz="0 0 0.09"/>
-    <parent link="top_stomach"/>
-    <child link="disk"/>
+      <origin rpy="0 0 0" xyz="0.046 0 0.09"/>
+    <parent link="top_stomach_link"/>
+    <child link="disk_link"/>
   </joint>
 
-  <joint name="waist_lean" type="revolute">
-   <axis xyz="0 1 0"/>
-<limit effort="1000.0" lower="-0.30" upper="0.30" velocity="0.5"/>
-<origin rpy="0 0 0" xyz="0 0 0.11"/>
-    <parent link="top_stomach"/>
-    <child link="torso"/>
+  <joint name="waist_roll_joint" type="revolute">
+   <axis xyz="1 0 0"/>
+   <limit effort="1000.0" lower="${waist_roll_joint_lower}" upper="${waist_roll_joint_upper}" velocity="${waist_roll_joint_velocity}" />
+   <origin rpy="0 0 0" xyz="0 0 0.11"/>
+    <parent link="top_stomach_link"/>
+    <child link="torso_link"/>
   </joint>
 
-  <joint name="chestplate" type="fixed">
-<origin rpy="0 0 0" xyz="0 0.039 0.025"/>
-    <parent link="torso"/>
-    <child link="chestplate"/>
+  <joint name="chestplate_joint" type="fixed">
+<origin rpy="0 0 0" xyz="0.042 0 0.025"/>
+    <parent link="torso_link"/>
+    <child link="chestplate_link"/>
   </joint>
 
-  <joint name="kinect" type="fixed">
-<origin rpy="0 0 0" xyz="0 0 0.066"/>
-    <parent link="torso"/>
-    <child link="kinect"/>
+  <joint name="kinect2_joint" type="fixed">
+<origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
+    <parent link="torso_link"/>
+    <child link="kinect2_link"/>
+  </joint>
+
+  <joint name="kinect2_ir_optical_frame_joint" type="fixed">
+<origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
+    <parent link="torso_link"/>
+    <child link="kinect2_ir_optical_frame"/>
+  </joint>
+
+  <joint name="kinect2_rgb_optical_joint" type="fixed">
+<origin rpy="-1.57 0 -1.57" xyz="0 0 0.066"/>
+    <parent link="torso_link"/>
+    <child link="kinect2_rgb_optical_frame"/>
   </joint>
 
 </xacro:macro>

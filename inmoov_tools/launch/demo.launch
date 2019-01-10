@@ -1,0 +1,19 @@
+<launch>
+
+<rosparam file="$(find inmoov_tools)/launch/params.yaml"/>
+
+<include file="$(find inmoov_tools)/launch/servobus.launch" />
+
+<include file="$(find inmoov_tools)/launch/webcams.launch" />
+
+<include file="$(find inmoov_description)/launch/display.launch"/>
+
+<node name="trainer" pkg="inmoov_tools" type="trainer.py" respawn="true" />
+
+<node name="image_view_kinect_color" pkg="image_view" type="image_view" respawn="false" output="screen">
+<remap from="image" to="/kinect2/hd/image_color"/>
+<param name="autosize" value="false" />
+</node>
+
+
+</launch>

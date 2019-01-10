@@ -1,0 +1,11 @@
+<launch>
+  <param name="robot_description" textfile="$(find inmoov_description)/moveit/config/inmoov.srdf" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="/use_gui" value="false"/>
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <include file="$(find inmoov_description)/moveit/launch/move_group.launch">
+    <arg name="allow_trajectory_execution" value="false"/>
+  </include>
+  <include file="$(find inmoov_description)/moveit/launch/moveit_rviz.launch"/>
+</launch>
