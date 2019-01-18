@@ -38,7 +38,7 @@ bus = {}        # dict of motorcommand busses indexed by ordinal
 PI = 3.1415926539
 
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
-import qdarkstyle
+# import qdarkstyle
 
 # https://www.safaribooksonline.com/blog/2014/01/22/create-basic-gui-using-pyqt/
 gui = os.path.join(os.path.dirname(__file__), 'rviz_manager.ui')

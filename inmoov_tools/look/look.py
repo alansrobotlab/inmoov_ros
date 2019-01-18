@@ -28,7 +28,7 @@ from std_msgs.msg import Header
 from time import sleep
 
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
-import qdarkstyle
+# import qdarkstyle
 
 # https://www.safaribooksonline.com/blog/2014/01/22/create-basic-gui-using-pyqt/
 gui = os.path.join(os.path.dirname(__file__), 'look.ui')
@@ -704,7 +704,7 @@ ARMOUT_OLD = [
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    # app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     form = ExampleApp()  # We set the form to be our ExampleApp (design)
     form.show()  # Show the form
     app.exec_()  # and execute the app

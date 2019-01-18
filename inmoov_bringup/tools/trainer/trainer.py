@@ -30,7 +30,7 @@ import sys
 from os.path import dirname, abspath
 
 # https://github.com/ColinDuquesnoy/QDarkStyleSheet
-import qdarkstyle
+# import qdarkstyle
 
 #Ui_MainWindow, QtBaseClass = uic.loadUiType("trainer.ui")
 # https://www.safaribooksonline.com/blog/2014/01/22/create-basic-gui-using-pyqt/
@@ -444,7 +444,7 @@ def clamp(n,minn,maxn):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  # A new instance of QApplication
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    # app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     form = TrainerApp()  # We set the form to be our ExampleApp (design)
     form.show()  # Show the form
     #app.aboutToQuit.connect(form.emit_export_yaml) # myExitHandler is a callable
